@@ -3,10 +3,10 @@
 # basado en tu boceto [cite: 672, 686, 705-722]
 
 """
-Tipos de Lecciones (definidos en tu boceto [cite: 714-718]):
-- 'explicativa': Muestra texto y fórmulas. [cite: 715]
-- 'practica': Un problema donde se muestra la solución si se falla. [cite: 716]
-- 'examen': Un problema donde fallar reinicia la lección. [cite: 718, 721]
+Tipos de Lecciones:
+- 'Explicativa': Muestra texto y fórmulas. 
+- 'Practica': Un problema donde se muestra la solución si se falla.
+- 'Examen': Un problema donde fallar reinicia la lección.
 """
 
 GAME_STRUCTURE = {
@@ -16,51 +16,51 @@ GAME_STRUCTURE = {
                 {'type': 'explicativa', 'content': 'El método de Lagrange se usa para intervalos no uniformes...[cite: 419]. La fórmula es: g(x) = Σ yi * Π... [cite: 420]'},
                 {'type': 'practica', 'content': '¿Qué falta en la fórmula g(x) = Σ [?] * Π...?', 'options': ['yi', 'xi', 'gi'], 'answer': 'yi'}, # [cite: 627, 628]
                 {'type': 'practica', 'content': '¿Qué falta en la fórmula ... Π (x - [?]) / ...?', 'options': ['x-xj', 'xi', 'xj'], 'answer': 'x-xj'}, # [cite: 634, 635]
-                {'type': 'examen', 'problem_id': 'lagrange_1'} # Coincide con el problema en [cite: 644]
+                {'type': 'examen', 'problem_id': 'lagrange_1'} 
             ],
             "Nivel 2: Lineal": [
-                {'type': 'explicativa', 'content': 'Consiste en unir dos puntos con una línea recta[cite: 367]. Fórmula: g(x) = ... [cite: 370]'},
-                {'type': 'examen', 'problem_id': 'linear_interp_1'} # Coincide con el problema en [cite: 385]
+                {'type': 'explicativa', 'content': 'Consiste en unir dos puntos con una línea recta. Fórmula: g(x) = ... '},
+                {'type': 'examen', 'problem_id': 'linear_interp_1'} 
             ],
             "Nivel 3: Newton con Diferencias Divididas": [
-                {'type': 'explicativa', 'content': 'Se aplica cuando los intervalos son no uniformes[cite: 439]. Fórmula: g(x) = D0 + D1(x-x1) + ... [cite: 444]'},
-                {'type': 'examen', 'problem_id': 'newton_div_diff_1'} # Coincide con el problema en [cite: 445]
+                {'type': 'explicativa', 'content': 'Se aplica cuando los intervalos son no uniformes. Fórmula: g(x) = D0 + D1(x-x1) + ... '},
+                {'type': 'examen', 'problem_id': 'newton_div_diff_1'} 
             ],
             "Nivel 4: Newton Hacia Adelante": [
-                {'type': 'explicativa', 'content': 'Se usa para intervalos uniformes[cite: 475, 479]. Fórmula: g(x) = yi[s 0] + Δf(xi)[s 1]... [cite: 490]'},
-                {'type': 'examen', 'problem_id': 'newton_forward_1'} # Coincide con el problema en [cite: 493, 637]
+                {'type': 'explicativa', 'content': 'Se usa para intervalos uniformes. Fórmula: g(x) = yi[s 0] + Δf(xi)[s 1]...'},
+                {'type': 'examen', 'problem_id': 'newton_forward_1'} 
             ],
             "Nivel 5: Newton Hacia Atrás": [
-                {'type': 'explicativa', 'content': "Requiere intervalos uniformes[cite: 540]. El factor binomial 's' es siempre negativo[cite: 547]. Fórmula: ...[s(s+1)/2!]... [cite: 551]"},
-                {'type': 'examen', 'problem_id': 'newton_backward_1'} # Coincide con el problema en [cite: 555]
+                {'type': 'explicativa', 'content': "Requiere intervalos uniformes. El factor binomial 's' es siempre negativo. Fórmula: ...[s(s+1)/2!]... "},
+                {'type': 'examen', 'problem_id': 'newton_backward_1'}
             ],
         }
     },
     "Capítulo 2: Ecuaciones No Lineales": {
         "levels": {
             "Nivel 1: Bisección (Bisectriz)": [
-                {'type': 'explicativa', 'content': 'Es el punto medio entre dos puntos[cite: 234]. Fórmula: x = (a+b)/2 [cite: 236]'},
-                {'type': 'examen', 'problem_id': 'bisection_1'} # Coincide con el problema en [cite: 237]
+                {'type': 'explicativa', 'content': 'Es el punto medio entre dos puntos. Fórmula: x = (a+b)/2 [cite: 236]'},
+                {'type': 'examen', 'problem_id': 'bisection_1'} 
             ],
             "Nivel 2: Falsa Posición (Regula-Falsi)": [
                 {'type': 'explicativa', 'content': 'Une f(b) y f(a) con una línea recta[cite: 245]. Fórmula: x = a - f(a)(b-a) / (f(b)-f(a)) [cite: 259]'},
-                {'type': 'examen', 'problem_id': 'false_position_1'} # Coincide con el problema en [cite: 263]
+                {'type': 'examen', 'problem_id': 'false_position_1'} 
             ],
             "Nivel 3: Newton-Raphson": [
                 {'type': 'explicativa', 'content': 'Utiliza rectas tangentes[cite: 285]. Fórmula: x_i+1 = x_i - (f(x_i) / f\'(x_i)) [cite: 293]'},
-                {'type': 'examen', 'problem_id': 'newton_raphson_1'} # Coincide con el problema en [cite: 297]
+                {'type': 'examen', 'problem_id': 'newton_raphson_1'} 
             ],
             "Nivel 4: Punto Fijo": [
                 {'type': 'explicativa', 'content': 'Transforma algebraicamente f(x)=0 a x=g(x)[cite: 304]. Fórmula: x_i+1 = g(x_i) [cite: 319]'},
-                {'type': 'examen', 'problem_id': 'fixed_point_1'} # Coincide con el problema en [cite: 322]
+                {'type': 'examen', 'problem_id': 'fixed_point_1'} 
             ],
             "Nivel 5: Secante": [
                 {'type': 'explicativa', 'content': 'Similar a Newton, pero aproxima la derivada[cite: 336]. Fórmula: x_i+1 = ... [cite: 343]'},
-                {'type': 'examen', 'problem_id': 'secant_1'} # Coincide con el problema en [cite: 346]
+                {'type': 'examen', 'problem_id': 'secant_1'}  
             ],
             "Nivel 6: Método Gráfico": [
                 {'type': 'explicativa', 'content': 'Consiste en graficar la función y observar donde cruza el eje x[cite: 192].'},
-                {'type': 'examen', 'problem_id': 'graphical_1'} # Coincide con el problema en [cite: 194]
+                {'type': 'examen', 'problem_id': 'graphical_1'} 
             ],
         }
     },
@@ -68,11 +68,11 @@ GAME_STRUCTURE = {
         "levels": {
             "Nivel 1: Gauss-Seidel": [
                 {'type': 'explicativa', 'content': 'Método iterativo para resolver sistemas de ecuaciones[cite: 6]. Requiere diagonal dominante[cite: 12].'},
-                {'type': 'examen', 'problem_id': 'gauss_seidel_1'} # Coincide con el problema en [cite: 9, 10, 11]
+                {'type': 'examen', 'problem_id': 'gauss_seidel_1'} 
             ],
             "Nivel 2: Jacobi": [
                 {'type': 'explicativa', 'content': 'Método iterativo similar a Gauss-Seidel, pero no usa los valores nuevos en la misma iteración[cite: 7].'},
-                {'type': 'examen', 'problem_id': 'jacobi_1'} # Coincide con el problema en [cite: 94, 95, 96]
+                {'type': 'examen', 'problem_id': 'jacobi_1'}
             ],
             "Nivel 3: Montante": [
                 {'type': 'explicativa', 'content': 'Método de pivoteo para resolver sistemas de ecuaciones[cite: 3]. (Teoría no incluida en PDF).'},
@@ -92,23 +92,23 @@ GAME_STRUCTURE = {
         "levels": {
             "Nivel 1: Regla Trapezoidal": [
                 {'type': 'explicativa', 'content': 'Integra un polinomio de primer grado[cite: 976]. Fórmula: I = h/2 * [f(a) + 2Σ... + f(b)] [cite: 979]'},
-                {'type': 'examen', 'problem_id': 'trapezoidal_1'} # Coincide con el problema en [cite: 987]
+                {'type': 'examen', 'problem_id': 'trapezoidal_1'} 
             ],
             "Nivel 2: Regla de 1/3 Simpson": [
                 {'type': 'explicativa', 'content': 'Integra un polinomio de 2do grado [cite: 926]. n debe ser par[cite: 928, 933]. Fórmula: I = h/3 * [f(a) + 4Σ(impar) + 2Σ(par) + f(b)] [cite: 929]'},
-                {'type': 'examen', 'problem_id': 'simpson_1_3_1'} # Coincide con el problema en [cite: 934]
+                {'type': 'examen', 'problem_id': 'simpson_1_3_1'} 
             ],
             "Nivel 3: Regla de 3/8 Simpson": [
-                {'type': 'explicativa', 'content': 'Integra un polinomio de 3er grado [cite: 947]. n debe ser múltiplo de 3[cite: 950]. Fórmula: I = 3h/8 * [...] [cite: 951]'},
-                {'type': 'examen', 'problem_id': 'simpson_3_8_1'} # Coincide con el problema en [cite: 958]
+                {'type': 'explicativa', 'content': 'Integra un polinomio de 3er grado. n debe ser múltiplo de 3[cite: 950]. Fórmula: I = 3h/8 * [...] [cite: 951]'},
+                {'type': 'examen', 'problem_id': 'simpson_3_8_1'} 
             ],
             "Nivel 4: Newton-Cotes Cerradas": [
                 {'type': 'explicativa', 'content': 'Fórmulas de integración donde el dominio está cerrado por el primer y último dato[cite: 1006]. Fórmula: I = αh * Σ(wi * f(a+ih)) [cite: 968]'},
-                {'type': 'examen', 'problem_id': 'cotes_closed_1'} # Coincide con el problema en [cite: 972]
+                {'type': 'examen', 'problem_id': 'cotes_closed_1'} 
             ],
             "Nivel 5: Newton-Cotes Abiertas": [
                 {'type': 'explicativa', 'content': 'Fórmulas de integración que extienden el intervalo [cite: 1009]. h = (b-a)/(n+2) [cite: 1012]'},
-                {'type': 'examen', 'problem_id': 'cotes_open_1'} # Coincide con el problema en [cite: 1019]
+                {'type': 'examen', 'problem_id': 'cotes_open_1'} 
             ],
         }
     },
