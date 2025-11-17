@@ -8,10 +8,10 @@ import methods_engine as me
 class NumericalMethodsGame:
     def __init__(self, root):
         self.root = root
-        self.root.title("Métodos Numéricos - El Juego") # [cite: 596]
+        self.root.title("Métodos Numéricos - El Juego") 
         self.root.geometry("800x600")
         
-        # Estado del juego [cite: 701, 702]
+        # Estado del juego 
         self.username = "Jugador 1"
         self.errors_committed = 0
         self.time_elapsed = "0h 0m"
@@ -32,7 +32,7 @@ class NumericalMethodsGame:
         self.current_screen.pack(fill=tk.BOTH, expand=True)
 
     def show_main_menu(self):
-        """Muestra el menú principal [cite: 596-600]"""
+        """Muestra el menú principal """
         self.clear_screen()
         
         tk.Label(self.current_screen, text="¡Aprende, Juega, Domina!", font=("Arial", 24)).pack(pady=20)
@@ -42,12 +42,12 @@ class NumericalMethodsGame:
         tk.Button(self.current_screen, text="SALIR", command=self.root.quit).pack(pady=10)
 
     def show_user_menu(self):
-        """Muestra el menú de usuario [cite: 601-606]"""
+        """Muestra el menú de usuario""" 
         self.clear_screen()
         
         tk.Label(self.current_screen, text=f"PERFIL DE: {self.username}", font=("Arial", 18)).pack(pady=10)
-        tk.Label(self.current_screen, text=f"TIEMPO TRANSCURRIDO: {self.time_elapsed}").pack(pady=5) # [cite: 604]
-        tk.Label(self.current_screen, text=f"ERRORES COMETIDOS: {self.errors_committed}").pack(pady=5) # [cite: 605]
+        tk.Label(self.current_screen, text=f"TIEMPO TRANSCURRIDO: {self.time_elapsed}").pack(pady=5) 
+        tk.Label(self.current_screen, text=f"ERRORES COMETIDOS: {self.errors_committed}").pack(pady=5) 
         
         tk.Label(self.current_screen, text="MEDALLAS GANADAS:", font=("Arial", 14)).pack(pady=10)
         for medal in self.medals:
@@ -56,7 +56,7 @@ class NumericalMethodsGame:
             tk.Label(self.current_screen, text="(Aún no hay medallas)").pack()
             
         tk.Button(self.current_screen, text="VOLVER", command=self.show_main_menu).pack(pady=20)
-        # Aquí iría la lógica de "Cerrar Sesión" [cite: 606, 703]
+        # Aquí iría la lógica de "Cerrar Sesión" 
 
     def show_chapter_menu(self):
         """Muestra el menú de capítulos [cite: 607, 609, 617]"""
@@ -88,7 +88,7 @@ class NumericalMethodsGame:
         tk.Button(self.current_screen, text="VOLVER A CAPÍTULOS", command=self.show_chapter_menu).pack(pady=20)
 
     def start_lesson(self, chapter, level, lesson_index):
-        """Muestra la lección actual [cite: 714]"""
+        """Muestra la lección actual"""
         self.clear_screen()
         
         lessons = GAME_STRUCTURE[chapter]['levels'][level]
@@ -112,7 +112,7 @@ class NumericalMethodsGame:
             self.show_practica(current_lesson, chapter, level, lesson_index)
             
     def show_explicativa(self, lesson, chapter, level, lesson_index):
-        """Muestra una lección explicativa [cite: 715]"""
+        """Muestra una lección explicativa """
         tk.Label(self.current_screen, text=lesson['content'], wraplength=600, justify=tk.LEFT).pack(pady=20, padx=20)
         
         # Botón para continuar a la siguiente lección
@@ -124,10 +124,10 @@ class NumericalMethodsGame:
         #           command=lambda: self.apply_penalty('alto', chapter, level)).pack(pady=5)
 
     def show_practica(self, lesson, chapter, level, lesson_index):
-        """Muestra una lección de práctica o examen [cite: 716, 718]"""
+        """Muestra una lección de práctica o examen"""
         tk.Label(self.current_screen, text=f"Pregunta: {lesson['content']}", wraplength=600).pack(pady=10, padx=20)
         
-        # Esto es para preguntas de opción múltiple, como en [cite: 626]
+        # Esto es para preguntas de opción múltiple
         if 'options' in lesson:
             for option in lesson['options']:
                 btn = tk.Button(self.current_screen, text=option,
@@ -136,7 +136,7 @@ class NumericalMethodsGame:
                 
         # Esto es para problemas que llaman al motor de métodos (ej. [cite: 636])
         elif 'problem_id' in lesson:
-            # Aquí se mostraría la tabla del problema [cite: 641] y un campo de entrada
+            # Aquí se mostraría la tabla del problema y un campo de entrada
             tk.Label(self.current_screen, text=f"(Mostrando problema: {lesson['problem_id']})").pack(pady=10)
             tk.Label(self.current_screen, text="Ingresa tu respuesta:").pack()
             entry = tk.Entry(self.current_screen)
@@ -157,7 +157,7 @@ class NumericalMethodsGame:
             messagebox.showinfo("¡Correcto!", "¡Muy bien! Pasando a la siguiente lección.")
             self.start_lesson(chapter, level, lesson_index + 1)
         else:
-            # Aplicar castigo según el boceto [cite: 723-727]
+            # Aplicar castigo
             self.errors_committed += 1
             if lesson_type == 'practica':
                 messagebox.showerror("Incorrecto", f"La respuesta correcta era '{correct_answer}'. [cite: 696]\nRegresando a la lección anterior. [cite: 726]")

@@ -12,7 +12,7 @@ GAME_STRUCTURE = {
     "Capítulo 1: Interpolación":{
         "levels": {
             "Nivel 1: Lagrange": [
-                {'type': 'explicativa', 'content': 'El método de Lagrange se usa para intervalos no uniformes...[cite: 419]. La fórmula es: g(x) = Σ yi * Π... [cite: 420]'},
+                {'type': 'explicativa', 'content': 'El método de Lagrange se usa para intervalos no uniformes.... La fórmula es: g(x) = Σ yi * Π... '},
                 {'type': 'practica', 'content': '¿Qué falta en la fórmula g(x) = Σ [?] * Π...?', 'options': ['yi', 'xi', 'gi'], 'answer': 'yi'}, 
                 {'type': 'practica', 'content': '¿Qué falta en la fórmula ... Π (x - [?]) / ...?', 'options': ['x-xj', 'xi', 'xj'], 'answer': 'x-xj'}, 
                 {'type': 'examen', 'problem_id': 'lagrange_1'} 

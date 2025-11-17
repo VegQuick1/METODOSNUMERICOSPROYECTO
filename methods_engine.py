@@ -7,7 +7,7 @@ def solve_lagrange(points, x_to_find):
     """ Resuelve la interpolación de Lagrange [cite: 420-425] """
     # points es una lista de tuplas (x, y), ej: [(2.2, 2.54), (2.5, 2.82), ...]
     # x_to_find es el valor de x, ej: 2.4
-    # Basado en el problema de [cite: 434, 435]
+    # Basado en el problema de
     n = len(points)
     g_x = 0
     
@@ -31,7 +31,7 @@ def solve_linear_interpolation(a, fa, b, fb, x):
     return g_x
 
 def solve_newton_divided_differences(points, x_to_find):
-    """ Resuelve Newton con Diferencias Divididas [cite: 444] """
+    """ Resuelve Newton con Diferencias Divididas  """
     # Basado en el ejemplo de [cite: 445-469]
     n = len(points)
     # 'table' almacenará las diferencias divididas (D0, D1, D2, ...)
