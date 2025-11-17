@@ -1,6 +1,5 @@
 # game_data.py
 # Define la estructura de todos los capítulos, niveles y lecciones
-# basado en tu boceto [cite: 672, 686, 705-722]
 
 """
 Tipos de Lecciones:
@@ -14,8 +13,8 @@ GAME_STRUCTURE = {
         "levels": {
             "Nivel 1: Lagrange": [
                 {'type': 'explicativa', 'content': 'El método de Lagrange se usa para intervalos no uniformes...[cite: 419]. La fórmula es: g(x) = Σ yi * Π... [cite: 420]'},
-                {'type': 'practica', 'content': '¿Qué falta en la fórmula g(x) = Σ [?] * Π...?', 'options': ['yi', 'xi', 'gi'], 'answer': 'yi'}, # [cite: 627, 628]
-                {'type': 'practica', 'content': '¿Qué falta en la fórmula ... Π (x - [?]) / ...?', 'options': ['x-xj', 'xi', 'xj'], 'answer': 'x-xj'}, # [cite: 634, 635]
+                {'type': 'practica', 'content': '¿Qué falta en la fórmula g(x) = Σ [?] * Π...?', 'options': ['yi', 'xi', 'gi'], 'answer': 'yi'}, 
+                {'type': 'practica', 'content': '¿Qué falta en la fórmula ... Π (x - [?]) / ...?', 'options': ['x-xj', 'xi', 'xj'], 'answer': 'x-xj'}, 
                 {'type': 'examen', 'problem_id': 'lagrange_1'} 
             ],
             "Nivel 2: Lineal": [
@@ -43,23 +42,23 @@ GAME_STRUCTURE = {
                 {'type': 'examen', 'problem_id': 'bisection_1'} 
             ],
             "Nivel 2: Falsa Posición (Regula-Falsi)": [
-                {'type': 'explicativa', 'content': 'Une f(b) y f(a) con una línea recta[cite: 245]. Fórmula: x = a - f(a)(b-a) / (f(b)-f(a)) [cite: 259]'},
+                {'type': 'explicativa', 'content': 'Une f(b) y f(a) con una línea recta. Fórmula: x = a - f(a)(b-a) / (f(b)-f(a))'},
                 {'type': 'examen', 'problem_id': 'false_position_1'} 
             ],
             "Nivel 3: Newton-Raphson": [
-                {'type': 'explicativa', 'content': 'Utiliza rectas tangentes[cite: 285]. Fórmula: x_i+1 = x_i - (f(x_i) / f\'(x_i)) [cite: 293]'},
+                {'type': 'explicativa', 'content': 'Utiliza rectas tangentes[cite: 285]. Fórmula: x_i+1 = x_i - (f(x_i) / f\'(x_i))'},
                 {'type': 'examen', 'problem_id': 'newton_raphson_1'} 
             ],
             "Nivel 4: Punto Fijo": [
-                {'type': 'explicativa', 'content': 'Transforma algebraicamente f(x)=0 a x=g(x)[cite: 304]. Fórmula: x_i+1 = g(x_i) [cite: 319]'},
+                {'type': 'explicativa', 'content': 'Transforma algebraicamente f(x)=0 a x=g(x). Fórmula: x_i+1 = g(x_i)'},
                 {'type': 'examen', 'problem_id': 'fixed_point_1'} 
             ],
             "Nivel 5: Secante": [
-                {'type': 'explicativa', 'content': 'Similar a Newton, pero aproxima la derivada[cite: 336]. Fórmula: x_i+1 = ... [cite: 343]'},
+                {'type': 'explicativa', 'content': 'Similar a Newton, pero aproxima la derivada. Fórmula: x_i+1 = ... '},
                 {'type': 'examen', 'problem_id': 'secant_1'}  
             ],
             "Nivel 6: Método Gráfico": [
-                {'type': 'explicativa', 'content': 'Consiste en graficar la función y observar donde cruza el eje x[cite: 192].'},
+                {'type': 'explicativa', 'content': 'Consiste en graficar la función y observar donde cruza el eje x.'},
                 {'type': 'examen', 'problem_id': 'graphical_1'} 
             ],
         }
@@ -67,23 +66,23 @@ GAME_STRUCTURE = {
     "Capítulo 3: Ecuaciones Lineales": {
         "levels": {
             "Nivel 1: Gauss-Seidel": [
-                {'type': 'explicativa', 'content': 'Método iterativo para resolver sistemas de ecuaciones[cite: 6]. Requiere diagonal dominante[cite: 12].'},
+                {'type': 'explicativa', 'content': 'Método iterativo para resolver sistemas de ecuaciones. Requiere diagonal dominante.'},
                 {'type': 'examen', 'problem_id': 'gauss_seidel_1'} 
             ],
             "Nivel 2: Jacobi": [
-                {'type': 'explicativa', 'content': 'Método iterativo similar a Gauss-Seidel, pero no usa los valores nuevos en la misma iteración[cite: 7].'},
+                {'type': 'explicativa', 'content': 'Método iterativo similar a Gauss-Seidel, pero no usa los valores nuevos en la misma iteración.'},
                 {'type': 'examen', 'problem_id': 'jacobi_1'}
             ],
             "Nivel 3: Montante": [
-                {'type': 'explicativa', 'content': 'Método de pivoteo para resolver sistemas de ecuaciones[cite: 3]. (Teoría no incluida en PDF).'},
+                {'type': 'explicativa', 'content': 'Método de pivoteo para resolver sistemas de ecuaciones. (Teoría no incluida en PDF).'},
                 {'type': 'examen', 'problem_id': 'montante_1'}
             ],
             "Nivel 4: Gauss-Jordan": [
-                {'type': 'explicativa', 'content': 'Método de eliminación para encontrar la matriz inversa o resolver sistemas[cite: 4]. (Teoría no incluida en PDF).'},
+                {'type': 'explicativa', 'content': 'Método de eliminación para encontrar la matriz inversa o resolver sistemas. (Teoría no incluida en PDF).'},
                 {'type': 'examen', 'problem_id': 'gauss_jordan_1'}
             ],
             "Nivel 5: Eliminación Gaussiana": [
-                {'type': 'explicativa', 'content': 'Método de eliminación para convertir la matriz en triangular superior[cite: 5]. (Teoría no incluida en PDF).'},
+                {'type': 'explicativa', 'content': 'Método de eliminación para convertir la matriz en triangular superior. (Teoría no incluida en PDF).'},
                 {'type': 'examen', 'problem_id': 'gaussian_elim_1'}
             ],
         }
@@ -115,23 +114,23 @@ GAME_STRUCTURE = {
     "Capítulo 5: Mínimos Cuadrados": {
         "levels": {
             "Nivel 1: Línea Recta": [
-                {'type': 'explicativa', 'content': 'Ajuste a la ecuación g(x) = a0 + a1*x[cite: 1097]. Se resuelve el sistema: n*a0 + Σx*a1 = Σy ... [cite: 1099]'},
-                {'type': 'examen', 'problem_id': 'least_sq_linear_1'} # Coincide con el problema en [cite: 1102-1114]
+                {'type': 'explicativa', 'content': 'Ajuste a la ecuación g(x) = a0 + a1*x. Se resuelve el sistema: n*a0 + Σx*a1 = Σy ... '},
+                {'type': 'examen', 'problem_id': 'least_sq_linear_1'} 
             ],
             "Nivel 2: Cuadrática": [
-                {'type': 'explicativa', 'content': 'Ajuste a la ecuación g(x) = a0 + a1*x + a2*x^2[cite: 1058]. Se resuelve el sistema de 3x3... [cite: 1061]'},
+                {'type': 'explicativa', 'content': 'Ajuste a la ecuación g(x) = a0 + a1*x + a2*x^2. Se resuelve el sistema de 3x3... '},
                 {'type': 'examen', 'problem_id': 'least_sq_quadratic_1'}
             ],
             "Nivel 3: Cúbica": [
-                {'type': 'explicativa', 'content': 'Ajuste a la ecuación g(x) = a0 + a1*x + a2*x^2 + a3*x^3[cite: 1063]. Se resuelve el sistema de 4x4... [cite: 1066]'},
+                {'type': 'explicativa', 'content': 'Ajuste a la ecuación g(x) = a0 + a1*x + a2*x^2 + a3*x^3. Se resuelve el sistema de 4x4... '},
                 {'type': 'examen', 'problem_id': 'least_sq_cubic_1'}
             ],
             "Nivel 4: Lineal con Función": [
-                {'type': 'explicativa', 'content': 'Ajuste a g(x) = a0 + a1*x + a2*f(x) [cite: 1068]. f(x) puede ser e^x, sen(x), etc.[cite: 1069, 1071]. Sistema: ...Σx*f(x)... [cite: 1077-1082]'},
+                {'type': 'explicativa', 'content': 'Ajuste a g(x) = a0 + a1*x + a2*f(x). f(x) puede ser e^x, sen(x), etc. Sistema: ...Σx*f(x)...'},
                 {'type': 'examen', 'problem_id': 'least_sq_linear_func_1'}
             ],
             "Nivel 5: Cuadrática con Función": [
-                {'type': 'explicativa', 'content': 'Ajuste a g(x) = a0 + a1*x + a2*x^2 + a3*f(x)[cite: 1084]. Sistema de 4x4... [cite: 1094]'},
+                {'type': 'explicativa', 'content': 'Ajuste a g(x) = a0 + a1*x + a2*x^2 + a3*f(x). Sistema de 4x4...'},
                 {'type': 'examen', 'problem_id': 'least_sq_quadratic_func_1'}
             ],
         }
@@ -143,32 +142,32 @@ GAME_STRUCTURE = {
                 {'type': 'examen', 'problem_id': 'euler_forward_1'}
             ],
             "Nivel 2: Euler Modificado": [
-                {'type': 'explicativa', 'content': 'Más exacto que Euler Adelante[cite: 737]. Fórmula: y_n+1 = y_n + (h/2) * [f(...) + f(...)] [cite: 740]'},
-                {'type': 'examen', 'problem_id': 'euler_modified_1'} # Coincide con el problema en [cite: 742]
+                {'type': 'explicativa', 'content': 'Más exacto que Euler Adelante[cite: 737]. Fórmula: y_n+1 = y_n + (h/2) * [f(...) + f(...)'},
+                {'type': 'examen', 'problem_id': 'euler_modified_1'} 
             ],
             "Nivel 3: Euler (Atrás)": [
-                {'type': 'explicativa', 'content': 'Versión del método de Euler[cite: 881]. (Fórmula no provista en PDF).'},
+                {'type': 'explicativa', 'content': 'Versión del método de Euler. (Fórmula no provista en PDF).'},
                 {'type': 'examen', 'problem_id': 'euler_backward_1'}
             ],
             "Nivel 4: Runge-Kutta 2do Orden": [
-                {'type': 'explicativa', 'content': 'Usa dos pasos de iteración [cite: 759]. k1 = h*f(...), k2 = h*f(y_n+k1, ...), y_n+1 = y_n + 1/2(k1+k2) [cite: 760, 761, 762]'},
-                {'type': 'examen', 'problem_id': 'rk2_1'} # Coincide con el problema en [cite: 768]
+                {'type': 'explicativa', 'content': 'Usa dos pasos de iteración. k1 = h*f(...), k2 = h*f(y_n+k1, ...), y_n+1 = y_n + 1/2(k1+k2) '},
+                {'type': 'examen', 'problem_id': 'rk2_1'} 
             ],
             "Nivel 5: Runge-Kutta 3er Orden": [
-                {'type': 'explicativa', 'content': 'Fórmulas: k1=..., k2=..., k3=... y_n+1 = y_n + 1/6(k1+4k2+k3) [cite: 783]'},
-                {'type': 'examen', 'problem_id': 'rk3_1'} # Coincide con el problema en [cite: 785]
+                {'type': 'explicativa', 'content': 'Fórmulas: k1=..., k2=..., k3=... y_n+1 = y_n + 1/6(k1+4k2+k3)'},
+                {'type': 'examen', 'problem_id': 'rk3_1'} 
             ],
             "Nivel 6: Runge-Kutta 4to Orden (1/3 Simpson)": [
-                {'type': 'explicativa', 'content': 'Basado en 1/3 de Simpson[cite: 791]. Fórmulas: k1, k2, k3, k4. y_n+1 = y_n + 1/6(k1+2k2+2k3+k4) [cite: 792-796]'},
-                {'type': 'examen', 'problem_id': 'rk4_simpson13_1'} # Coincide con el problema en [cite: 797]
+                {'type': 'explicativa', 'content': 'Basado en 1/3 de Simpson. Fórmulas: k1, k2, k3, k4. y_n+1 = y_n + 1/6(k1+2k2+2k3+k4)'},
+                {'type': 'examen', 'problem_id': 'rk4_simpson13_1'} 
             ],
             "Nivel 7: Runge-Kutta 4to Orden (3/8 Simpson)": [
-                {'type': 'explicativa', 'content': 'Basado en 3/8 de Simpson[cite: 817]. Fórmulas: k1, k2, k3, k4. y_n+1 = y_n + 1/8(k1+3k2+3k3+k4) [cite: 818-822]'},
-                {'type': 'examen', 'problem_id': 'rk4_simpson38_1'} # Coincide con el problema en [cite: 824]
+                {'type': 'explicativa', 'content': 'Basado en 3/8 de Simpson. Fórmulas: k1, k2, k3, k4. y_n+1 = y_n + 1/8(k1+3k2+3k3+k4)'},
+                {'type': 'examen', 'problem_id': 'rk4_simpson38_1'} 
             ],
             "Nivel 8: Runge-Kutta Orden Superior": [
-                {'type': 'explicativa', 'content': 'Se usa para EDOs de orden superior (ej. y\'\')[cite: 827, 874]. Fórmulas: k1=h*Vn, m1=h[...], y_n+1 = ... [cite: 829-834]'},
-                {'type': 'examen', 'problem_id': 'rk_higher_order_1'} # Coincide con el problema en [cite: 837]
+                {'type': 'explicativa', 'content': 'Se usa para EDOs de orden superior (ej. y\'\'). Fórmulas: k1=h*Vn, m1=h[...], y_n+1 = ... '},
+                {'type': 'examen', 'problem_id': 'rk_higher_order_1'} 
             ],
         }
     },
