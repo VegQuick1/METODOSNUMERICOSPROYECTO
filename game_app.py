@@ -59,7 +59,7 @@ class NumericalMethodsGame:
         # Aquí iría la lógica de "Cerrar Sesión" 
 
     def show_chapter_menu(self):
-        """Muestra el menú de capítulos [cite: 607, 609, 617]"""
+        """Muestra el menú de capítulos"""
         self.clear_screen()
         
         tk.Label(self.current_screen, text="LECCIONES", font=("Arial", 20)).pack(pady=10)
@@ -74,7 +74,7 @@ class NumericalMethodsGame:
         tk.Button(self.current_screen, text="VOLVER AL MENÚ", command=self.show_main_menu).pack(pady=20)
 
     def show_level_menu(self, chapter_name):
-        """Muestra el menú de niveles para un capítulo [cite: 608, 618]"""
+        """Muestra el menú de niveles para un capítulo"""
         self.clear_screen()
         
         tk.Label(self.current_screen, text=chapter_name, font=("Arial", 20)).pack(pady=10)
@@ -97,7 +97,7 @@ class NumericalMethodsGame:
         if lesson_index >= len(lessons):
             messagebox.showinfo("¡Felicidades!", f"¡Nivel '{level}' completado!")
             if f"{level}" not in self.medals:
-                self.medals.append(f"{level}") # [cite: 729]
+                self.medals.append(f"{level}")
             self.show_level_menu(chapter)
             return
 
@@ -160,8 +160,8 @@ class NumericalMethodsGame:
             # Aplicar castigo
             self.errors_committed += 1
             if lesson_type == 'practica':
-                messagebox.showerror("Incorrecto", f"La respuesta correcta era '{correct_answer}'. [cite: 696]\nRegresando a la lección anterior. [cite: 726]")
+                messagebox.showerror("Incorrecto", f"La respuesta correcta era '{correct_answer}'. \nRegresando a la lección anterior. ")
                 self.start_lesson(chapter, level, lesson_index - 1) # Castigo intermedio
             elif lesson_type == 'examen':
-                messagebox.showerror("Incorrecto", f"Respuesta incorrecta. [cite: 718]\nReiniciando la lección. [cite: 727]")
+                messagebox.showerror("Incorrecto", f"Respuesta incorrecta. \nReiniciando la lección. ")
                 self.start_lesson(chapter, level, lesson_index) # Castigo bajo

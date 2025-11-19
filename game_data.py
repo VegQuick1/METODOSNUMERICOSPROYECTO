@@ -38,7 +38,7 @@ GAME_STRUCTURE = {
     "Capítulo 2: Ecuaciones No Lineales": {
         "levels": {
             "Nivel 1: Bisección (Bisectriz)": [
-                {'type': 'explicativa', 'content': 'Es el punto medio entre dos puntos. Fórmula: x = (a+b)/2 [cite: 236]'},
+                {'type': 'explicativa', 'content': 'Es el punto medio entre dos puntos. Fórmula: x = (a+b)/2 '},
                 {'type': 'examen', 'problem_id': 'bisection_1'} 
             ],
             "Nivel 2: Falsa Posición (Regula-Falsi)": [
@@ -74,15 +74,15 @@ GAME_STRUCTURE = {
                 {'type': 'examen', 'problem_id': 'jacobi_1'}
             ],
             "Nivel 3: Montante": [
-                {'type': 'explicativa', 'content': 'Método de pivoteo para resolver sistemas de ecuaciones. (Teoría no incluida en PDF).'},
+                {'type': 'explicativa', 'content': 'Método de pivoteo para resolver sistemas de ecuaciones. '},
                 {'type': 'examen', 'problem_id': 'montante_1'}
             ],
             "Nivel 4: Gauss-Jordan": [
-                {'type': 'explicativa', 'content': 'Método de eliminación para encontrar la matriz inversa o resolver sistemas. (Teoría no incluida en PDF).'},
+                {'type': 'explicativa', 'content': 'Método de eliminación para encontrar la matriz inversa o resolver sistemas.'},
                 {'type': 'examen', 'problem_id': 'gauss_jordan_1'}
             ],
             "Nivel 5: Eliminación Gaussiana": [
-                {'type': 'explicativa', 'content': 'Método de eliminación para convertir la matriz en triangular superior. (Teoría no incluida en PDF).'},
+                {'type': 'explicativa', 'content': 'Método de eliminación para convertir la matriz en triangular superior. '},
                 {'type': 'examen', 'problem_id': 'gaussian_elim_1'}
             ],
         }
@@ -90,23 +90,23 @@ GAME_STRUCTURE = {
     "Capítulo 4: Integración Numérica": {
         "levels": {
             "Nivel 1: Regla Trapezoidal": [
-                {'type': 'explicativa', 'content': 'Integra un polinomio de primer grado[cite: 976]. Fórmula: I = h/2 * [f(a) + 2Σ... + f(b)] [cite: 979]'},
+                {'type': 'explicativa', 'content': 'Integra un polinomio de primer grado. Fórmula: I = h/2 * [f(a) + 2Σ... + f(b)]'},
                 {'type': 'examen', 'problem_id': 'trapezoidal_1'} 
             ],
             "Nivel 2: Regla de 1/3 Simpson": [
-                {'type': 'explicativa', 'content': 'Integra un polinomio de 2do grado [cite: 926]. n debe ser par[cite: 928, 933]. Fórmula: I = h/3 * [f(a) + 4Σ(impar) + 2Σ(par) + f(b)] [cite: 929]'},
+                {'type': 'explicativa', 'content': 'Integra un polinomio de 2do grado. n debe ser par[cite: 928, 933]. Fórmula: I = h/3 * [f(a) + 4Σ(impar) + 2Σ(par) + f(b)]'},
                 {'type': 'examen', 'problem_id': 'simpson_1_3_1'} 
             ],
             "Nivel 3: Regla de 3/8 Simpson": [
-                {'type': 'explicativa', 'content': 'Integra un polinomio de 3er grado. n debe ser múltiplo de 3[cite: 950]. Fórmula: I = 3h/8 * [...] [cite: 951]'},
+                {'type': 'explicativa', 'content': 'Integra un polinomio de 3er grado. n debe ser múltiplo de 3. Fórmula: I = 3h/8 * [...]'},
                 {'type': 'examen', 'problem_id': 'simpson_3_8_1'} 
             ],
             "Nivel 4: Newton-Cotes Cerradas": [
-                {'type': 'explicativa', 'content': 'Fórmulas de integración donde el dominio está cerrado por el primer y último dato[cite: 1006]. Fórmula: I = αh * Σ(wi * f(a+ih)) [cite: 968]'},
+                {'type': 'explicativa', 'content': 'Fórmulas de integración donde el dominio está cerrado por el primer y último dato[cite: 1006]. Fórmula: I = αh * Σ(wi * f(a+ih)) '},
                 {'type': 'examen', 'problem_id': 'cotes_closed_1'} 
             ],
             "Nivel 5: Newton-Cotes Abiertas": [
-                {'type': 'explicativa', 'content': 'Fórmulas de integración que extienden el intervalo [cite: 1009]. h = (b-a)/(n+2) [cite: 1012]'},
+                {'type': 'explicativa', 'content': 'Fórmulas de integración que extienden el intervalo. h = (b-a)/(n+2)'},
                 {'type': 'examen', 'problem_id': 'cotes_open_1'} 
             ],
         }
@@ -138,15 +138,15 @@ GAME_STRUCTURE = {
     "Capítulo 6: Ecuaciones Diferenciales Ordinarias (EDO)": {
         "levels": {
             "Nivel 1: Euler (Adelante)": [
-                {'type': 'explicativa', 'content': 'Método de punto pendiente[cite: 877]. (Fórmula no provista en PDF).'},
+                {'type': 'explicativa', 'content': 'Método de punto pendiente.'},
                 {'type': 'examen', 'problem_id': 'euler_forward_1'}
             ],
             "Nivel 2: Euler Modificado": [
-                {'type': 'explicativa', 'content': 'Más exacto que Euler Adelante[cite: 737]. Fórmula: y_n+1 = y_n + (h/2) * [f(...) + f(...)'},
+                {'type': 'explicativa', 'content': 'Más exacto que Euler Adelante. Fórmula: y_n+1 = y_n + (h/2) * [f(...) + f(...)'},
                 {'type': 'examen', 'problem_id': 'euler_modified_1'} 
             ],
             "Nivel 3: Euler (Atrás)": [
-                {'type': 'explicativa', 'content': 'Versión del método de Euler. (Fórmula no provista en PDF).'},
+                {'type': 'explicativa', 'content': 'Versión del método de Euler.'},
                 {'type': 'examen', 'problem_id': 'euler_backward_1'}
             ],
             "Nivel 4: Runge-Kutta 2do Orden": [

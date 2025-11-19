@@ -4,7 +4,7 @@ import numpy as np
 # --- CAPÍTULO 1: INTERPOLACIÓN ---
 
 def solve_lagrange(points, x_to_find):
-    """ Resuelve la interpolación de Lagrange [cite: 420-425] """
+    """ Resuelve la interpolación de Lagrange """
     # points es una lista de tuplas (x, y), ej: [(2.2, 2.54), (2.5, 2.82), ...]
     # x_to_find es el valor de x, ej: 2.4
     # Basado en el problema de
@@ -24,15 +24,13 @@ def solve_lagrange(points, x_to_find):
     return g_x
 
 def solve_linear_interpolation(a, fa, b, fb, x):
-    """ Resuelve la interpolación lineal [cite: 370] """
-    # Basado en el ejemplo de [cite: 385]
+    """ Resuelve la interpolación lineal """
     # g(x) = f(a) + (f(b) - f(a)) / (b - a) * (x - a)
     g_x = fa + ((fb - fa) / (b - a)) * (x - a)
     return g_x
 
 def solve_newton_divided_differences(points, x_to_find):
     """ Resuelve Newton con Diferencias Divididas  """
-    # Basado en el ejemplo de [cite: 445-469]
     n = len(points)
     # 'table' almacenará las diferencias divididas (D0, D1, D2, ...)
     table = np.zeros((n, n))
@@ -51,7 +49,7 @@ def solve_newton_divided_differences(points, x_to_find):
     # D1 = table[0][1]
     # D2 = table[0][2]
     
-    # Calcular g(x) usando la fórmula [cite: 464]
+    # Calcular g(x) usando la fórmula 
     # g(x) = D0 + D1(x-x1) + D2(x-x1)(x-x2) + ...
     g_x = table[0][0]
     product_term = 1
@@ -63,10 +61,9 @@ def solve_newton_divided_differences(points, x_to_find):
 
 def solve_newton_forward(points, x_to_find):
     """ Resuelve Newton Hacia Adelante [cite: 490] """
-    # Basado en el ejemplo de [cite: 493-538]
     n = len(points)
-    h = points[1][0] - points[0][0] # Asume uniforme [cite: 510]
-    s = (x_to_find - points[0][0]) / h # [cite: 531]
+    h = points[1][0] - points[0][0] # Asume uniforme 
+    s = (x_to_find - points[0][0]) / h 
     
     # 'table' almacenará las diferencias (y, Δy, Δ²y, ...)
     table = np.zeros((n, n))
@@ -85,7 +82,7 @@ def solve_newton_forward(points, x_to_find):
     # Δ1 = table[0][1]
     # Δ²1 = table[0][2]
     
-    # Calcular g(x) usando la fórmula [cite: 534]
+    # Calcular g(x) usando la fórmula 
     g_x = table[0][0] # y1 * [s 0] (donde [s 0] = 1)
     s_term = 1
     factorial = 1
@@ -97,11 +94,10 @@ def solve_newton_forward(points, x_to_find):
     return g_x
 
 def solve_newton_backward(points, x_to_find):
-    """ Resuelve Newton Hacia Atrás [cite: 551] """
-    # Basado en el ejemplo de [cite: 555-594]
+    """ Resuelve Newton Hacia Atrás """
     n = len(points)
-    h = points[1][0] - points[0][0] # Asume uniforme [cite: 586]
-    s = (x_to_find - points[n-1][0]) / h # 's' es negativo [cite: 577, 587]
+    h = points[1][0] - points[0][0] # Asume uniforme 
+    s = (x_to_find - points[n-1][0]) / h # 's' es negativo
     
     # 'table' almacenará las diferencias (y, ∇y, ∇²y, ...)
     table = np.zeros((n, n))
@@ -110,7 +106,7 @@ def solve_newton_backward(points, x_to_find):
     for i in range(n):
         table[i][0] = points[i][1] # yi
         
-    # Calcular las columnas ∇, ∇², ... [cite: 579-592]
+    # Calcular las columnas ∇, ∇², ...
     for j in range(1, n): # Columnas
         for i in range(j, n): # Filas (diferente al de "hacia adelante")
             table[i][j] = table[i][j-1] - table[i-1][j-1]
@@ -120,7 +116,7 @@ def solve_newton_backward(points, x_to_find):
     # ∇'2 = table[n-1][1]
     # ∇²1 = table[n-1][2]
     
-    # Calcular g(x) usando la fórmula [cite: 589]
+    # Calcular g(x) usando la fórmula
     g_x = table[n-1][0] # y3 * [s 0] (donde [s 0] = 1)
     s_term = 1
     factorial = 1
@@ -131,53 +127,61 @@ def solve_newton_backward(points, x_to_find):
         
     return g_x
 
+
+
+
+
 # --- CAPÍTULO 2: ECUACIONES NO LINEALES ---
 
 def solve_bisection(func, a, b, tolerance):
-    """ Resuelve por Bisección (Bisectriz) [cite: 233-242] """
-    # func es una lambda, ej: lambda x: x**3 - 6.5*x + 2 [cite: 237]
+    """ Resuelve por Bisección (Bisectriz) """
+    # func es una lambda, ej: lambda x: x**3 - 6.5*x + 2 
     pass # Implementar lógica
 
 def solve_false_position(func, a, b, tolerance):
-    """ Resuelve por Falsa Posición [cite: 243-280] """
-    # func es una lambda, ej: lambda x: 3*x**3 - 2*x - 3 [cite: 263]
-    # Usar fórmula: x = a - f(a)(b-a) / (f(b)-f(a)) [cite: 259]
+    """ Resuelve por Falsa Posición """
+    # func es una lambda, ej: lambda x: 3*x**3 - 2*x - 3 
+    # Usar fórmula: x = a - f(a)(b-a) / (f(b)-f(a))
     pass # Implementar lógica
 
 def solve_newton_raphson(func, func_prime, x0, tolerance):
-    """ Resuelve por Newton-Raphson [cite: 281-299] """
+    """ Resuelve por Newton-Raphson """
     # func es f(x) [cite: 297]
     # func_prime es f'(x) [cite: 298]
-    # Usar fórmula: x_i+1 = x_i - (f(x_i) / f'(x_i)) [cite: 293]
+    # Usar fórmula: x_i+1 = x_i - (f(x_i) / f'(x_i))
     pass # Implementar lógica
 
 def solve_fixed_point(g_func, x0, tolerance):
-    """ Resuelve por Punto Fijo [cite: 300-334] """
-    # g_func es la función g(x), ej: lambda x: np.exp(-x) [cite: 323]
+    """ Resuelve por Punto Fijo """
+    # g_func es la función g(x), ej: lambda x: np.exp(-x) 
     # Usar fórmula: x_i+1 = g(x_i) [cite: 319]
     pass # Implementar lógica
 
 def solve_secant(func, x0, x1, tolerance):
-    """ Resuelve por Secante [cite: 335-348] """
+    """ Resuelve por Secante """
     # func es f(x), ej: lambda x: np.exp(-x) - x [cite: 346]
-    # Usar fórmula: x_i+1 = x1 - f(x1)(x1-x0) / (f(x1)-f(x0)) [cite: 343, 348]
+    # Usar fórmula: x_i+1 = x1 - f(x1)(x1-x0) / (f(x1)-f(x0)) 
     pass # Implementar lógica
 
 def solve_graphical(func, x_range):
-    """ Resuelve por Método Gráfico [cite: 191-232] """
+    """ Resuelve por Método Gráfico """
     # Esto en la app simplemente graficaría la función
     pass # Implementar lógica de ploteo
+
+
+
+
 
 # --- CAPÍTULO 3: ECUACIONES LINEALES ---
 
 def solve_gauss_seidel(A, b, tolerance=0.001):
     """ Resuelve por Gauss-Seidel  """
-    # Basado en el ejemplo [cite: 9, 10, 11]
+    # Basado en el ejemplo 
     # A = np.array([[3, -0.1, -0.2], [0.1, 7, -0.3], [0.3, -0.2, 10]])
     # b = np.array([7.85, -19.3, 71.4])
     
     n = len(b)
-    x = np.zeros(n) # x0 = [0, 0, 0] [cite: 22]
+    x = np.zeros(n) # x0 = [0, 0, 0] 
     x_new = np.copy(x)
     
     iterations = 0
@@ -186,7 +190,7 @@ def solve_gauss_seidel(A, b, tolerance=0.001):
     while iterations < max_iterations:
         x = np.copy(x_new)
         for i in range(n):
-            # Despejes [cite: 15, 16, 18]
+            # Despejes 
             sum_j = 0
             for j in range(n):
                 if i != j:
@@ -196,7 +200,7 @@ def solve_gauss_seidel(A, b, tolerance=0.001):
             
             x_new[i] = (b[i] - sum_j) / A[i, i]
         
-        # Calcular error [cite: 87-92]
+        # Calcular error 
         # (El PDF usa error absoluto, usaremos error relativo por ser más robusto)
         errors = np.abs(x_new - x)
         if np.all(errors < tolerance):
@@ -207,10 +211,10 @@ def solve_gauss_seidel(A, b, tolerance=0.001):
     return x_new # Resultado: [3.0, -2.5, 7.0]
 
 def solve_jacobi(A, b, tolerance=0.001):
-    """ Resuelve por Jacobi [cite: 93-179] """
+    """ Resuelve por Jacobi """
     # A, b como en Gauss-Seidel
     n = len(b)
-    x = np.ones(n) # x0 = [1, 1, 1] [cite: 110]
+    x = np.ones(n) # x0 = [1, 1, 1] 
     x_new = np.copy(x)
     
     iterations = 0
@@ -219,7 +223,7 @@ def solve_jacobi(A, b, tolerance=0.001):
     while iterations < max_iterations:
         x = np.copy(x_new)
         for i in range(n):
-            # Despejes [cite: 100, 103, 104]
+            # Despejes 
             sum_j = 0
             for j in range(n):
                 if i != j:
@@ -228,7 +232,7 @@ def solve_jacobi(A, b, tolerance=0.001):
             
             x_new[i] = (b[i] - sum_j) / A[i, i]
 
-        # Calcular error [cite: 174-179]
+        # Calcular error 
         errors = np.abs(x_new - x)
         if np.all(errors < tolerance):
             break
@@ -238,36 +242,39 @@ def solve_jacobi(A, b, tolerance=0.001):
     return x_new
 
 def solve_montante(A, b):
-    """ Resuelve por Montante [cite: 3] """
+    """ Resuelve por Montante """
     pass # Implementar lógica
 
 def solve_gauss_jordan(A, b):
-    """ Resuelve por Gauss-Jordan [cite: 4] """
+    """ Resuelve por Gauss-Jordan """
     pass # Implementar lógica
 
 def solve_gaussian_elimination(A, b):
-    """ Resuelve por Eliminación Gaussiana [cite: 5] """
+    """ Resuelve por Eliminación Gaussiana"""
     pass # Implementar lógica
+
+
+
 
 # --- CAPÍTULO 4: INTEGRACIÓN NUMÉRICA ---
 
 def solve_trapezoidal_rule(func, a, b, n):
     """ Resuelve por Regla Trapezoidal [cite: 974-1002] """
-    # func es f(x), ej: lambda x: 1 - x**2 [cite: 987]
-    h = (b - a) / n # [cite: 990]
+    # func es f(x), ej: lambda x: 1 - x**2
+    h = (b - a) / n # 
     I = func(a) + func(b)
     
     sum_mid = 0
     for i in range(1, n):
         sum_mid += func(a + i * h)
         
-    I = (h / 2) * (I + 2 * sum_mid) # [cite: 979, 993]
+    I = (h / 2) * (I + 2 * sum_mid) # 
     return I
 
 def solve_simpson_1_3(func, a, b, n):
-    """ Resuelve por Regla 1/3 Simpson [cite: 925-945] """
-    # n debe ser par [cite: 933]
-    h = (b - a) / n # [cite: 937]
+    """ Resuelve por Regla 1/3 Simpson  """
+    # n debe ser par 
+    h = (b - a) / n 
     
     sum_odd = 0
     for i in range(1, n, 2): # i = 1, 3, 5...
@@ -277,14 +284,13 @@ def solve_simpson_1_3(func, a, b, n):
     for i in range(2, n, 2): # i = 2, 4, 6...
         sum_even += func(a + i * h)
         
-    I = (h / 3) * (func(a) + 4 * sum_odd + 2 * sum_even + func(b)) # [cite: 929]
+    I = (h / 3) * (func(a) + 4 * sum_odd + 2 * sum_even + func(b))
     return I
 
 def solve_simpson_3_8(func, a, b, n):
-    """ Resuelve por Regla 3/8 Simpson [cite: 946-966] """
-    # n debe ser múltiplo de 3 [cite: 950]
+    """ Resuelve por Regla 3/8 Simpson  """
+    # n debe ser múltiplo de 3 
     h = (b - a) / n
-    # La fórmula [cite: 951] está incompleta en el PDF, la completaré:
     I = func(a) + func(b)
     sum_3 = 0 # Para i = 3, 6, 9...
     sum_others = 0 # Para i = 1, 2, 4, 5, 7...
@@ -301,7 +307,7 @@ def solve_simpson_3_8(func, a, b, n):
 def solve_newton_cotes_closed(func, a, b, n):
     """ Resuelve por Newton-Cotes Cerradas [cite: 967-973] """
     h = (b - a) / n # [cite: 969]
-    # Constantes de la tabla [cite: 971]
+    # Constantes de la tabla 
     constants = {
         1: {'alpha': 1/2, 'w': [1, 1]},
         2: {'alpha': 1/3, 'w': [1, 4, 1]}, # (Simpson 1/3)
@@ -319,13 +325,12 @@ def solve_newton_cotes_closed(func, a, b, n):
     for i in range(n + 1):
         sum_w += w[i] * func(a + i * h)
         
-    I = alpha * h * sum_w # [cite: 968]
+    I = alpha * h * sum_w 
     return I
 
 def solve_newton_cotes_open(func, a, b, n):
     """ Resuelve por Newton-Cotes Abiertas [cite: 1009-1029] """
-    h = (b - a) / (n + 2) # [cite: 1012, 1022]
-    # Constantes de la tabla [cite: 901]
+    h = (b - a) / (n + 2) 
     constants = {
         # n=0 (1 punto)
         # n=1
@@ -341,10 +346,10 @@ def solve_newton_cotes_open(func, a, b, n):
     w = constants[n]['w']
     
     sum_w = 0
-    # La fórmula [cite: 1010, 1024] es I = α * h * Σ(wi * f(a+ih))
-    # El ejemplo [cite: 1025] parece usar n=4 con h=1/6
+    # La fórmula  es I = α * h * Σ(wi * f(a+ih))
+    # El ejemplo parece usar n=4 con h=1/6
     
-    # Siguiendo el ejemplo [cite: 1025] para n=4:
+    # Siguiendo el ejemplo  para n=4:
     # h = (1-0)/(4+2) = 1/6
     # w = [0, 11, -14, 26, -14, 11, 0] (son n+3=7 puntos, pero w0 y w6 son 0)
     # alpha = 6/20
@@ -355,6 +360,9 @@ def solve_newton_cotes_open(func, a, b, n):
         
     I = alpha * h * sum_w
     return I
+
+
+
 
 
 # --- CAPÍTULO 5: MÍNIMOS CUADRADOS ---
@@ -406,67 +414,71 @@ def solve_least_squares_quadratic_func(points, func):
     # Resolver sistema 4x4 [cite: 1094]
     pass # Implementar lógica
 
+
+
+
+
 # --- CAPÍTULO 6: ECUACIONES DIFERENCIALES ORDINARIAS (EDO) ---
 
 def solve_euler_forward(func, y0, t0, h, t_end):
-    """ Resuelve EDO por Euler Hacia Adelante [cite: 880] """
+    """ Resuelve EDO por Euler Hacia Adelante """
     pass # Implementar lógica
 
 def solve_euler_modified(func, y0, t0, h, t_end):
-    """ Resuelve EDO por Euler Modificado [cite: 735-757] """
-    # func es f(y, t), ej: lambda y, t: (5*y*t - 1) / 3 [cite: 744]
-    # Usar fórmula: y_n+1 = y_n + (h/2) * [f(y_n, t_n) + f(y_n+1, t_n+1)] [cite: 740]
+    """ Resuelve EDO por Euler Modificado """
+    # func es f(y, t), ej: lambda y, t: (5*y*t - 1) / 3
+    # Usar fórmula: y_n+1 = y_n + (h/2) * [f(y_n, t_n) + f(y_n+1, t_n+1)] 
     # Nota: f(y_n+1, t_n+1) requiere una predicción. El ejemplo [cite: 745, 748] parece usar un y1 *dado* (y1=2)
     # y no lo calcula, lo cual es extraño. La implementación estándar requeriría un paso de predicción.
     pass # Implementar lógica
 
 def solve_euler_backward(func, y0, t0, h, t_end):
-    """ Resuelve EDO por Euler Hacia Atrás [cite: 881] """
+    """ Resuelve EDO por Euler Hacia Atrás  """
     pass # Implementar lógica
 
 def solve_rk2(func, y0, t0, h, t_end):
-    """ Resuelve EDO por Runge-Kutta 2do Orden [cite: 758-781] """
-    # func es f(y, t), ej: lambda y, t: 5*y*t - 1 [cite: 770]
-    # k1 = h * f(y_n, t_n) [cite: 760]
-    # k2 = h * f(y_n + k1, t_n + h) [cite: 761]
-    # y_n+1 = y_n + 0.5 * (k1 + k2) [cite: 762]
+    """ Resuelve EDO por Runge-Kutta 2do Orden  """
+    # func es f(y, t), ej: lambda y, t: 5*y*t - 1 
+    # k1 = h * f(y_n, t_n) 
+    # k2 = h * f(y_n + k1, t_n + h) 
+    # y_n+1 = y_n + 0.5 * (k1 + k2) 
     pass # Implementar lógica
 
 def solve_rk3(func, y0, t0, h, t_end):
-    """ Resuelve EDO por Runge-Kutta 3er Orden [cite: 782-787] """
+    """ Resuelve EDO por Runge-Kutta 3er Orden  """
     # k1 = h * f(y_n, t_n)
     # k2 = h * f(y_n + k1/2, t_n + h/2)
     # k3 = h * f(y_n - k1 + 2*k2, t_n + h)
-    # y_n+1 = y_n + 1/6 * (k1 + 4*k2 + k3) [cite: 783]
+    # y_n+1 = y_n + 1/6 * (k1 + 4*k2 + k3) 
     pass # Implementar lógica
 
 def solve_rk4_simpson13(func, y0, t0, h, t_end):
-    """ Resuelve EDO por Runge-Kutta 4to Orden (1/3 Simpson) [cite: 788-816] """
-    # func es f(y, t), ej: lambda y, t: 5*y*t - 1 [cite: 799]
-    # k1 = h * f(y_n, t_n) [cite: 792]
-    # k2 = h * f(y_n + k1/2, t_n + h/2) [cite: 793]
-    # k3 = h * f(y_n + k2/2, t_n + h/2) [cite: 794]
-    # k4 = h * f(y_n + k3, t_n + h) [cite: 795]
-    # y_n+1 = y_n + 1/6 * (k1 + 2*k2 + 2*k3 + k4) [cite: 796]
+    """ Resuelve EDO por Runge-Kutta 4to Orden (1/3 Simpson)  """
+    # func es f(y, t), ej: lambda y, t: 5*y*t - 1 
+    # k1 = h * f(y_n, t_n) 
+    # k2 = h * f(y_n + k1/2, t_n + h/2) 
+    # k3 = h * f(y_n + k2/2, t_n + h/2) 
+    # k4 = h * f(y_n + k3, t_n + h) 
+    # y_n+1 = y_n + 1/6 * (k1 + 2*k2 + 2*k3 + k4) 
     pass # Implementar lógica
 
 def solve_rk4_simpson38(func, y0, t0, h, t_end):
-    """ Resuelve EDO por Runge-Kutta 4to Orden (3/8 Simpson) [cite: 817-826] """
-    # k1 = h * f(y_n, t_n) [cite: 818]
-    # k2 = h * f(y_n + k1/3, t_n + h/3) [cite: 819]
-    # k3 = h * f(y_n + k1/3 + k2/3, t_n + 2*h/3) [cite: 820]
-    # k4 = h * f(y_n + k1 - k2 + k3, t_n + h) [cite: 821]
-    # y_n+1 = y_n + 1/8 * (k1 + 3*k2 + 3*k3 + k4) [cite: 822]
+    """ Resuelve EDO por Runge-Kutta 4to Orden (3/8 Simpson) """
+    # k1 = h * f(y_n, t_n) 
+    # k2 = h * f(y_n + k1/3, t_n + h/3) 
+    # k3 = h * f(y_n + k1/3 + k2/3, t_n + 2*h/3) 
+    # k4 = h * f(y_n + k1 - k2 + k3, t_n + h) 
+    # y_n+1 = y_n + 1/8 * (k1 + 3*k2 + 3*k3 + k4) 
     pass # Implementar lógica
 
 def solve_rk_higher_order(func, y0, y_prime0, t0, h, t_end):
-    """ Resuelve EDO por Runge-Kutta Orden Superior [cite: 827-861] """
-    # Para y'' = f(y', y, t), ej: y'' = y'*t + y [cite: 837, 839]
+    """ Resuelve EDO por Runge-Kutta Orden Superior """
+    # Para y'' = f(y', y, t), ej: y'' = y'*t + y 
     # U = y, V = y'
-    # k1 = h * Vn [cite: 844]
-    # m1 = h * f(Vn, Un, qn) [cite: 848]
-    # k2 = h * (Vn + m1) [cite: 849]
-    # m2 = h * f(Vn+m1, Un+k1, qn+h) [cite: 851]
-    # y_n+1 (U_n+1) = Un + 1/2 * (k1 + k2) [cite: 855]
-    # y'_n+1 (V_n+1) = Vn + 1/2 * (m1 + m2) [cite: 861]
+    # k1 = h * Vn 
+    # m1 = h * f(Vn, Un, qn) 
+    # k2 = h * (Vn + m1)
+    # m2 = h * f(Vn+m1, Un+k1, qn+h)
+    # y_n+1 (U_n+1) = Un + 1/2 * (k1 + k2) 
+    # y'_n+1 (V_n+1) = Vn + 1/2 * (m1 + m2)
     pass # Implementar lógica
