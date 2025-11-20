@@ -137,37 +137,30 @@ GAME_STRUCTURE = {
     },
     "Capítulo 6: Ecuaciones Diferenciales Ordinarias (EDO)": {
         "levels": {
-            "Nivel 1: Euler (Adelante)": [
-                {'type': 'explicativa', 'content': 'Método de punto pendiente.'},
-                {'type': 'examen', 'problem_id': 'euler_forward_1'}
-            ],
-            "Nivel 2: Euler Modificado": [
+            "Nivel 1: Euler Modificado": [
                 {'type': 'explicativa', 'content': 'Más exacto que Euler Adelante. Fórmula: y_n+1 = y_n + (h/2) * [f(...) + f(...)'},
                 {'type': 'examen', 'problem_id': 'euler_modified_1'} 
             ],
-            "Nivel 3: Euler (Atrás)": [
-                {'type': 'explicativa', 'content': 'Versión del método de Euler.'},
-                {'type': 'examen', 'problem_id': 'euler_backward_1'}
-            ],
-            "Nivel 4: Runge-Kutta 2do Orden": [
+            "Nivel 2: Runge-Kutta 2do Orden": [
                 {'type': 'explicativa', 'content': 'Usa dos pasos de iteración. k1 = h*f(...), k2 = h*f(y_n+k1, ...), y_n+1 = y_n + 1/2(k1+k2) '},
                 {'type': 'examen', 'problem_id': 'rk2_1'} 
             ],
-            "Nivel 5: Runge-Kutta 3er Orden": [
+            "Nivel 3: Runge-Kutta 3er Orden": [
                 {'type': 'explicativa', 'content': 'Fórmulas: k1=..., k2=..., k3=... y_n+1 = y_n + 1/6(k1+4k2+k3)'},
                 {'type': 'examen', 'problem_id': 'rk3_1'} 
             ],
-            "Nivel 6: Runge-Kutta 4to Orden (1/3 Simpson)": [
+            "Nivel 4: Runge-Kutta 4to Orden (1/3 Simpson)": [
                 {'type': 'explicativa', 'content': 'Basado en 1/3 de Simpson. Fórmulas: k1, k2, k3, k4. y_n+1 = y_n + 1/6(k1+2k2+2k3+k4)'},
                 {'type': 'examen', 'problem_id': 'rk4_simpson13_1'} 
             ],
-            "Nivel 7: Runge-Kutta 4to Orden (3/8 Simpson)": [
+            "Nivel 5: Runge-Kutta 4to Orden (3/8 Simpson)": [
                 {'type': 'explicativa', 'content': 'Basado en 3/8 de Simpson. Fórmulas: k1, k2, k3, k4. y_n+1 = y_n + 1/8(k1+3k2+3k3+k4)'},
                 {'type': 'examen', 'problem_id': 'rk4_simpson38_1'} 
             ],
-            "Nivel 8: Runge-Kutta Orden Superior": [
+            "Nivel 6: Runge-Kutta Orden Superior": [
                 {'type': 'explicativa', 'content': 'Se usa para EDOs de orden superior (ej. y\'\'). Fórmulas: k1=h*Vn, m1=h[...], y_n+1 = ... '},
-                {'type': 'examen', 'problem_id': 'rk_higher_order_1'} 
+                {'type': 'examen', 'problem_id': 'rk_higher_order_1'},
+                {'type': 'examen', 'problem_id': 'rk_higher_order_2'}
             ],
         }
     },
