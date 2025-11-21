@@ -11,12 +11,22 @@ Tipos de Lecciones:
 GAME_STRUCTURE = {
     "Capítulo 1: Interpolación":{
         "levels": {
-            "Nivel 1: Lagrange": [
-                {'type': 'explicativa', 'content': 'El método de Lagrange se usa para intervalos no uniformes.... La fórmula es: g(x) = Σ yi * Π... '},
-                {'type': 'practica', 'content': '¿Qué falta en la fórmula g(x) = Σ [?] * Π...?', 'options': ['yi', 'xi', 'gi'], 'answer': 'yi'}, 
-                {'type': 'practica', 'content': '¿Qué falta en la fórmula ... Π (x - [?]) / ...?', 'options': ['x-xj', 'xi', 'xj'], 'answer': 'x-xj'}, 
-                {'type': 'examen', 'problem_id': 'lagrange_1'} 
-            ],
+            "Nivel 1: Lagrange": {
+                # AHORA SE DIVIDE POR DIFICULTAD
+                "Fácil": [
+                    {'type': 'explicativa', 'content': 'El método de Lagrange (Conceptos Básicos)...'},
+                    {'type': 'practica', 'content': 'Pregunta sencilla de teoría...', 'options': ['A', 'B'], 'answer': 'A'},
+                ],
+                "Intermedio": [
+                    {'type': 'practica', 'content': 'Problema de aplicación intermedia...', 'options': ['1', '2'], 'answer': '1'},
+                ],
+                "Avanzado": [
+                    {'type': 'practica', 'content': 'Problema complejo...', 'options': ['X', 'Y'], 'answer': 'X'},
+                ],
+                "Prueba Final": [
+                    {'type': 'examen', 'problem_id': 'lagrange_final'}
+                ]
+            },
             "Nivel 2: Lineal": [
                 {'type': 'explicativa', 'content': 'Consiste en unir dos puntos con una línea recta. Fórmula: g(x) = ... '},
                 {'type': 'examen', 'problem_id': 'linear_interp_1'} 
