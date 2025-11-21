@@ -1335,8 +1335,8 @@ Zamora Pequeño, O., Zamora Pequeño, R. S., & Del Ángel Ramírez, A. (2020). M
                     except Exception:
                         tk.Label(img_frame, text=f"No se pudo cargar: {current_image_file}", bg=COLOR_FONDO, fg="white").pack()
 
-                # Pregunta: "¿Qué es esta imagen?"
-                tk.Label(self.current_screen, text="¿Qué es esta imagen?", font=("Arial", scale_font(14), "bold"), 
+                # Pregunta: "¿Qué falta en esta parte de la fórmula de Lagrange?"
+                tk.Label(self.current_screen, text="¿Qué falta en esta parte de la fórmula de Lagrange?", font=("Arial", scale_font(14), "bold"), 
                         bg=COLOR_FONDO, fg="white").pack(pady=15)
 
                 # Generar opciones: respuesta correcta + 3 falsas
