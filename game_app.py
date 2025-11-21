@@ -712,42 +712,63 @@ class NumericalMethodsGame:
                 level_frame = tk.Frame(chapter_frame, bg="#1a3a52", highlightthickness=0)
                 level_frame.pack(fill=tk.X, pady=8, padx=10)
                 
-                # Contenido del nivel (texto) - NO CLICKEABLE
+                # Contenido del nivel (texto)
                 level_label = tk.Label(level_frame, text=level_name, 
                                       font=("Arial", 13, "bold"), 
                                       bg="#1a3a52", fg="white", 
                                       padx=15, pady=12, anchor="w")
                 level_label.pack(side=tk.LEFT, fill=tk.X, expand=True)
                 
-                # Botón imagen a la derecha (navegación) - ÚNICO CLICKEABLE
+                # Botón con imagen a la derecha (navegación)
                 def _on_level_click(event, c=chapter_name, l=level_name):
                     self.show_difficulty_menu(c, l)
                 
                 try:
+                    # Cargar imagen botonnivel.png
                     if PIL_AVAILABLE:
-                        from PIL import Image, ImageTk as PILImageTk
-                        btn_img = Image.open(os.path.join('imgs', 'botonnivel.png'))
-                        btn_img.thumbnail((45, 45), Image.Resampling.LANCZOS)
-                        nivel_btn_img = PILImageTk.PhotoImage(btn_img)
-                        level_btn = tk.Label(level_frame, image=nivel_btn_img, bg="#1a3a52", cursor="hand2")
-                        level_btn.image = nivel_btn_img
+                        from PIL import Image as PILImage, ImageTk as PILImageTk
+                        btn_img_pil = PILImage.open(os.path.join('imgs', 'botonnivel.png'))
+                        # Redimensionar a 40x40
+                        btn_img_pil.thumbnail((40, 40), PILImage.Resampling.LANCZOS)
+                        btn_img_tk = PILImageTk.PhotoImage(btn_img_pil)
                     else:
-                        level_btn = tk.Label(level_frame, text="➤", 
-                                            font=("Arial", 18, "bold"), 
-                                            bg="#1a3a52", fg="white", 
-                                            cursor="hand2")
+                        btn_img_tk = tk.PhotoImage(file=os.path.join('imgs', 'botonnivel.png'))
+                        if btn_img_tk.width() > 40:
+                            factor = max(1, int(btn_img_tk.width() / 40))
+                            btn_img_tk = btn_img_tk.subsample(factor)
+                    
+                    level_btn = tk.Label(level_frame, image=btn_img_tk, 
+                                        bg="#1a3a52", padx=15, pady=12, cursor="hand2")
+                    level_btn.image = btn_img_tk  # Keep reference
+                    level_btn.pack(side=tk.RIGHT)
+                    level_btn.bind("<Button-1>", _on_level_click)
+                    
                 except Exception:
+                    # Fallback: usar flecha de texto si la imagen no carga
                     level_btn = tk.Label(level_frame, text="➤", 
                                         font=("Arial", 18, "bold"), 
                                         bg="#1a3a52", fg="white", 
-                                        cursor="hand2")
+                                        padx=15, pady=12, cursor="hand2")
+                    level_btn.pack(side=tk.RIGHT)
+                    level_btn.bind("<Button-1>", _on_level_click)
                 
-                level_btn.pack(side=tk.RIGHT, padx=10)
-                level_btn.bind("<Button-1>", _on_level_click)
+                # Cambiar cursor y color del fondo al pasar el mouse (solo en el frame y el botón)
+                def _on_enter(event, frame=level_frame):
+                    frame.config(bg="#2a4a62")
+                    level_label.config(bg="#2a4a62")
+                    level_btn.config(bg="#2a4a62")
                 
-                # Cambiar color al pasar el mouse SOLO EN EL BOTÓN
-                level_btn.bind("<Enter>", lambda e, lf=level_frame: lf.config(bg="#2a4a62"))
-                level_btn.bind("<Leave>", lambda e, lf=level_frame: lf.config(bg="#1a3a52"))
+                def _on_leave(event, frame=level_frame):
+                    frame.config(bg="#1a3a52")
+                    level_label.config(bg="#1a3a52")
+                    level_btn.config(bg="#1a3a52")
+                
+                level_frame.bind("<Enter>", _on_enter)
+                level_frame.bind("<Leave>", _on_leave)
+                level_label.bind("<Enter>", _on_enter)
+                level_label.bind("<Leave>", _on_leave)
+                level_btn.bind("<Enter>", _on_enter)
+                level_btn.bind("<Leave>", _on_leave)
             
     def show_level_menu(self, chapter_name):
         """Este método está deprecado - Se usa show_chapter_menu en su lugar"""
@@ -861,120 +882,213 @@ class NumericalMethodsGame:
 
     def show_practica(self, lesson, chapter, level, difficulty, lesson_index):
         """Renderiza preguntas de práctica. Si es dificultad 'Fácil', aplica estética especial.
-        Todos los niveles Fácil usan formato con banner, respuestas horizontales, etc.
+        Caso especial: Nivel Lagrange (Fácil) — muestra la fórmula, luego preguntas individuales de cada imagen.
         """
         import random
         
-        # TODOS LOS NIVELES FÁCIL usan el nuevo formato con banner y respuestas horizontales
-        is_easy_mode = difficulty.lower() == 'fácil'
+        # Caso especial: Lagrange Fácil
+        try:
+            is_lagrange = 'Lagrange' in level and difficulty.lower() == 'fácil'
+        except Exception:
+            is_lagrange = False
 
-        if is_easy_mode:
-            # Estado para rastrear el progreso en las preguntas - GENÉRICO PARA TODOS LOS NIVELES FÁCIL
-            easy_state = {
-                'current_lesson_index': lesson_index,
-                'total_correct': 0,
-                'lessons': []  # Lista de lecciones en esta dificultad
-            }
-
-            # Obtener todas las lecciones de esta dificultad
-            try:
-                lessons = GAME_STRUCTURE[chapter]['levels'][level][difficulty]
-                easy_state['lessons'] = lessons
-            except KeyError:
-                tk.Label(self.current_screen, text="Error al cargar lecciones.", bg=COLOR_FONDO, fg='white').pack(pady=20)
+        if is_lagrange:
+            # Directorio de imágenes
+            img_dir = os.path.join('imgs', 'Lagrange')
+            if not os.path.exists(img_dir):
+                tk.Label(self.current_screen, text="Carpeta de imágenes de Lagrange no encontrada.", bg=COLOR_FONDO, fg='white').pack(pady=20)
                 return
 
-            def _show_easy_question():
-                """Muestra la siguiente pregunta en modo Fácil con banner y respuestas horizontales."""
+            # Estado para rastrear el progreso en las preguntas
+            lagrange_state = {
+                'current_question_index': 0,
+                'total_correct': 0,
+                'formula_seen': False,
+                'questions_list': []  # Lista de (imagen_file, answer_text)
+            }
+
+            # Obtener lista de preguntas (todas las imágenes excepto FormulaOriginal)
+            question_images = []
+            for f in os.listdir(img_dir):
+                name, ext = os.path.splitext(f)
+                if name.lower().startswith('formulaoriginal'):
+                    continue
+                if ext.lower() not in ('.png', '.jpg', '.gif', '.bmp'):
+                    continue
+                question_images.append(f)
+
+            # Barajar el orden de las preguntas
+            random.shuffle(question_images)
+            lagrange_state['questions_list'] = question_images
+
+            # Diccionario de respuestas falsas similares para cada concepto
+            fake_answers = {
+                'yi': ['y', 'yi+1', 'y(i)', 'yn'],
+                'n': ['m', 'k', 'l', 'i'],
+                'x-xj': ['x-xi', 'x-x0', 'x-xn', 'xi-x'],
+                'xi-xj': ['xi-xk', 'xj-xi', 'xk-xi', 'x-xj'],
+                'Σ': ['Σ', 'Π', '∫', 'Δ'],
+                'Nada': ['?', '*', '·', '—']
+            }
+
+            def _show_formula():
+                """Muestra la pantalla inicial con la fórmula."""
                 for w in self.current_screen.winfo_children():
                     w.destroy()
 
-                # Verificar si completamos todas las lecciones
-                if easy_state['current_lesson_index'] >= len(easy_state['lessons']):
-                    messagebox.showinfo("¡Completado!", f"¡Felicidades! Has completado {level} en modo {difficulty}.")
+                top_frame = tk.Frame(self.current_screen, bg=COLOR_FONDO)
+                top_frame.pack(fill=tk.BOTH, expand=False, pady=10)
+
+                formula_path = None
+                for f in os.listdir(img_dir):
+                    if f.lower().startswith('formulaoriginal'):
+                        formula_path = os.path.join(img_dir, f)
+                        break
+
+                if formula_path and os.path.exists(formula_path):
+                    try:
+                        pimg = tk.PhotoImage(file=formula_path)
+                        # scale down if too large
+                        if pimg.width() > 700:
+                            factor = max(1, int(pimg.width() / 700))
+                            pimg = pimg.subsample(factor)
+                        lbl_img = tk.Label(top_frame, image=pimg, bg=COLOR_FONDO)
+                        lbl_img.image = pimg
+                        lbl_img.pack(pady=10)
+                    except Exception:
+                        pass
+
+                tk.Label(top_frame, text="¡Esta es la formula de lagrange, memorizala!", font=("Arial", 16, "bold"), bg=COLOR_FONDO, fg="white").pack(pady=(6,12))
+
+                def _continue_to_questions():
+                    lagrange_state['formula_seen'] = True
+                    _show_next_question()
+
+                RoundedButton(self.current_screen, text="OK", width=120, height=48, color="#20D0C0", text_color="#00303a", command=_continue_to_questions).pack(pady=12)
+
+            def _show_next_question():
+                """Muestra la siguiente pregunta de imagen."""
+                for w in self.current_screen.winfo_children():
+                    w.destroy()
+
+                # Verificar si hemos terminado todas las preguntas
+                if lagrange_state['current_question_index'] >= len(lagrange_state['questions_list']):
+                    # Todas las preguntas completadas
+                    messagebox.showinfo("¡Completado!", f"¡Felicidades! Has completado el nivel Lagrange Fácil.")
                     medal_str = f"{level} ({difficulty})"
                     if medal_str not in self.medals:
                         self.medals.append(medal_str)
                     self._save_progress()
-                    self.show_difficulty_menu(chapter, level)
+                    self.start_lesson(chapter, level, difficulty, lesson_index + 1)
                     return
-
-                current_lesson = easy_state['lessons'][easy_state['current_lesson_index']]
 
                 # === BANNER SUPERIOR ===
                 banner_frame = tk.Frame(self.current_screen, bg="#20E0D0", height=60)
                 banner_frame.pack(fill=tk.X, side=tk.TOP)
                 banner_frame.pack_propagate(False)
                 
-                banner_text = f"Capítulo 1 {level}. {difficulty} - Pregunta {easy_state['current_lesson_index'] + 1}"
+                banner_text = f"Capítulo 1 Nivel 1. Lagrange. {difficulty}"
                 tk.Label(banner_frame, text=banner_text, font=("Arial", 16, "bold"), 
                         bg="#20E0D0", fg="#FFFFFF").pack(side=tk.LEFT, padx=20, pady=10)
                 
-                # Botón de retroceso en la esquina derecha del banner
+                # Botón de retroceso en la esquina derecha del banner con imagen
                 try:
                     if PIL_AVAILABLE:
+                        # Usar PIL para redimensionar correctamente
                         from PIL import Image, ImageTk as PILImageTk
                         pil_img = Image.open(os.path.join('imgs', 'red-go-back-arrow.png'))
+                        # Redimensionar a 40x40 manteniendo aspecto
                         pil_img.thumbnail((40, 40), Image.Resampling.LANCZOS)
                         back_arrow_img = PILImageTk.PhotoImage(pil_img)
                     else:
+                        # Fallback: cargar como PhotoImage normal
                         back_arrow_img = tk.PhotoImage(file=os.path.join('imgs', 'red-go-back-arrow.png'))
                         if back_arrow_img.width() > 40:
                             factor = max(1, int(back_arrow_img.width() / 40))
                             back_arrow_img = back_arrow_img.subsample(factor)
                     
                     back_btn = tk.Label(banner_frame, image=back_arrow_img, bg="#20E0D0", cursor="hand2")
-                    back_btn.image = back_arrow_img
+                    back_btn.image = back_arrow_img  # Keep reference
                     back_btn.pack(side=tk.RIGHT, padx=15, pady=10)
                     back_btn.bind("<Button-1>", lambda e: self.show_difficulty_menu(chapter, level))
                 except Exception:
+                    # Fallback al botón de texto si la imagen no carga
                     back_btn = tk.Label(banner_frame, text="◀", font=("Arial", 20, "bold"), 
                                        bg="#20E0D0", fg="#FF5733", cursor="hand2")
                     back_btn.pack(side=tk.RIGHT, padx=20, pady=10)
                     back_btn.bind("<Button-1>", lambda e: self.show_difficulty_menu(chapter, level))
 
-                # Mostrar contenido de la pregunta
-                tk.Label(self.current_screen, text=f"Pregunta: {current_lesson['content']}", 
-                        wraplength=700, font=("Arial", 14, "bold"), bg=COLOR_FONDO, fg=COLOR_TEXTO_LBL).pack(pady=20, padx=40)
+                # Obtener imagen actual
+                current_image_file = lagrange_state['questions_list'][lagrange_state['current_question_index']]
+                current_image_path = os.path.join(img_dir, current_image_file)
+                current_answer = os.path.splitext(current_image_file)[0]
 
-                # Mostrar opciones en fila horizontal
-                options_frame = tk.Frame(self.current_screen, bg=COLOR_FONDO)
-                options_frame.pack(pady=20)
+                # Mostrar la imagen centrada
+                img_frame = tk.Frame(self.current_screen, bg=COLOR_FONDO)
+                img_frame.pack(pady=30)
 
-                if 'options' in current_lesson:
-                    correct_answer = current_lesson['answer']
-                    
-                    def _make_easy_answer_handler(selected_option):
-                        def _handler():
-                            if selected_option == correct_answer:
-                                messagebox.showinfo("¡Correcto!", "¡Respuesta correcta!")
-                                easy_state['total_correct'] += 1
-                            else:
-                                messagebox.showerror("Incorrecto", f"Respuesta incorrecta.\nLa respuesta correcta es: {correct_answer}")
-                                self.errors_committed += 1
+                if os.path.exists(current_image_path):
+                    try:
+                        display_img = tk.PhotoImage(file=current_image_path)
+                        # scale to height ~120
+                        if display_img.height() > 120:
+                            factor = max(1, int(display_img.height() / 120))
+                            display_img = display_img.subsample(factor)
+                        img_lbl = tk.Label(img_frame, image=display_img, bg=COLOR_FONDO)
+                        img_lbl.image = display_img
+                        img_lbl.pack()
+                    except Exception:
+                        tk.Label(img_frame, text=f"No se pudo cargar: {current_image_file}", bg=COLOR_FONDO, fg="white").pack()
 
-                            easy_state['current_lesson_index'] += 1
-                            self._save_progress()
-                            _show_easy_question()
+                # Pregunta: "¿Qué es esta imagen?"
+                tk.Label(self.current_screen, text="¿Qué es esta imagen?", font=("Arial", 14, "bold"), 
+                        bg=COLOR_FONDO, fg="white").pack(pady=15)
 
-                        return _handler
-
-                    # Crear botones en fila horizontal
-                    for option in current_lesson['options']:
-                        btn = RoundedButton(options_frame, text=option, width=120, height=50,
-                                          color=BTN_EASY_COLOR, text_color="#000000",
-                                          command=_make_easy_answer_handler(option))
-                        btn.pack(side=tk.LEFT, padx=8)
+                # Generar opciones: respuesta correcta + 3 falsas
+                correct_option = current_answer
+                if current_answer in fake_answers:
+                    fake_opts = fake_answers[current_answer]
+                    wrong_options = random.sample(fake_opts, min(3, len(fake_opts)))
                 else:
-                    tk.Label(self.current_screen, text="(Formato de lección no soportado)", bg=COLOR_FONDO, fg='white').pack(pady=20)
+                    # Si no hay respuestas falsas predefinidas, crear genéricas
+                    wrong_options = [f"Opción {i}" for i in range(1, 4)]
 
-            # Iniciar el flujo de preguntas en modo Fácil
-            _show_easy_question()
+                all_options = [correct_option] + wrong_options
+                random.shuffle(all_options)
+
+                # Frame para botones en fila
+                btns_frame = tk.Frame(self.current_screen, bg=COLOR_FONDO)
+                btns_frame.pack(pady=20)
+
+                def _make_answer_handler(selected_option):
+                    def _handler():
+                        if selected_option.lower() == correct_option.lower():
+                            messagebox.showinfo("¡Correcto!", f"Correcto: {correct_option}")
+                            lagrange_state['total_correct'] += 1
+                        else:
+                            messagebox.showerror("Incorrecto", f"Respuesta incorrecta. La correcta era: {correct_option}")
+                            self.errors_committed += 1
+
+                        lagrange_state['current_question_index'] += 1
+                        self._save_progress()
+                        _show_next_question()
+
+                    return _handler
+
+                # Crear botones en fila horizontal
+                for option_text in all_options:
+                    btn = RoundedButton(btns_frame, text=option_text, width=120, height=50,
+                                      color=BTN_EASY_COLOR, text_color="#000000",
+                                      command=_make_answer_handler(option_text))
+                    btn.pack(side=tk.LEFT, padx=8)
+
+            # Iniciar el flujo: mostrar la fórmula primero
+            _show_formula()
             return
 
-        # Fin modo Fácil
+        # Fin caso especial Lagrange
 
-        # Comportamiento por defecto (para Intermedio, Avanzado, Prueba Final)
+        # Comportamiento por defecto (general) con estética para 'Fácil'
         tk.Label(self.current_screen, text=f"Pregunta: {lesson['content']}", 
                  wraplength=700, font=("Arial", 14), bg=COLOR_FONDO, fg=COLOR_TEXTO_LBL).pack(pady=20, padx=40)
         
@@ -983,8 +1097,10 @@ class NumericalMethodsGame:
 
         if 'options' in lesson:
             for option in lesson['options']:
-                btn = RoundedButton(options_frame, text=option, width=None, height=50,
-                                    color=COLOR_BOTON_CLARO, outline_color=COLOR_BORDE_OSCURO, border_width=2,
+                btn_color = BTN_EASY_COLOR if difficulty.lower() == 'fácil' else COLOR_BOTON_CLARO
+                btn_height = 60 if difficulty.lower() == 'fácil' else 50
+                btn = RoundedButton(options_frame, text=option, width=None, height=btn_height,
+                                    color=btn_color, outline_color=COLOR_BORDE_OSCURO, border_width=2,
                                     command=lambda o=option: self.check_answer(o, lesson, chapter, level, difficulty, lesson_index))
                 btn.pack(pady=8)
                 
