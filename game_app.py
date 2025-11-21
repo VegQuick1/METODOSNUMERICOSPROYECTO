@@ -6,6 +6,9 @@ import json
 from game_data import GAME_STRUCTURE
 import methods_engine as me 
 from music_manager import MusicManager
+from numerical_methods_lessons import *
+from methods_mapping import METHODS_MAPPING, get_method_info
+import additional_methods
 try:
     from PIL import Image, ImageDraw, ImageTk
     PIL_AVAILABLE = True
@@ -390,6 +393,9 @@ class NumericalMethodsGame:
             self.music_manager.set_volume(0.0)
         else:
             self.music_manager.set_volume(self.music_volume)
+        
+        # --- ESTABLECER REFERENCIA EN MÓDULO ADICIONAL ---
+        additional_methods.set_app_reference(self)
         
         # --- CARGAR IMAGEN DE "VOLVER" ---
         self.back_icon = None
@@ -949,6 +955,23 @@ Zamora Pequeño, O., Zamora Pequeño, R. S., & Del Ángel Ramírez, A. (2020). M
         
         self.clear_screen()
         
+        # Caso especial: Métodos con interfaz personalizada (Lagrange, Interpolación, etc)
+        # Se verifica PRIMERO para evitar problemas con GAME_STRUCTURE vacío
+        method_info = get_method_info(chapter, level, difficulty)
+        
+        if method_info and 'function' in method_info:
+            func_name = method_info['function']
+            # Para métodos en additional_methods
+            if hasattr(additional_methods, func_name):
+                func = getattr(additional_methods, func_name)
+                func(chapter, level, difficulty, lesson_index)
+                return
+            # Para métodos en self (como _show_lagrange_*)
+            elif hasattr(self, func_name):
+                func = getattr(self, func_name)
+                func(chapter, level, difficulty, lesson_index)
+                return
+        
         # Acceder al diccionario anidado: Capitulo -> Nivel -> Dificultad
         try:
             lessons = GAME_STRUCTURE[chapter]['levels'][level][difficulty]
@@ -973,16 +996,6 @@ Zamora Pequeño, O., Zamora Pequeño, R. S., & Del Ángel Ramírez, A. (2020). M
 
         current_lesson = lessons[lesson_index]
         lesson_type = current_lesson['type']
-        
-        # Caso especial: Lagrange Intermedio, Avanzado y Prueba Final (manejan su propio banner)
-        try:
-            is_lagrange_special = 'Lagrange' in level and difficulty.lower() in ['intermedio', 'avanzado', 'prueba final']
-        except Exception:
-            is_lagrange_special = False
-        
-        if is_lagrange_special:
-            self.show_practica(current_lesson, chapter, level, difficulty, lesson_index)
-            return
         
         # Configurar colores de franja
         strip_color = COLOR_FONDO 
