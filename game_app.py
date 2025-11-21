@@ -52,10 +52,11 @@ COLOR_BORDE_OSCURO = "#008080"
 COLOR_BOTON_ROJO = "#FF6B6B"
 
 # --- COLORES DE DIFICULTAD (Basados en tu imagen) ---
-BTN_EASY_COLOR = "#00E676"      # Verde/Cyan vibrante
-BTN_INTER_COLOR = "#FFAB00"     # Naranja/Amarillo
-BTN_ADV_COLOR = "#F50057"       # Rosa/Rojo intenso
-BTN_FINAL_COLOR = "#D500F9"     # Violeta brillante
+# Colores para botones de dificultad
+BTN_EASY_COLOR = "#00e676"      # Fácil: gradiente de #00e676 a #24a7d3
+BTN_INTER_COLOR = "#f8cf39"     # Intermedio: gradiente de #f8cf39 a #f67345
+BTN_ADV_COLOR = "#f94255"       # Avanzado: gradiente de #f94255 a #b3319e
+BTN_FINAL_COLOR = "#ac35e4"     # Prueba Final: color sólido
 
 # --- COLORES DE FRANJAS ---
 COLOR_STRIP_EXPL = "#FFD700"
@@ -366,6 +367,9 @@ class NumericalMethodsGame:
         self.errors_committed = 0
         self.time_elapsed_seconds = 0  # Contador en segundos
         self.medals = []
+        
+        # Posición del scroll en el menú de lecciones
+        self.chapter_menu_scroll_position = 0
         
         # Archivo de guardado
         self.save_file = "game_progress.json"
@@ -828,6 +832,8 @@ Zamora Pequeño, O., Zamora Pequeño, R. S., & Del Ángel Ramírez, A. (2020). M
                 
                 # Botón con imagen a la derecha (navegación)
                 def _on_level_click(event, c=chapter_name, l=level_name):
+                    # Guardar posición del scroll antes de salir
+                    self.chapter_menu_scroll_position = scroll_container.canvas.yview()[0]
                     self.show_difficulty_menu(c, l)
                 
                 try:
@@ -876,11 +882,23 @@ Zamora Pequeño, O., Zamora Pequeño, R. S., & Del Ángel Ramírez, A. (2020). M
                 level_label.bind("<Leave>", _on_leave)
                 level_btn.bind("<Enter>", _on_enter)
                 level_btn.bind("<Leave>", _on_leave)
+        
+        # Restaurar la posición del scroll después de renderizar todo
+        self.root.after(100, lambda: self._restore_scroll_position(scroll_container))
             
     def show_level_menu(self, chapter_name):
         """Este método está deprecado - Se usa show_chapter_menu en su lugar"""
         pass
 
+    def _restore_scroll_position(self, scroll_container):
+        """Restaura la posición del scroll en el menú de lecciones"""
+        try:
+            if self.chapter_menu_scroll_position > 0:
+                # Usar yview_moveto para restaurar la posición
+                scroll_container.canvas.yview_moveto(self.chapter_menu_scroll_position)
+        except Exception as e:
+            print(f"Error al restaurar posición del scroll: {e}")
+    
     # --- NUEVA FUNCIÓN: MENÚ DE DIFICULTAD (Estilo Imagen Adjunta) ---
     def show_difficulty_menu(self, chapter, level):
         self.clear_screen()
@@ -899,18 +917,18 @@ Zamora Pequeño, O., Zamora Pequeño, R. S., & Del Ángel Ramírez, A. (2020). M
         container = tk.Frame(self.current_screen, bg=COLOR_FONDO)
         container.pack(expand=True)
 
-        # Botón FÁCIL (Verde/Cyan)
-        RoundedButton(container, text="Fácil   ☆", width=300, height=60,
+        # Botón FÁCIL (Verde/Cyan) con estrellas pequeñas
+        RoundedButton(container, text="Fácil   ★", width=300, height=60,
                       color=BTN_EASY_COLOR, text_color="white",
                       command=lambda: self.start_lesson(chapter, level, "Fácil", 0)).pack(pady=15)
 
-        # Botón INTERMEDIO (Naranja)
-        RoundedButton(container, text="Intermedio   ☆☆", width=300, height=60,
+        # Botón INTERMEDIO (Naranja) con estrellas pequeñas
+        RoundedButton(container, text="Intermedio   ★★", width=300, height=60,
                       color=BTN_INTER_COLOR, text_color="white",
                       command=lambda: self.start_lesson(chapter, level, "Intermedio", 0)).pack(pady=15)
 
-        # Botón AVANZADO (Rojo/Rosa)
-        RoundedButton(container, text="Avanzado   ☆☆☆", width=300, height=60,
+        # Botón AVANZADO (Rojo/Rosa) con estrellas pequeñas
+        RoundedButton(container, text="Avanzado   ★★★", width=300, height=60,
                       color=BTN_ADV_COLOR, text_color="white",
                       command=lambda: self.start_lesson(chapter, level, "Avanzado", 0)).pack(pady=15)
 
@@ -956,13 +974,13 @@ Zamora Pequeño, O., Zamora Pequeño, R. S., & Del Ángel Ramírez, A. (2020). M
         current_lesson = lessons[lesson_index]
         lesson_type = current_lesson['type']
         
-        # Caso especial: Lagrange Intermedio (maneja su propio banner)
+        # Caso especial: Lagrange Intermedio, Avanzado y Prueba Final (manejan su propio banner)
         try:
-            is_lagrange_intermedio = 'Lagrange' in level and difficulty.lower() == 'intermedio'
+            is_lagrange_special = 'Lagrange' in level and difficulty.lower() in ['intermedio', 'avanzado', 'prueba final']
         except Exception:
-            is_lagrange_intermedio = False
+            is_lagrange_special = False
         
-        if is_lagrange_intermedio:
+        if is_lagrange_special:
             self.show_practica(current_lesson, chapter, level, difficulty, lesson_index)
             return
         
@@ -1016,7 +1034,7 @@ Zamora Pequeño, O., Zamora Pequeño, R. S., & Del Ángel Ramírez, A. (2020). M
         import random
         
         # === BANNER SUPERIOR ===
-        banner_frame = tk.Frame(self.current_screen, bg="#FF8C42", height=70)
+        banner_frame = tk.Frame(self.current_screen, bg="#ac35e4", height=70)
         banner_frame.pack(fill=tk.X, side=tk.TOP)
         banner_frame.pack_propagate(False)
         
@@ -1063,6 +1081,7 @@ Zamora Pequeño, O., Zamora Pequeño, R. S., & Del Ángel Ramírez, A. (2020). M
         tk.Label(top_content_frame, text="x = 3", font=("Arial", scale_font(16), "bold"), 
                 bg=COLOR_FONDO, fg="white").pack(side=tk.LEFT, padx=20)
         
+
         # Tabla de datos (centro)
         table_frame = tk.Frame(top_content_frame, bg="white", highlightthickness=2, highlightbackground="#20E0D0")
         table_frame.pack(side=tk.LEFT, padx=20)
@@ -1160,10 +1179,324 @@ Zamora Pequeño, O., Zamora Pequeño, R. S., & Del Ángel Ramírez, A. (2020). M
                               command=_make_handler(opt_text))
             btn.pack(side=tk.LEFT, padx=15)
 
+    def _show_lagrange_avanzado(self, chapter, level, difficulty, lesson_index):
+        """Nivel avanzado de Lagrange con tabla extendida (5 filas) y 30 minutos"""
+        import random
+        
+        # === BANNER SUPERIOR ===
+        banner_frame = tk.Frame(self.current_screen, bg="#ac35e4", height=70)
+        banner_frame.pack(fill=tk.X, side=tk.TOP)
+        banner_frame.pack_propagate(False)
+        
+        banner_text = f"Capítulo 1 Nivel 1. Lagrange. {difficulty}"
+        tk.Label(banner_frame, text=banner_text, font=("Arial", scale_font(16), "bold"), 
+                bg="#FF8C42", fg="#FFFFFF").pack(side=tk.LEFT, padx=20, pady=15)
+        
+        # Botón de retroceso
+        try:
+            if PIL_AVAILABLE:
+                from PIL import Image as PILImage, ImageTk as PILImageTk
+                pil_img = PILImage.open(os.path.join('imgs', 'red-go-back-arrow.png'))
+                pil_img.thumbnail((40, 40), PILImage.Resampling.LANCZOS)
+                back_arrow_img = PILImageTk.PhotoImage(pil_img)
+            else:
+                back_arrow_img = tk.PhotoImage(file=os.path.join('imgs', 'red-go-back-arrow.png'))
+                if back_arrow_img.width() > 40:
+                    factor = max(1, int(back_arrow_img.width() / 40))
+                    back_arrow_img = back_arrow_img.subsample(factor)
+            
+            back_btn = tk.Label(banner_frame, image=back_arrow_img, bg="#FF8C42", cursor="hand2")
+            back_btn.image = back_arrow_img
+            back_btn.pack(side=tk.RIGHT, padx=20, pady=15)
+            back_btn.bind("<Button-1>", lambda e: self.show_difficulty_menu(chapter, level))
+        except Exception:
+            back_btn = tk.Label(banner_frame, text="◀", font=("Arial", scale_font(20), "bold"), 
+                               bg="#FF8C42", fg="#FFFFFF", cursor="hand2")
+            back_btn.pack(side=tk.RIGHT, padx=20, pady=15)
+            back_btn.bind("<Button-1>", lambda e: self.show_difficulty_menu(chapter, level))
+        
+        # Contenido principal
+        main_frame = tk.Frame(self.current_screen, bg=COLOR_FONDO)
+        main_frame.pack(fill=tk.BOTH, expand=True, padx=20, pady=20)
+        
+        # Título del problema
+        tk.Label(main_frame, text="Obtener g(x)", font=("Arial", scale_font(18), "bold"), 
+                bg=COLOR_FONDO, fg="#20E0D0").pack(pady=10)
+        
+        # Frame para tabla y x = 2.4
+        top_content_frame = tk.Frame(main_frame, bg=COLOR_FONDO)
+        top_content_frame.pack(pady=15, fill=tk.X)
+        
+        # Mostrar x = 2.4 (izquierda)
+        tk.Label(top_content_frame, text="x = 2.4", font=("Arial", scale_font(16), "bold"), 
+                bg=COLOR_FONDO, fg="white").pack(side=tk.LEFT, padx=20)
+        
+        # Tabla de datos con 5 filas (avanzado)
+        table_frame = tk.Frame(top_content_frame, bg="white", highlightthickness=2, highlightbackground="#20E0D0")
+        table_frame.pack(side=tk.LEFT, padx=20)
+        
+        # Encabezados
+        header_x = tk.Label(table_frame, text="x", font=("Arial", scale_font(12), "bold"), 
+                           bg="#20E0D0", fg="white", width=12, height=2)
+        header_x.grid(row=0, column=0, sticky="nsew")
+        
+        header_y = tk.Label(table_frame, text="y", font=("Arial", scale_font(12), "bold"), 
+                           bg="#20E0D0", fg="white", width=12, height=2)
+        header_y.grid(row=0, column=1, sticky="nsew")
+        
+        # Datos de la tabla (5 filas para avanzado)
+        data = [(2.2, 2.54), (2.5, 2.82), (2.8, 3.21), (3.1, 3.32), (3.4, 3.41)]
+        
+        for i, (x_val, y_val) in enumerate(data, 1):
+            cell_x = tk.Label(table_frame, text=str(x_val), font=("Arial", scale_font(11)), 
+                             bg="white", fg="black", width=12, height=2, relief=tk.RIDGE)
+            cell_x.grid(row=i, column=0, sticky="nsew")
+            
+            cell_y = tk.Label(table_frame, text=str(y_val), font=("Arial", scale_font(11)), 
+                             bg="white", fg="black", width=12, height=2, relief=tk.RIDGE)
+            cell_y.grid(row=i, column=1, sticky="nsew")
+        
+        # Temporizador a la derecha (30 minutos)
+        timer_container = tk.Frame(top_content_frame, bg=COLOR_FONDO)
+        timer_container.pack(side=tk.RIGHT, padx=20)
+        
+        tk.Label(timer_container, text="⏱", font=("Arial", scale_font(24)), 
+                bg=COLOR_FONDO, fg="white").pack(pady=5)
+        tk.Label(timer_container, text="Tiempo restante", font=("Arial", scale_font(12), "bold"), 
+                bg=COLOR_FONDO, fg="white").pack()
+        
+        timer_label = tk.Label(timer_container, text="30:00", font=("Arial", scale_font(20), "bold"), 
+                              bg=COLOR_FONDO, fg="#20E0D0")
+        timer_label.pack(pady=5)
+        
+        # Temporizador de 30 minutos (1800 segundos)
+        timer_state = {'seconds': 1800, 'timer_id': None}
+        
+        def _update_timer():
+            timer_state['seconds'] -= 1
+            minutes = timer_state['seconds'] // 60
+            seconds = timer_state['seconds'] % 60
+            time_str = f"{minutes}:{seconds:02d}"
+            timer_label.config(text=time_str)
+            
+            if timer_state['seconds'] > 0:
+                timer_state['timer_id'] = self.root.after(1000, _update_timer)
+            else:
+                messagebox.showinfo("Tiempo agotado", "Se acabó el tiempo para resolver el problema.")
+                self.show_difficulty_menu(chapter, level)
+        
+        _update_timer()
+        
+        # Marco con opciones
+        options_frame = tk.Frame(main_frame, bg=COLOR_FONDO)
+        options_frame.pack(pady=30, fill=tk.BOTH, expand=True)
+        
+        # Etiqueta g(x) =
+        tk.Label(options_frame, text="g(x) =", font=("Arial", scale_font(16), "bold"), 
+                bg=COLOR_FONDO, fg="white").pack(pady=15)
+        
+        # Opciones con RoundedButton
+        btn_frame = tk.Frame(options_frame, bg=COLOR_FONDO)
+        btn_frame.pack(pady=20)
+        
+        # 5 opciones para avanzado
+        options_values = ["2.67646", "2.77646", "2.57646", "3.67646", "1.67646"]
+        correct_answer = "2.77646"
+        
+        # Randomizar el orden
+        random.shuffle(options_values)
+        
+        def _make_handler(option_text):
+            def _handler():
+                if timer_state['timer_id']:
+                    self.root.after_cancel(timer_state['timer_id'])
+                
+                if option_text == correct_answer:
+                    messagebox.showinfo("¡Correcto!", f"¡Excelente!")
+                    self.start_lesson(chapter, level, difficulty, lesson_index + 1)
+                else:
+                    messagebox.showinfo("Incorrecto", "Lo siento, esa respuesta no es correcta.")
+                    self.errors_committed += 1
+                    self._save_progress()
+                    self.show_difficulty_menu(chapter, level)
+            return _handler
+        
+        # Crear botones en fila horizontal
+        for opt_text in options_values:
+            btn = RoundedButton(btn_frame, text=opt_text, width=180, height=90,
+                              color=BTN_EASY_COLOR, text_color="#000000",
+                              command=_make_handler(opt_text))
+            btn.pack(side=tk.LEFT, padx=12)
+
+    def _show_lagrange_final(self, chapter, level, difficulty, lesson_index):
+        """Prueba Final de Lagrange con tabla extendida, 25 minutos e intento único"""
+        import random
+        
+        # Verificar si ya se intentó esta prueba
+        medal_str = f"{level} ({difficulty})"
+        if medal_str in self.medals:
+            messagebox.showinfo("Prueba Final", "Ya completaste la Prueba Final. No puedes volver a intentarla.")
+            self.show_difficulty_menu(chapter, level)
+            return
+        
+        # === BANNER SUPERIOR ===
+        banner_frame = tk.Frame(self.current_screen, bg="#ac35e4", height=70)
+        banner_frame.pack(fill=tk.X, side=tk.TOP)
+        banner_frame.pack_propagate(False)
+        
+        banner_text = f"Capítulo 1 Nivel 1. Lagrange. {difficulty}"
+        tk.Label(banner_frame, text=banner_text, font=("Arial", scale_font(16), "bold"), 
+                bg="#FF8C42", fg="#FFFFFF").pack(side=tk.LEFT, padx=20, pady=15)
+        
+        # Botón de retroceso
+        try:
+            if PIL_AVAILABLE:
+                from PIL import Image as PILImage, ImageTk as PILImageTk
+                pil_img = PILImage.open(os.path.join('imgs', 'red-go-back-arrow.png'))
+                pil_img.thumbnail((40, 40), PILImage.Resampling.LANCZOS)
+                back_arrow_img = PILImageTk.PhotoImage(pil_img)
+            else:
+                back_arrow_img = tk.PhotoImage(file=os.path.join('imgs', 'red-go-back-arrow.png'))
+                if back_arrow_img.width() > 40:
+                    factor = max(1, int(back_arrow_img.width() / 40))
+                    back_arrow_img = back_arrow_img.subsample(factor)
+            
+            back_btn = tk.Label(banner_frame, image=back_arrow_img, bg="#FF8C42", cursor="hand2")
+            back_btn.image = back_arrow_img
+            back_btn.pack(side=tk.RIGHT, padx=20, pady=15)
+            back_btn.bind("<Button-1>", lambda e: self.show_difficulty_menu(chapter, level))
+        except Exception:
+            back_btn = tk.Label(banner_frame, text="◀", font=("Arial", scale_font(20), "bold"), 
+                               bg="#FF8C42", fg="#FFFFFF", cursor="hand2")
+            back_btn.pack(side=tk.RIGHT, padx=20, pady=15)
+            back_btn.bind("<Button-1>", lambda e: self.show_difficulty_menu(chapter, level))
+        
+        # Contenido principal
+        main_frame = tk.Frame(self.current_screen, bg=COLOR_FONDO)
+        main_frame.pack(fill=tk.BOTH, expand=True, padx=20, pady=20)
+        
+        # Título del problema
+        tk.Label(main_frame, text="Obtener g(x)", font=("Arial", scale_font(18), "bold"), 
+                bg=COLOR_FONDO, fg="#20E0D0").pack(pady=10)
+        
+        # Frame para tabla y x = 2.4
+        top_content_frame = tk.Frame(main_frame, bg=COLOR_FONDO)
+        top_content_frame.pack(pady=15, fill=tk.X)
+        
+        # Mostrar x = 2.4 (izquierda)
+        tk.Label(top_content_frame, text="x = 2.4", font=("Arial", scale_font(16), "bold"), 
+                bg=COLOR_FONDO, fg="white").pack(side=tk.LEFT, padx=20)
+        
+        # Tabla de datos con 5 filas (igual que avanzado)
+        table_frame = tk.Frame(top_content_frame, bg="white", highlightthickness=2, highlightbackground="#20E0D0")
+        table_frame.pack(side=tk.LEFT, padx=20)
+        
+        # Encabezados
+        header_x = tk.Label(table_frame, text="x", font=("Arial", scale_font(12), "bold"), 
+                           bg="#20E0D0", fg="white", width=12, height=2)
+        header_x.grid(row=0, column=0, sticky="nsew")
+        
+        header_y = tk.Label(table_frame, text="y", font=("Arial", scale_font(12), "bold"), 
+                           bg="#20E0D0", fg="white", width=12, height=2)
+        header_y.grid(row=0, column=1, sticky="nsew")
+        
+        # Datos de la tabla (5 filas para prueba final)
+        data = [(2.2, 2.54), (2.5, 2.82), (2.8, 3.21), (3.1, 3.32), (3.4, 3.41)]
+        
+        for i, (x_val, y_val) in enumerate(data, 1):
+            cell_x = tk.Label(table_frame, text=str(x_val), font=("Arial", scale_font(11)), 
+                             bg="white", fg="black", width=12, height=2, relief=tk.RIDGE)
+            cell_x.grid(row=i, column=0, sticky="nsew")
+            
+            cell_y = tk.Label(table_frame, text=str(y_val), font=("Arial", scale_font(11)), 
+                             bg="white", fg="black", width=12, height=2, relief=tk.RIDGE)
+            cell_y.grid(row=i, column=1, sticky="nsew")
+        
+        # Temporizador a la derecha (25 minutos)
+        timer_container = tk.Frame(top_content_frame, bg=COLOR_FONDO)
+        timer_container.pack(side=tk.RIGHT, padx=20)
+        
+        tk.Label(timer_container, text="⏱", font=("Arial", scale_font(24)), 
+                bg=COLOR_FONDO, fg="white").pack(pady=5)
+        tk.Label(timer_container, text="Tiempo restante", font=("Arial", scale_font(12), "bold"), 
+                bg=COLOR_FONDO, fg="white").pack()
+        
+        timer_label = tk.Label(timer_container, text="25:00", font=("Arial", scale_font(20), "bold"), 
+                              bg=COLOR_FONDO, fg="#20E0D0")
+        timer_label.pack(pady=5)
+        
+        # Temporizador de 25 minutos (1500 segundos)
+        timer_state = {'seconds': 1500, 'timer_id': None}
+        
+        def _update_timer():
+            timer_state['seconds'] -= 1
+            minutes = timer_state['seconds'] // 60
+            seconds = timer_state['seconds'] % 60
+            time_str = f"{minutes}:{seconds:02d}"
+            timer_label.config(text=time_str)
+            
+            if timer_state['seconds'] > 0:
+                timer_state['timer_id'] = self.root.after(1000, _update_timer)
+            else:
+                messagebox.showinfo("Tiempo agotado", "Se acabó el tiempo para resolver el problema.")
+                self.errors_committed += 1
+                self._save_progress()
+                self.show_difficulty_menu(chapter, level)
+        
+        _update_timer()
+        
+        # Marco con opciones
+        options_frame = tk.Frame(main_frame, bg=COLOR_FONDO)
+        options_frame.pack(pady=30, fill=tk.BOTH, expand=True)
+        
+        # Etiqueta g(x) =
+        tk.Label(options_frame, text="g(x) =", font=("Arial", scale_font(16), "bold"), 
+                bg=COLOR_FONDO, fg="white").pack(pady=15)
+        
+        # Opciones con RoundedButton
+        btn_frame = tk.Frame(options_frame, bg=COLOR_FONDO)
+        btn_frame.pack(pady=20)
+        
+        # 5 opciones para prueba final
+        options_values = ["2.67646", "2.77646", "2.57646", "3.67646", "1.67646"]
+        correct_answer = "2.77646"
+        
+        # Randomizar el orden
+        random.shuffle(options_values)
+        
+        def _make_handler(option_text):
+            def _handler():
+                if timer_state['timer_id']:
+                    self.root.after_cancel(timer_state['timer_id'])
+                
+                if option_text == correct_answer:
+                    messagebox.showinfo("¡Correcto!", f"¡Excelente! ¡Prueba Final completada!")
+                    # Agregar medalla de prueba final
+                    if medal_str not in self.medals:
+                        self.medals.append(medal_str)
+                    self._save_progress()
+                    self.show_difficulty_menu(chapter, level)
+                else:
+                    messagebox.showinfo("Incorrecto", "Lo siento, fallaste la Prueba Final. No se otorga medalla.")
+                    self.errors_committed += 1
+                    self._save_progress()
+                    # No permite reintentar
+                    self.show_difficulty_menu(chapter, level)
+            return _handler
+        
+        # Crear botones en fila horizontal
+        for opt_text in options_values:
+            btn = RoundedButton(btn_frame, text=opt_text, width=180, height=90,
+                              color=BTN_EASY_COLOR, text_color="#000000",
+                              command=_make_handler(opt_text))
+            btn.pack(side=tk.LEFT, padx=12)
+
     def show_practica(self, lesson, chapter, level, difficulty, lesson_index):
         """Renderiza preguntas de práctica. Si es dificultad 'Fácil', aplica estética especial.
         Caso especial: Nivel Lagrange (Fácil) — muestra la fórmula, luego preguntas individuales de cada imagen.
         Caso especial: Nivel Lagrange (Intermedio) — ejercicio de interpolación de Lagrange.
+        Caso especial: Nivel Lagrange (Avanzado) — ejercicio con tabla extendida y 30 minutos.
+        Caso especial: Nivel Lagrange (Prueba Final) — ejercicio con tabla extendida, 25 minutos, intento único.
         """
         import random
         
@@ -1175,6 +1508,25 @@ Zamora Pequeño, O., Zamora Pequeño, R. S., & Del Ángel Ramírez, A. (2020). M
         
         if is_lagrange_intermedio:
             return self._show_lagrange_intermedio(chapter, level, difficulty, lesson_index)
+        
+        # Caso especial: Lagrange Avanzado (tabla extendida, 30 minutos)
+        try:
+            is_lagrange_avanzado = 'Lagrange' in level and difficulty.lower() == 'avanzado'
+        except Exception:
+            is_lagrange_avanzado = False
+        
+        if is_lagrange_avanzado:
+            return self._show_lagrange_avanzado(chapter, level, difficulty, lesson_index)
+        
+        # Caso especial: Lagrange Prueba Final (tabla extendida, 25 minutos, intento único)
+        try:
+            is_lagrange_final = 'Lagrange' in level and difficulty.lower() == 'prueba final'
+        except Exception:
+            is_lagrange_final = False
+        
+        if is_lagrange_final:
+            return self._show_lagrange_final(chapter, level, difficulty, lesson_index)
+        
         
         # Caso especial: Lagrange Fácil (formato con imágenes)
         try:
