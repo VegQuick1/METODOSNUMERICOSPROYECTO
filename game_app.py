@@ -4,6 +4,41 @@ import tkinter.font as tkfont
 import os
 from game_data import GAME_STRUCTURE
 import methods_engine as me 
+try:
+    from PIL import Image, ImageDraw, ImageTk
+    PIL_AVAILABLE = True
+except Exception:
+    PIL_AVAILABLE = False
+
+def create_rounded_rect_image(width, height, radius, color1, color2=None):
+    """Create a rounded rectangle PIL Image with optional horizontal gradient.
+    Returns a PIL Image.
+    """
+    if not PIL_AVAILABLE:
+        return None
+    img = Image.new("RGBA", (max(2, int(width)), max(2, int(height))), (0, 0, 0, 0))
+    draw = ImageDraw.Draw(img)
+
+    if color2 is None:
+        # solid fill
+        draw.rounded_rectangle([(0, 0), (img.width, img.height)], radius=radius, fill=color1)
+    else:
+        # horizontal gradient between color1 and color2
+        r1, g1, b1 = tuple(int(color1.lstrip('#')[i:i+2], 16) for i in (0, 2, 4))
+        r2, g2, b2 = tuple(int(color2.lstrip('#')[i:i+2], 16) for i in (0, 2, 4))
+        for x in range(img.width):
+            t = x / max(1, img.width - 1)
+            ri = int(r1 + (r2 - r1) * t)
+            gi = int(g1 + (g2 - g1) * t)
+            bi = int(b1 + (b2 - b1) * t)
+            draw.line([(x, 0), (x, img.height)], fill=(ri, gi, bi))
+        # mask to rounded rect
+        mask = Image.new("L", (img.width, img.height), 0)
+        mdraw = ImageDraw.Draw(mask)
+        mdraw.rounded_rectangle([(0, 0), (img.width, img.height)], radius=radius, fill=255)
+        img.putalpha(mask)
+
+    return img
 
 # --- COLORES GENERALES ---
 COLOR_FONDO = "#001F3F"
@@ -34,7 +69,7 @@ class RoundedButton(tk.Canvas):
     # PEGA AQUÍ TU CLASE RoundedButton ORIGINAL
     def __init__(self, parent, text, command, width=None, height=60, corner_radius=20, 
                  color=COLOR_BOTON, text_color=COLOR_TEXTO_BTN, bg_color=COLOR_FONDO,
-                 outline_color=None, border_width=0):
+                 outline_color=None, border_width=0, icon_image=None, icon_padding=14):
         
         if width is None:
             font = tkfont.Font(family="Arial", size=14, weight="bold")
@@ -50,11 +85,20 @@ class RoundedButton(tk.Canvas):
         self.width = width
         self.height = height
         self.corner_radius = corner_radius
+        self.icon_image = icon_image
+        self.icon_padding = icon_padding
+        self.dynamic = width is None
         self.outline_color = outline_color if outline_color else color
         self.border_width = border_width
 
         self.configure(width=width, height=height)
         self.draw_button()
+        # If width is dynamic (None), bind parent resize to update width
+        try:
+            if self.dynamic and hasattr(parent, 'bind'):
+                parent.bind('<Configure>', self._on_parent_config)
+        except Exception:
+            pass
         
         self.bind("<ButtonPress-1>", self._on_press)
         self.bind("<ButtonRelease-1>", self._on_release)
@@ -77,7 +121,19 @@ class RoundedButton(tk.Canvas):
         self.create_rectangle((x0+r, y0, x1-r, y1), fill=self.color, outline=self.color, tags="btn")
         self.create_rectangle((x0, y0+r, x1, y1-r), fill=self.color, outline=self.color, tags="btn")
         
-        self.create_text(w/2, h/2, text=self.text, fill=self.text_color, font=("Arial", 14, "bold"), tags="btn")
+        # If there's an icon, draw it to the left and shift text
+        text_x = w/2
+        if self.icon_image:
+            try:
+                # keep a reference so image is not garbage collected
+                self._icon_ref = self.icon_image
+                icon_x = x0 + self.icon_padding
+                self.create_image(icon_x, h/2, image=self._icon_ref, anchor='w', tags="btn")
+                text_x = (x0 + x1) / 2 + self.icon_padding/2
+            except Exception:
+                pass
+
+        self.create_text(text_x, h/2, text=self.text, fill=self.text_color, font=("Arial", 14, "bold"), tags="btn")
 
     def _on_press(self, event): self.move("btn", 1, 1)
     def _on_release(self, event): 
@@ -85,6 +141,18 @@ class RoundedButton(tk.Canvas):
         if self.command: self.command()
     def _on_hover(self, event): self.config(cursor="hand2")
     def _on_leave(self, event): self.config(cursor="")
+
+    def _on_parent_config(self, event):
+        # Adjust width to be a fraction of parent width when dynamic
+        try:
+            pw = event.width
+            new_w = max(120, int(pw * 0.45))
+            if new_w != self.width:
+                self.width = new_w
+                self.configure(width=self.width)
+                self.draw_button()
+        except Exception:
+            pass
 
 class ScrollableFrame(tk.Frame):
     # PEGA AQUÍ TU CLASE ScrollableFrame ORIGINAL
@@ -130,6 +198,14 @@ class GradientRoundedButton(tk.Canvas):
         self.configure(width=width, height=height)
         self.draw_button()
 
+        # allow dynamic width if width is None
+        self.dynamic = width is None
+        try:
+            if self.dynamic and hasattr(parent, 'bind'):
+                parent.bind('<Configure>', self._on_parent_config)
+        except Exception:
+            pass
+
         self.bind("<ButtonPress-1>", self._on_press)
         self.bind("<ButtonRelease-1>", self._on_release)
         self.bind("<Enter>", self._on_hover)
@@ -141,32 +217,59 @@ class GradientRoundedButton(tk.Canvas):
         w = self.width
         h = self.height
 
-        # Draw gradient by drawing many narrow vertical lines interpolating colors
-        steps = max(2, int(w / 2))
-        r1, g1, b1 = self._hex_to_rgb(self.colors[0])
-        r2, g2, b2 = self._hex_to_rgb(self.colors[-1])
-        for i in range(steps):
-            t = i / (steps - 1)
-            ri = int(r1 + (r2 - r1) * t)
-            gi = int(g1 + (g2 - g1) * t)
-            bi = int(b1 + (b2 - b1) * t)
-            col = f"#{ri:02x}{gi:02x}{bi:02x}"
-            x0 = i * (w / steps)
-            x1 = (i + 1) * (w / steps)
-            # Clip corners by drawing over full rect then using arcs to mask look
-            self.create_rectangle(x0, 0, x1, h, fill=col, width=0)
+        # If Pillow is available, generate a rounded-rect gradient image and use it.
+        if PIL_AVAILABLE:
+            try:
+                # create an RGBA image with horizontal gradient
+                img = Image.new("RGBA", (max(2, int(w)), max(2, int(h))), (0, 0, 0, 0))
+                draw = ImageDraw.Draw(img)
+                # horizontal gradient
+                r1, g1, b1 = self._hex_to_rgb(self.colors[0])
+                r2, g2, b2 = self._hex_to_rgb(self.colors[-1])
+                for x in range(img.width):
+                    t = x / max(1, img.width - 1)
+                    ri = int(r1 + (r2 - r1) * t)
+                    gi = int(g1 + (g2 - g1) * t)
+                    bi = int(b1 + (b2 - b1) * t)
+                    draw.line([(x, 0), (x, img.height)], fill=(ri, gi, bi))
 
-        # Mask corners by drawing rounded border shapes (drawn over gradient to give rounded look)
-        self.create_arc((0, 0, 2*r, 2*r), start=90, extent=90, fill=self.colors[0], outline=self.colors[0])
-        self.create_arc((w-2*r, 0, w, 2*r), start=0, extent=90, fill=self.colors[-1], outline=self.colors[-1])
-        self.create_arc((w-2*r, h-2*r, w, h), start=270, extent=90, fill=self.colors[-1], outline=self.colors[-1])
-        self.create_arc((0, h-2*r, 2*r, h), start=180, extent=90, fill=self.colors[0], outline=self.colors[0])
+                # mask for rounded rectangle
+                mask = Image.new("L", (img.width, img.height), 0)
+                mdraw = ImageDraw.Draw(mask)
+                # rounded rectangle (full pill)
+                mdraw.rounded_rectangle([(0, 0), (img.width, img.height)], radius=r, fill=255)
+                img.putalpha(mask)
 
-        # Draw central rounded rectangle overlay to smooth edges
-        self.create_rectangle((r, 0, w-r, h), fill="", outline="")
+                # convert to Tk image and display
+                tkimg = ImageTk.PhotoImage(img)
+                # keep reference
+                self._tkimg = tkimg
+                self.create_image(0, 0, anchor="nw", image=self._tkimg)
+            except Exception:
+                # fallback to simple canvas drawing below
+                pass
+        # If Pillow not available or fallback, use canvas drawing (existing method)
+        if not PIL_AVAILABLE or not hasattr(self, '_tkimg'):
+            # Draw gradient only in the central band (between the rounded corners)
+            central_width = max(0, w - 2 * r)
+            steps = max(2, int(central_width / 2))
+            r1, g1, b1 = self._hex_to_rgb(self.colors[0])
+            r2, g2, b2 = self._hex_to_rgb(self.colors[-1])
+            for i in range(steps):
+                t = i / (steps - 1)
+                ri = int(r1 + (r2 - r1) * t)
+                gi = int(g1 + (g2 - g1) * t)
+                bi = int(b1 + (b2 - b1) * t)
+                col = f"#{ri:02x}{gi:02x}{bi:02x}"
+                x0 = r + i * (central_width / steps)
+                x1 = r + (i + 1) * (central_width / steps)
+                self.create_rectangle(x0, 0, x1, h, fill=col, width=0)
 
-        # Add subtle outer glow (thin outline)
-        self.create_round_rect = None
+            # Draw rounded corner arcs to create pill shape (use end colors so corners blend)
+            self.create_arc((0, 0, 2*r, 2*r), start=90, extent=90, fill=self.colors[0], outline=self.colors[0])
+            self.create_arc((w-2*r, 0, w, 2*r), start=0, extent=90, fill=self.colors[-1], outline=self.colors[-1])
+            self.create_arc((w-2*r, h-2*r, w, h), start=270, extent=90, fill=self.colors[-1], outline=self.colors[-1])
+            self.create_arc((0, h-2*r, 2*r, h), start=180, extent=90, fill=self.colors[0], outline=self.colors[0])
 
         # Play icon (triangle) on left
         tri_size = int(h * 0.34)
@@ -178,8 +281,8 @@ class GradientRoundedButton(tk.Canvas):
                             fill=self.text_color, outline="")
 
         # Text centered
-        self.create_text(w/2 + 30, h/2, text=self.text, fill=self.text_color,
-                         font=("Arial", 18, "bold"))
+        self.create_text(w/2, h/2, text=self.text, fill=self.text_color,
+                 font=("Arial", 18, "bold"))
 
     def _hex_to_rgb(self, hexcol):
         hexcol = hexcol.lstrip('#')
@@ -201,6 +304,17 @@ class GradientRoundedButton(tk.Canvas):
 
     def _on_leave(self, event):
         self.config(cursor="")
+
+    def _on_parent_config(self, event):
+        try:
+            pw = event.width
+            new_w = max(200, int(pw * 0.7))
+            if new_w != self.width:
+                self.width = new_w
+                self.configure(width=self.width)
+                self.draw_button()
+        except Exception:
+            pass
 
 
 class NumericalMethodsGame:
@@ -250,6 +364,26 @@ class NumericalMethodsGame:
             except Exception as e:
                 print(f"Error cargando profile.png: {e}")
 
+        # --- CARGAR ICONOS PARA BOTONES ---
+        self.icon_config = None
+        self.icon_exit = None
+        icon_config_path = os.path.join("imgs", "iconoconfig.png")
+        icon_exit_path = os.path.join("imgs", "iconosalir.png")
+        try:
+            if os.path.exists(icon_config_path):
+                ic = tk.PhotoImage(file=icon_config_path)
+                # scale to ~24 px if larger
+                if ic.width() > 36:
+                    ic = ic.subsample(max(1, int(ic.width()/24)))
+                self.icon_config = ic
+            if os.path.exists(icon_exit_path):
+                ie = tk.PhotoImage(file=icon_exit_path)
+                if ie.width() > 36:
+                    ie = ie.subsample(max(1, int(ie.width()/24)))
+                self.icon_exit = ie
+        except Exception as e:
+            print(f"Error cargando iconos: {e}")
+
         self.main_frame = tk.Frame(root, bg=COLOR_FONDO)
         self.main_frame.pack(fill=tk.BOTH, expand=True)
         self.current_screen = None
@@ -286,22 +420,38 @@ class NumericalMethodsGame:
     def show_main_menu(self):
         self.clear_screen()
 
-        # Top banner with title and subtitle
+        # Top banner with title and subtitle (use PIL-generated rounded image for pixel-perfect corners)
         banner_h = 100
         banner = tk.Canvas(self.current_screen, height=banner_h, bg=COLOR_FONDO, highlightthickness=0)
         banner.pack(fill=tk.X, side=tk.TOP, pady=(20,10))
-        bw = 760
-        bx = 20
-        by = 10
-        br = 40
-        # Draw rounded dark panel
-        banner.create_arc((bx, by, bx+2*br, by+2*br), start=90, extent=90, fill="#0f2940", outline="#0f2940")
-        banner.create_arc((bx+bw-2*br, by, bx+bw, by+2*br), start=0, extent=90, fill="#0f2940", outline="#0f2940")
-        banner.create_arc((bx+bw-2*br, by+banner_h-2*br, bx+bw, by+banner_h), start=270, extent=90, fill="#0f2940", outline="#0f2940")
-        banner.create_arc((bx, by+banner_h-2*br, bx+2*br, by+banner_h), start=180, extent=90, fill="#0f2940", outline="#0f2940")
-        banner.create_rectangle((bx+br, by, bx+bw-br, by+banner_h), fill="#0f2940", outline="#0f2940")
-        banner.create_text(bx + bw/2, by + banner_h/2 - 8, text="MÉTODOS NUMÉRICOS - EL JUEGO", fill="white", font=("Arial", 22, "bold"))
-        banner.create_text(bx + bw/2, by + banner_h/2 + 22, text="¡Aprende, Juega, Domina!", fill="#dfefff", font=("Arial", 12))
+
+        def _draw_banner(event=None):
+            bw = max(200, banner.winfo_width() - 40)
+            bx = 20
+            by = 10
+            br = 30
+            # generate rounded image
+            if PIL_AVAILABLE:
+                img = create_rounded_rect_image(bw, banner_h, br, "#0f2940")
+                try:
+                    tkimg = ImageTk.PhotoImage(img)
+                    banner.delete("all")
+                    banner._img_ref = tkimg
+                    banner.create_image(bx, by, anchor="nw", image=tkimg)
+                except Exception:
+                    banner.delete("all")
+                    banner.create_rectangle(bx, by, bx + bw, by + banner_h, fill="#0f2940", outline="")
+            else:
+                banner.delete("all")
+                banner.create_rectangle(bx, by, bx + bw, by + banner_h, fill="#0f2940", outline="")
+
+            # title text centered on the banner area
+            banner.create_text(bx + bw/2, by + banner_h/2 - 8, text="MÉTODOS NUMÉRICOS - EL JUEGO", fill="white", font=("Arial", 22, "bold"))
+            banner.create_text(bx + bw/2, by + banner_h/2 + 22, text="¡Aprende, Juega, Domina!", fill="#dfefff", font=("Arial", 12))
+
+        banner.bind('<Configure>', _draw_banner)
+        # initial draw
+        banner.after(10, _draw_banner)
 
         # Profile icon (use image if available, otherwise fallback to canvas placeholder)
         if self.profile_icon:
@@ -310,7 +460,6 @@ class NumericalMethodsGame:
                                     cursor="hand2", command=self.show_user_menu)
             profile_btn.place(relx=0.95, y=30, anchor="n")
         else:
-            pr_x = bx + bw + 10
             profile = tk.Canvas(self.current_screen, width=56, height=56, bg=COLOR_FONDO, highlightthickness=0)
             profile.place(relx=0.95, y=30, anchor="n")
             profile.create_oval(4,4,52,52, fill="#ffffff", outline="#dddddd")
@@ -329,17 +478,19 @@ class NumericalMethodsGame:
                                      command=self.show_chapter_menu)
         play.pack(pady=(20, 18))
 
-        # Secondary buttons: Configuración + Salir (stacked vertically, left aligned)
+        # Secondary buttons: Configuración + Salir (stacked vertically and centered)
         second_frame = tk.Frame(btn_area, bg=COLOR_FONDO)
-        second_frame.pack(pady=10, anchor="w", padx=60)
+        second_frame.pack(pady=10)
 
-        RoundedButton(second_frame, text="  CONFIGURACIÓN", width=360, height=58,
-                      color="#103d56", text_color="#dfefff",
-                      command=lambda: messagebox.showinfo("Configuración", "Ajustes no implementados aún")).pack(pady=10)
+        RoundedButton(second_frame, text="CONFIGURACIÓN", width=None, height=58,
+                  color="#103d56", text_color="#dfefff",
+                  icon_image=self.icon_config,
+                  command=lambda: messagebox.showinfo("Configuración", "Ajustes no implementados aún")).pack(pady=10)
 
-        RoundedButton(second_frame, text="  SALIR", width=200, height=48,
-                      color=COLOR_BOTON_ROJO, text_color="#ffffff",
-                      command=self.root.quit).pack(pady=8)
+        RoundedButton(second_frame, text="SALIR", width=None, height=48,
+                  color=COLOR_BOTON_ROJO, text_color="#ffffff",
+                  icon_image=self.icon_exit,
+                  command=self.root.quit).pack(pady=8)
 
     def show_user_menu(self):
         self.clear_screen()
