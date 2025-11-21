@@ -103,8 +103,104 @@ class ScrollableFrame(tk.Frame):
 
     def _on_canvas_configure(self, event): self.canvas.itemconfig(self.window_id, width=event.width)
     def bind_mouse_scroll(self, canvas):
-        def _on_mousewheel(event): canvas.yview_scroll(int(-1*(event.delta/120)), "units")
-        canvas.bind_all("<MouseWheel>", _on_mousewheel)
+        def _on_mousewheel(event):
+            try:
+                canvas.yview_scroll(int(-1*(event.delta/120)), "units")
+            except Exception:
+                pass
+
+        # Bind only when mouse is over the canvas and unbind when leaves to avoid callbacks to destroyed widgets
+        canvas.bind("<Enter>", lambda e: canvas.bind_all("<MouseWheel>", _on_mousewheel))
+        canvas.bind("<Leave>", lambda e: canvas.unbind_all("<MouseWheel>"))
+
+
+class GradientRoundedButton(tk.Canvas):
+    """Canvas-based rounded button with a simple horizontal gradient fill."""
+    def __init__(self, parent, text, command, width=420, height=70, corner_radius=35,
+                 colors=("#20D0C6", "#FF7A4D"), text_color="#ffffff", bg_color=COLOR_FONDO):
+        tk.Canvas.__init__(self, parent, borderwidth=0, relief="flat", highlightthickness=0, bg=bg_color)
+        self.command = command
+        self.text = text
+        self.colors = colors
+        self.text_color = text_color
+        self.width = width
+        self.height = height
+        self.corner_radius = corner_radius
+        self.bg_color = bg_color
+        self.configure(width=width, height=height)
+        self.draw_button()
+
+        self.bind("<ButtonPress-1>", self._on_press)
+        self.bind("<ButtonRelease-1>", self._on_release)
+        self.bind("<Enter>", self._on_hover)
+        self.bind("<Leave>", self._on_leave)
+
+    def draw_button(self):
+        self.delete("all")
+        r = self.corner_radius
+        w = self.width
+        h = self.height
+
+        # Draw gradient by drawing many narrow vertical lines interpolating colors
+        steps = max(2, int(w / 2))
+        r1, g1, b1 = self._hex_to_rgb(self.colors[0])
+        r2, g2, b2 = self._hex_to_rgb(self.colors[-1])
+        for i in range(steps):
+            t = i / (steps - 1)
+            ri = int(r1 + (r2 - r1) * t)
+            gi = int(g1 + (g2 - g1) * t)
+            bi = int(b1 + (b2 - b1) * t)
+            col = f"#{ri:02x}{gi:02x}{bi:02x}"
+            x0 = i * (w / steps)
+            x1 = (i + 1) * (w / steps)
+            # Clip corners by drawing over full rect then using arcs to mask look
+            self.create_rectangle(x0, 0, x1, h, fill=col, width=0)
+
+        # Mask corners by drawing rounded border shapes (drawn over gradient to give rounded look)
+        self.create_arc((0, 0, 2*r, 2*r), start=90, extent=90, fill=self.colors[0], outline=self.colors[0])
+        self.create_arc((w-2*r, 0, w, 2*r), start=0, extent=90, fill=self.colors[-1], outline=self.colors[-1])
+        self.create_arc((w-2*r, h-2*r, w, h), start=270, extent=90, fill=self.colors[-1], outline=self.colors[-1])
+        self.create_arc((0, h-2*r, 2*r, h), start=180, extent=90, fill=self.colors[0], outline=self.colors[0])
+
+        # Draw central rounded rectangle overlay to smooth edges
+        self.create_rectangle((r, 0, w-r, h), fill="", outline="")
+
+        # Add subtle outer glow (thin outline)
+        self.create_round_rect = None
+
+        # Play icon (triangle) on left
+        tri_size = int(h * 0.34)
+        cx = r
+        cy = h / 2
+        self.create_polygon(cx - tri_size/2, cy - tri_size/1.2,
+                            cx - tri_size/2, cy + tri_size/1.2,
+                            cx + tri_size/1.2, cy,
+                            fill=self.text_color, outline="")
+
+        # Text centered
+        self.create_text(w/2 + 30, h/2, text=self.text, fill=self.text_color,
+                         font=("Arial", 18, "bold"))
+
+    def _hex_to_rgb(self, hexcol):
+        hexcol = hexcol.lstrip('#')
+        return tuple(int(hexcol[i:i+2], 16) for i in (0, 2, 4))
+
+    def _on_press(self, event):
+        self.scale("all", self.width/2, self.height/2, 0.995, 0.995)
+
+    def _on_release(self, event):
+        try:
+            self.scale("all", self.width/2, self.height/2, 1/0.995, 1/0.995)
+        except Exception:
+            pass
+        if self.command:
+            self.command()
+
+    def _on_hover(self, event):
+        self.config(cursor="hand2")
+
+    def _on_leave(self, event):
+        self.config(cursor="")
 
 
 class NumericalMethodsGame:
@@ -134,6 +230,25 @@ class NumericalMethodsGame:
                     self.back_icon = original_image
             except Exception as e:
                 print(f"Error imagen: {e}")
+
+        # --- CARGAR IMAGEN DE PERFIL ---
+        self.profile_icon = None
+        profile_path = os.path.join("imgs", "profile.png")
+        if os.path.exists(profile_path):
+            try:
+                pimg = tk.PhotoImage(file=profile_path)
+                pw = pimg.width()
+                ph = pimg.height()
+                target = 48
+                # scale down by integer factor if image is larger than target
+                if pw > target and ph > target:
+                    factor_w = max(1, int(pw/target))
+                    factor_h = max(1, int(ph/target))
+                    factor = max(factor_w, factor_h)
+                    pimg = pimg.subsample(factor, factor)
+                self.profile_icon = pimg
+            except Exception as e:
+                print(f"Error cargando profile.png: {e}")
 
         self.main_frame = tk.Frame(root, bg=COLOR_FONDO)
         self.main_frame.pack(fill=tk.BOTH, expand=True)
@@ -170,13 +285,61 @@ class NumericalMethodsGame:
     # ... (show_main_menu y show_user_menu quedan IGUAL) ...
     def show_main_menu(self):
         self.clear_screen()
-        tk.Label(self.current_screen, text="¡Aprende, Juega, Domina!", font=("Arial", 28, "bold"),
-                 bg=COLOR_FONDO, fg=COLOR_TEXTO_LBL).pack(pady=40)
-        btn_frame = tk.Frame(self.current_screen, bg=COLOR_FONDO)
-        btn_frame.pack(pady=20, anchor="center")
-        RoundedButton(btn_frame, text="JUGAR", width=250, command=self.show_chapter_menu).pack(pady=15)
-        RoundedButton(btn_frame, text="VER PERFIL", width=250, command=self.show_user_menu).pack(pady=15)
-        RoundedButton(btn_frame, text="SALIR", width=125, color=COLOR_BOTON_ROJO, command=self.root.quit).pack(pady=15)
+
+        # Top banner with title and subtitle
+        banner_h = 100
+        banner = tk.Canvas(self.current_screen, height=banner_h, bg=COLOR_FONDO, highlightthickness=0)
+        banner.pack(fill=tk.X, side=tk.TOP, pady=(20,10))
+        bw = 760
+        bx = 20
+        by = 10
+        br = 40
+        # Draw rounded dark panel
+        banner.create_arc((bx, by, bx+2*br, by+2*br), start=90, extent=90, fill="#0f2940", outline="#0f2940")
+        banner.create_arc((bx+bw-2*br, by, bx+bw, by+2*br), start=0, extent=90, fill="#0f2940", outline="#0f2940")
+        banner.create_arc((bx+bw-2*br, by+banner_h-2*br, bx+bw, by+banner_h), start=270, extent=90, fill="#0f2940", outline="#0f2940")
+        banner.create_arc((bx, by+banner_h-2*br, bx+2*br, by+banner_h), start=180, extent=90, fill="#0f2940", outline="#0f2940")
+        banner.create_rectangle((bx+br, by, bx+bw-br, by+banner_h), fill="#0f2940", outline="#0f2940")
+        banner.create_text(bx + bw/2, by + banner_h/2 - 8, text="MÉTODOS NUMÉRICOS - EL JUEGO", fill="white", font=("Arial", 22, "bold"))
+        banner.create_text(bx + bw/2, by + banner_h/2 + 22, text="¡Aprende, Juega, Domina!", fill="#dfefff", font=("Arial", 12))
+
+        # Profile icon (use image if available, otherwise fallback to canvas placeholder)
+        if self.profile_icon:
+            profile_btn = tk.Button(self.current_screen, image=self.profile_icon, bg=COLOR_FONDO,
+                                    bd=0, relief="flat", activebackground=COLOR_FONDO,
+                                    cursor="hand2", command=self.show_user_menu)
+            profile_btn.place(relx=0.95, y=30, anchor="n")
+        else:
+            pr_x = bx + bw + 10
+            profile = tk.Canvas(self.current_screen, width=56, height=56, bg=COLOR_FONDO, highlightthickness=0)
+            profile.place(relx=0.95, y=30, anchor="n")
+            profile.create_oval(4,4,52,52, fill="#ffffff", outline="#dddddd")
+            profile.create_oval(14,12,42,40, fill="#0f2940", outline="")
+            profile.bind("<Button-1>", lambda e: self.show_user_menu())
+            profile.bind("<Enter>", lambda e: profile.config(cursor="hand2"))
+            profile.bind("<Leave>", lambda e: profile.config(cursor=""))
+
+        # Main buttons area
+        btn_area = tk.Frame(self.current_screen, bg=COLOR_FONDO)
+        btn_area.pack(expand=True)
+
+        # Large gradient Play button
+        play = GradientRoundedButton(btn_area, text="JUGAR", width=650, height=80,
+                                     colors=("#20E0D0", "#FF8C5A"), text_color="#00303a",
+                                     command=self.show_chapter_menu)
+        play.pack(pady=(20, 18))
+
+        # Secondary buttons: Configuración + Salir (stacked vertically, left aligned)
+        second_frame = tk.Frame(btn_area, bg=COLOR_FONDO)
+        second_frame.pack(pady=10, anchor="w", padx=60)
+
+        RoundedButton(second_frame, text="  CONFIGURACIÓN", width=360, height=58,
+                      color="#103d56", text_color="#dfefff",
+                      command=lambda: messagebox.showinfo("Configuración", "Ajustes no implementados aún")).pack(pady=10)
+
+        RoundedButton(second_frame, text="  SALIR", width=200, height=48,
+                      color=COLOR_BOTON_ROJO, text_color="#ffffff",
+                      command=self.root.quit).pack(pady=8)
 
     def show_user_menu(self):
         self.clear_screen()
