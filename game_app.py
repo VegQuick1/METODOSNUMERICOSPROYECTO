@@ -62,7 +62,21 @@ COLOR_STRIP_EXPL = "#FFD700"
 COLOR_STRIP_PRAC = "#FF8C00"
 COLOR_STRIP_EXAM = "#FF4500"
 
-HEADER_HEIGHT = 70
+# --- RESOLUCIÓN Y ESCALADO ---
+WINDOW_WIDTH = 1920
+WINDOW_HEIGHT = 1080
+SCALE_FACTOR = 1.5  # Factor de escala global para toda la interfaz
+
+HEADER_HEIGHT = int(70 * SCALE_FACTOR)
+
+# --- FUNCIÓN AUXILIAR PARA ESCALAR ---
+def scale_value(value):
+    """Escala un valor numérico según SCALE_FACTOR"""
+    return int(value * SCALE_FACTOR)
+
+def scale_font(size):
+    """Escala tamaño de fuente según SCALE_FACTOR"""
+    return max(8, int(size * SCALE_FACTOR))
 
 # ... (Mantén tu clase RoundedButton y ScrollableFrame EXACTAMENTE IGUAL que antes) ...
 # ... (Copia aquí las clases RoundedButton y ScrollableFrame de tu código anterior) ...
@@ -73,10 +87,17 @@ class RoundedButton(tk.Canvas):
                  color=COLOR_BOTON, text_color=COLOR_TEXTO_BTN, bg_color=COLOR_FONDO,
                  outline_color=None, border_width=0, icon_image=None, icon_padding=14):
         
+        # Escalar dimensiones
+        height = scale_value(height)
+        corner_radius = scale_value(corner_radius)
+        icon_padding = scale_value(icon_padding)
+        
         if width is None:
-            font = tkfont.Font(family="Arial", size=14, weight="bold")
+            font = tkfont.Font(family="Arial", size=scale_font(14), weight="bold")
             text_width = font.measure(text)
             width = text_width + 60
+        else:
+            width = scale_value(width)
 
         tk.Canvas.__init__(self, parent, borderwidth=0, 
                            relief="flat", highlightthickness=0, bg=bg_color)
@@ -135,7 +156,7 @@ class RoundedButton(tk.Canvas):
             except Exception:
                 pass
 
-        self.create_text(text_x, h/2, text=self.text, fill=self.text_color, font=("Arial", 14, "bold"), tags="btn")
+        self.create_text(text_x, h/2, text=self.text, fill=self.text_color, font=("Arial", scale_font(14), "bold"), tags="btn")
 
     def _on_press(self, event): self.move("btn", 1, 1)
     def _on_release(self, event): 
@@ -188,6 +209,12 @@ class GradientRoundedButton(tk.Canvas):
     """Canvas-based rounded button with a simple horizontal gradient fill."""
     def __init__(self, parent, text, command, width=420, height=70, corner_radius=35,
                  colors=("#20D0C6", "#FF7A4D"), text_color="#ffffff", bg_color=COLOR_FONDO):
+        
+        # Escalar dimensiones
+        width = scale_value(width)
+        height = scale_value(height)
+        corner_radius = scale_value(corner_radius)
+        
         tk.Canvas.__init__(self, parent, borderwidth=0, relief="flat", highlightthickness=0, bg=bg_color)
         self.command = command
         self.text = text
@@ -284,7 +311,7 @@ class GradientRoundedButton(tk.Canvas):
 
         # Text centered
         self.create_text(w/2, h/2, text=self.text, fill=self.text_color,
-                 font=("Arial", 18, "bold"))
+                 font=("Arial", scale_font(18), "bold"))
 
     def _hex_to_rgb(self, hexcol):
         hexcol = hexcol.lstrip('#')
@@ -323,8 +350,17 @@ class NumericalMethodsGame:
     def __init__(self, root):
         self.root = root
         self.root.title("Métodos Numéricos - El Juego") 
-        self.root.geometry("800x600")
+        self.root.geometry(f"{WINDOW_WIDTH}x{WINDOW_HEIGHT}")
+        self.root.resizable(False, False)  # No permitir redimensionar
         self.root.configure(bg=COLOR_FONDO)
+        
+        # Centrar la ventana en la pantalla
+        self.root.update_idletasks()
+        screen_width = self.root.winfo_screenwidth()
+        screen_height = self.root.winfo_screenheight()
+        x = (screen_width - WINDOW_WIDTH) // 2
+        y = (screen_height - WINDOW_HEIGHT) // 2
+        self.root.geometry(f"{WINDOW_WIDTH}x{WINDOW_HEIGHT}+{x}+{y}")
         
         self.username = "Jugador 1"
         self.errors_committed = 0
@@ -394,14 +430,14 @@ class NumericalMethodsGame:
         try:
             if os.path.exists(icon_config_path):
                 ic = tk.PhotoImage(file=icon_config_path)
-                # scale to ~24 px if larger
-                if ic.width() > 36:
-                    ic = ic.subsample(max(1, int(ic.width()/24)))
+                # scale to ~48 px if larger
+                if ic.width() > 72:
+                    ic = ic.subsample(max(1, int(ic.width()/48)))
                 self.icon_config = ic
             if os.path.exists(icon_exit_path):
                 ie = tk.PhotoImage(file=icon_exit_path)
-                if ie.width() > 36:
-                    ie = ie.subsample(max(1, int(ie.width()/24)))
+                if ie.width() > 72:
+                    ie = ie.subsample(max(1, int(ie.width()/48)))
                 self.icon_exit = ie
         except Exception as e:
             print(f"Error cargando iconos: {e}")
@@ -444,7 +480,7 @@ class NumericalMethodsGame:
         btn_back = self.create_back_button(header_frame, back_cmd, bg_color)
         btn_back.pack(side=tk.RIGHT, anchor="center", padx=10) 
         
-        tk.Label(header_frame, text=title_text, font=("Arial", 22, "bold"), 
+        tk.Label(header_frame, text=title_text, font=("Arial", scale_font(22), "bold"), 
                  bg=bg_color, fg=text_color).place(relx=0.5, rely=0.5, anchor=tk.CENTER)
 
     # ... (show_main_menu y show_user_menu quedan IGUAL) ...
@@ -486,8 +522,8 @@ class NumericalMethodsGame:
                 banner.create_rectangle(bx, by, bx + bw, by + banner_h, fill="#0f2940", outline="")
 
             # title text centered on the banner area
-            banner.create_text(bx + bw/2, by + banner_h/2 - 8, text="MÉTODOS NUMÉRICOS - EL JUEGO", fill="white", font=("Arial", 22, "bold"))
-            banner.create_text(bx + bw/2, by + banner_h/2 + 22, text="¡Aprende, Juega, Domina!", fill="#dfefff", font=("Arial", 12))
+            banner.create_text(bx + bw/2, by + banner_h/2 - 8, text="MÉTODOS NUMÉRICOS - EL JUEGO", fill="white", font=("Arial", scale_font(22), "bold"))
+            banner.create_text(bx + bw/2, by + banner_h/2 + 22, text="¡Aprende, Juega, Domina!", fill="#dfefff", font=("Arial", scale_font(12)))
 
         banner.bind('<Configure>', _draw_banner)
         # initial draw
@@ -513,24 +549,24 @@ class NumericalMethodsGame:
         btn_area.pack(expand=True)
 
         # Large gradient Play button
-        play = GradientRoundedButton(btn_area, text="JUGAR", width=650, height=80,
+        play = GradientRoundedButton(btn_area, text="JUGAR", width=570, height=105,
                                      colors=("#20E0D0", "#FF8C5A"), text_color="#00303a",
                                      command=self.show_chapter_menu)
-        play.pack(pady=(20, 18))
+        play.pack(pady=(30, 22))
 
         # Secondary buttons: Configuración + Salir (stacked vertically and centered)
         second_frame = tk.Frame(btn_area, bg=COLOR_FONDO)
-        second_frame.pack(pady=10)
+        second_frame.pack(pady=15)
 
-        RoundedButton(second_frame, text="CONFIGURACIÓN", width=None, height=58,
+        RoundedButton(second_frame, text="CONFIGURACIÓN", width=570, height=105,
                   color="#103d56", text_color="#dfefff",
                   icon_image=self.icon_config,
-                  command=self.show_config_menu).pack(pady=10)
+                  command=self.show_config_menu).pack(pady=22)
 
-        RoundedButton(second_frame, text="SALIR", width=None, height=48,
+        RoundedButton(second_frame, text="SALIR", width=570, height=105,
                   color=COLOR_BOTON_ROJO, text_color="#ffffff",
                   icon_image=self.icon_exit,
-                  command=self.root.quit).pack(pady=8)
+                  command=self.root.quit).pack(pady=22)
 
     def show_user_menu(self):
         self.clear_screen()
@@ -540,7 +576,7 @@ class NumericalMethodsGame:
         header_frame.pack_propagate(False)
         
         # Title
-        tk.Label(header_frame, text="MENÚ DE USUARIO", font=("Arial", 20, "bold"), 
+        tk.Label(header_frame, text="MENÚ DE USUARIO", font=("Arial", scale_font(20), "bold"), 
                  bg="#0052CC", fg="white").pack(side=tk.LEFT, padx=20, pady=15)
         
         # Back button with icon
@@ -558,10 +594,10 @@ class NumericalMethodsGame:
         row_frame.columnconfigure(1, weight=1)
 
         # TIME card (cyan-to-blue gradient)
-        time_canvas = tk.Canvas(row_frame, height=120, bg=COLOR_FONDO, highlightthickness=0)
+        time_canvas = tk.Canvas(row_frame, height=scale_value(120), bg=COLOR_FONDO, highlightthickness=0)
         time_canvas.grid(row=0, column=0, padx=10, sticky="nsew")
         if PIL_AVAILABLE:
-            img_time = create_rounded_rect_image(time_canvas.winfo_width() or 150, 120, 15, "#20D0C0", "#00A8CC")
+            img_time = create_rounded_rect_image(time_canvas.winfo_width() or 150, scale_value(120), 15, "#20D0C0", "#00A8CC")
             try:
                 tkimg_time = ImageTk.PhotoImage(img_time)
                 time_canvas._img_time = tkimg_time
@@ -570,9 +606,9 @@ class NumericalMethodsGame:
                 time_canvas.create_rectangle(0, 0, 200, 120, fill="#20D0C0")
         else:
             time_canvas.create_rectangle(0, 0, 200, 120, fill="#20D0C0")
-        time_canvas.create_text(20, 35, text="⏱", font=("Arial", 24), anchor="w", fill="white")
-        time_canvas.create_text(75, 25, text="TIEMPO TRANSCURRIDO", fill="white", font=("Arial", 11, "bold"), anchor="w")
-        time_text_id = time_canvas.create_text(75, 65, text=self._format_time(), fill="white", font=("Arial", 18, "bold"), anchor="w")
+        time_canvas.create_text(20, 35, text="⏱", font=("Arial", scale_font(24)), anchor="w", fill="white")
+        time_canvas.create_text(75, 25, text="TIEMPO TRANSCURRIDO", fill="white", font=("Arial", scale_font(11), "bold"), anchor="w")
+        time_text_id = time_canvas.create_text(75, 65, text=self._format_time(), fill="white", font=("Arial", scale_font(18), "bold"), anchor="w")
         
         # Actualizar tiempo cada segundo mientras se está viendo el menú y guardar progreso
         def _update_time_display():
@@ -589,10 +625,10 @@ class NumericalMethodsGame:
         _update_time_display()
 
         # ERRORS card (orange-to-red gradient)
-        error_canvas = tk.Canvas(row_frame, height=120, bg=COLOR_FONDO, highlightthickness=0)
+        error_canvas = tk.Canvas(row_frame, height=scale_value(120), bg=COLOR_FONDO, highlightthickness=0)
         error_canvas.grid(row=0, column=1, padx=10, sticky="nsew")
         if PIL_AVAILABLE:
-            img_err = create_rounded_rect_image(error_canvas.winfo_width() or 150, 120, 15, "#FF8C42", "#E63946")
+            img_err = create_rounded_rect_image(error_canvas.winfo_width() or 150, scale_value(120), 15, "#FF8C42", "#E63946")
             try:
                 tkimg_err = ImageTk.PhotoImage(img_err)
                 error_canvas._img_err = tkimg_err
@@ -601,12 +637,12 @@ class NumericalMethodsGame:
                 error_canvas.create_rectangle(0, 0, 200, 120, fill="#FF8C42")
         else:
             error_canvas.create_rectangle(0, 0, 200, 120, fill="#FF8C42")
-        error_canvas.create_text(20, 35, text="✕", font=("Arial", 24), anchor="w", fill="white")
-        error_canvas.create_text(75, 25, text="ERRORES COMETIDOS", fill="white", font=("Arial", 11, "bold"), anchor="w")
-        error_canvas.create_text(75, 65, text=str(self.errors_committed), fill="white", font=("Arial", 18, "bold"), anchor="w")
+        error_canvas.create_text(20, 35, text="✕", font=("Arial", scale_font(24)), anchor="w", fill="white")
+        error_canvas.create_text(75, 25, text="ERRORES COMETIDOS", fill="white", font=("Arial", scale_font(11), "bold"), anchor="w")
+        error_canvas.create_text(75, 65, text=str(self.errors_committed), fill="white", font=("Arial", scale_font(18), "bold"), anchor="w")
 
         # Medals section
-        medals_label = tk.Label(content, text="MEDALLAS:", font=("Arial", 16, "bold"), bg=COLOR_FONDO, fg="white")
+        medals_label = tk.Label(content, text="MEDALLAS:", font=("Arial", scale_font(16), "bold"), bg=COLOR_FONDO, fg="white")
         medals_label.pack(pady=(20, 10), anchor="w")
         
         # Medals display (scrollable if needed)
@@ -618,7 +654,7 @@ class NumericalMethodsGame:
         else:
             medals_text = "Sin medallas aún"
         
-        tk.Label(medals_frame, text=medals_text, font=("Arial", 12), bg=COLOR_FONDO, fg="white", justify=tk.LEFT).pack(anchor="w", padx=10)
+        tk.Label(medals_frame, text=medals_text, font=("Arial", scale_font(12)), bg=COLOR_FONDO, fg="white", justify=tk.LEFT).pack(anchor="w", padx=10)
 
     def show_config_menu(self):
         """Menú de configuración con opciones de sonido, idioma, créditos y reinicio"""
@@ -629,7 +665,7 @@ class NumericalMethodsGame:
         header_frame.pack(fill=tk.X, side=tk.TOP)
         header_frame.pack_propagate(False)
         
-        tk.Label(header_frame, text="CONFIGURACIÓN", font=("Arial", 20, "bold"), 
+        tk.Label(header_frame, text="CONFIGURACIÓN", font=("Arial", scale_font(20), "bold"), 
                  bg="#003366", fg="white").pack(side=tk.LEFT, padx=20, pady=15)
         
         btn_back = self.create_back_button(header_frame, self.show_main_menu, "#003366")
@@ -641,7 +677,7 @@ class NumericalMethodsGame:
         
         # Contenedor interno para centrar los botones
         buttons_container = tk.Frame(content, bg=COLOR_FONDO)
-        buttons_container.pack(expand=True, fill=tk.X)
+        buttons_container.pack(expand=True, anchor="center")
 
         # Botones de configuración con gradientes
         # SONIDO - Gradiente cyan a verde
@@ -660,38 +696,38 @@ class NumericalMethodsGame:
         
         music_action = "Ensordecer" if self.music_enabled else "Desensordecer"
         music_status = "🔊" if self.music_enabled else "🔇"
-        RoundedButton(buttons_container, text=f"{music_status}  {music_action}", width=380, height=70,
+        RoundedButton(buttons_container, text=f"{music_status}  {music_action}", width=380, height=105,
                   color="#20D0C0", text_color="#ffffff",
-                  command=_toggle_music).pack(pady=15)
+                  command=_toggle_music).pack(pady=22)
 
         # IDIOMA - Gradiente cyan a naranja
-        btn_idioma = tk.Canvas(buttons_container, width=380, height=70, bg=COLOR_FONDO, highlightthickness=0)
-        btn_idioma.pack(pady=15)
+        btn_idioma = tk.Canvas(buttons_container, width=750, height=105, bg=COLOR_FONDO, highlightthickness=0)
+        btn_idioma.pack(pady=22)
         
         if PIL_AVAILABLE:
-            img_idioma = create_rounded_rect_image(380, 70, 20, "#20D0C0", "#FF8C5A")
+            img_idioma = create_rounded_rect_image(750, 105, 30, "#20D0C0", "#FF8C5A")
             if img_idioma:
                 tkimg_idioma = ImageTk.PhotoImage(img_idioma)
                 btn_idioma._img = tkimg_idioma
                 btn_idioma.create_image(0, 0, anchor="nw", image=tkimg_idioma)
         
-        btn_idioma.create_text(190, 35, text="🌐  IDIOMA", fill="white", font=("Arial", 16, "bold"), anchor="c")
+        btn_idioma.create_text(375, 52, text="🌐  IDIOMA", fill="white", font=("Arial", scale_font(24), "bold"), anchor="c")
         btn_idioma.bind("<Button-1>", lambda e: messagebox.showinfo("Idioma", "Funcionalidad próximamente"))
         btn_idioma.bind("<Enter>", lambda e: btn_idioma.config(cursor="hand2"))
         btn_idioma.bind("<Leave>", lambda e: btn_idioma.config(cursor=""))
 
         # CRÉDITOS - Gradiente cyan a naranja
-        btn_creditos = tk.Canvas(buttons_container, width=380, height=70, bg=COLOR_FONDO, highlightthickness=0)
-        btn_creditos.pack(pady=15)
+        btn_creditos = tk.Canvas(buttons_container, width=750, height=105, bg=COLOR_FONDO, highlightthickness=0)
+        btn_creditos.pack(pady=22)
         
         if PIL_AVAILABLE:
-            img_creditos = create_rounded_rect_image(380, 70, 20, "#20D0C0", "#FF8C5A")
+            img_creditos = create_rounded_rect_image(750, 105, 30, "#20D0C0", "#FF8C5A")
             if img_creditos:
                 tkimg_creditos = ImageTk.PhotoImage(img_creditos)
                 btn_creditos._img = tkimg_creditos
                 btn_creditos.create_image(0, 0, anchor="nw", image=tkimg_creditos)
         
-        btn_creditos.create_text(190, 35, text="ℹ️  CRÉDITOS", fill="white", font=("Arial", 16, "bold"), anchor="c")
+        btn_creditos.create_text(375, 52, text="ℹ️  CRÉDITOS", fill="white", font=("Arial", scale_font(24), "bold"), anchor="c")
         
         credits_text = """Juego de Métodos Numéricos
 
@@ -708,17 +744,17 @@ EQUIPO 1:
         btn_creditos.bind("<Leave>", lambda e: btn_creditos.config(cursor=""))
 
         # BIBLIOGRAFÍA - Gradiente cyan a naranja
-        btn_bibliografia = tk.Canvas(buttons_container, width=380, height=70, bg=COLOR_FONDO, highlightthickness=0)
-        btn_bibliografia.pack(pady=15)
+        btn_bibliografia = tk.Canvas(buttons_container, width=750, height=105, bg=COLOR_FONDO, highlightthickness=0)
+        btn_bibliografia.pack(pady=22)
         
         if PIL_AVAILABLE:
-            img_bibliografia = create_rounded_rect_image(380, 70, 20, "#20D0C0", "#FF8C5A")
+            img_bibliografia = create_rounded_rect_image(750, 105, 30, "#20D0C0", "#FF8C5A")
             if img_bibliografia:
                 tkimg_bibliografia = ImageTk.PhotoImage(img_bibliografia)
                 btn_bibliografia._img = tkimg_bibliografia
                 btn_bibliografia.create_image(0, 0, anchor="nw", image=tkimg_bibliografia)
         
-        btn_bibliografia.create_text(190, 35, text="📚  BIBLIOGRAFÍA", fill="white", font=("Arial", 16, "bold"), anchor="c")
+        btn_bibliografia.create_text(375, 52, text="📚  BIBLIOGRAFÍA", fill="white", font=("Arial", scale_font(24), "bold"), anchor="c")
         
         bibliography_text = """Referencias Bibliográficas
 
@@ -729,11 +765,11 @@ Zamora Pequeño, O., Zamora Pequeño, R. S., & Del Ángel Ramírez, A. (2020). M
         btn_bibliografia.bind("<Leave>", lambda e: btn_bibliografia.config(cursor=""))
 
         # REINICIAR PROGRESO - Gradiente rojo a púrpura
-        btn_reset = tk.Canvas(buttons_container, width=380, height=70, bg=COLOR_FONDO, highlightthickness=0)
-        btn_reset.pack(pady=15)
+        btn_reset = tk.Canvas(buttons_container, width=750, height=105, bg=COLOR_FONDO, highlightthickness=0)
+        btn_reset.pack(pady=22)
         
         if PIL_AVAILABLE:
-            img_reset = create_rounded_rect_image(380, 70, 20, "#FF3333", "#D500F9")
+            img_reset = create_rounded_rect_image(750, 105, 30, "#FF3333", "#D500F9")
             if img_reset:
                 tkimg_reset = ImageTk.PhotoImage(img_reset)
                 btn_reset._img = tkimg_reset
@@ -745,7 +781,7 @@ Zamora Pequeño, O., Zamora Pequeño, R. S., & Del Ángel Ramírez, A. (2020). M
             if response:
                 self._reset_progress()
         
-        btn_reset.create_text(190, 35, text="⚠️  REINICIAR PROGRESO", fill="white", font=("Arial", 16, "bold"), anchor="c")
+        btn_reset.create_text(375, 52, text="⚠️  REINICIAR PROGRESO", fill="white", font=("Arial", scale_font(24), "bold"), anchor="c")
         btn_reset.bind("<Button-1>", _on_reset_click)
         btn_reset.bind("<Enter>", lambda e: btn_reset.config(cursor="hand2"))
         btn_reset.bind("<Leave>", lambda e: btn_reset.config(cursor=""))
@@ -774,7 +810,7 @@ Zamora Pequeño, O., Zamora Pequeño, R. S., & Del Ángel Ramírez, A. (2020). M
                     chapter_title_canvas._img = tkimg_title
                     chapter_title_canvas.create_image(0, 0, anchor="nw", image=tkimg_title)
             
-            chapter_title_canvas.create_text(20, 25, text=chapter_name, fill="white", font=("Arial", 16, "bold"), anchor="w")
+            chapter_title_canvas.create_text(20, 25, text=chapter_name, fill="white", font=("Arial", scale_font(16), "bold"), anchor="w")
             chapter_title_canvas.configure(height=50, width=600)
 
             # Niveles dentro del capítulo
@@ -786,7 +822,7 @@ Zamora Pequeño, O., Zamora Pequeño, R. S., & Del Ángel Ramírez, A. (2020). M
                 
                 # Contenido del nivel (texto)
                 level_label = tk.Label(level_frame, text=level_name, 
-                                      font=("Arial", 13, "bold"), 
+                                      font=("Arial", scale_font(13), "bold"), 
                                       bg="#1a3a52", fg="white", 
                                       padx=15, pady=12, anchor="w")
                 level_label.pack(side=tk.LEFT, fill=tk.X, expand=True)
@@ -818,7 +854,7 @@ Zamora Pequeño, O., Zamora Pequeño, R. S., & Del Ángel Ramírez, A. (2020). M
                 except Exception:
                     # Fallback: usar flecha de texto si la imagen no carga
                     level_btn = tk.Label(level_frame, text="➤", 
-                                        font=("Arial", 18, "bold"), 
+                                        font=("Arial", scale_font(18), "bold"), 
                                         bg="#1a3a52", fg="white", 
                                         padx=15, pady=12, cursor="hand2")
                     level_btn.pack(side=tk.RIGHT)
@@ -921,6 +957,16 @@ Zamora Pequeño, O., Zamora Pequeño, R. S., & Del Ángel Ramírez, A. (2020). M
         current_lesson = lessons[lesson_index]
         lesson_type = current_lesson['type']
         
+        # Caso especial: Lagrange Intermedio (maneja su propio banner)
+        try:
+            is_lagrange_intermedio = 'Lagrange' in level and difficulty.lower() == 'intermedio'
+        except Exception:
+            is_lagrange_intermedio = False
+        
+        if is_lagrange_intermedio:
+            self.show_practica(current_lesson, chapter, level, difficulty, lesson_index)
+            return
+        
         # Configurar colores de franja
         strip_color = COLOR_FONDO 
         title_fg_color = COLOR_TEXTO_LBL 
@@ -947,7 +993,7 @@ Zamora Pequeño, O., Zamora Pequeño, R. S., & Del Ángel Ramírez, A. (2020). M
 
         tk.Label(strip_frame, 
                  text=f"{difficulty} - Lección {lesson_index + 1}", 
-                 font=("Arial", 20, "bold"), 
+                 font=("Arial", scale_font(20), "bold"), 
                  bg=strip_color, 
                  fg=title_fg_color).place(relx=0.5, rely=0.5, anchor=tk.CENTER)
         
@@ -960,17 +1006,180 @@ Zamora Pequeño, O., Zamora Pequeño, R. S., & Del Ángel Ramírez, A. (2020). M
     def show_explicativa(self, lesson, chapter, level, difficulty, lesson_index):
         lbl_content = tk.Label(self.current_screen, text=lesson['content'], 
                                wraplength=700, justify=tk.LEFT, 
-                               font=("Arial", 12), bg=COLOR_FONDO, fg="white")
+                               font=("Arial", scale_font(12)), bg=COLOR_FONDO, fg="white")
         lbl_content.pack(pady=20, padx=40)
         
         RoundedButton(self.current_screen, text="CONTINUAR", width=200, height=50,
                       command=lambda: self.start_lesson(chapter, level, difficulty, lesson_index + 1)).pack(pady=10)
 
+    def _show_lagrange_intermedio(self, chapter, level, difficulty, lesson_index):
+        """Nivel intermedio de Lagrange con tabla de datos y problema"""
+        import random
+        
+        # === BANNER SUPERIOR ===
+        banner_frame = tk.Frame(self.current_screen, bg="#FF8C42", height=70)
+        banner_frame.pack(fill=tk.X, side=tk.TOP)
+        banner_frame.pack_propagate(False)
+        
+        banner_text = f"Capítulo 1 Nivel 1. Lagrange. {difficulty}"
+        tk.Label(banner_frame, text=banner_text, font=("Arial", scale_font(16), "bold"), 
+                bg="#FF8C42", fg="#FFFFFF").pack(side=tk.LEFT, padx=20, pady=15)
+        
+        # Botón de retroceso
+        try:
+            if PIL_AVAILABLE:
+                from PIL import Image as PILImage, ImageTk as PILImageTk
+                pil_img = PILImage.open(os.path.join('imgs', 'red-go-back-arrow.png'))
+                pil_img.thumbnail((40, 40), PILImage.Resampling.LANCZOS)
+                back_arrow_img = PILImageTk.PhotoImage(pil_img)
+            else:
+                back_arrow_img = tk.PhotoImage(file=os.path.join('imgs', 'red-go-back-arrow.png'))
+                if back_arrow_img.width() > 40:
+                    factor = max(1, int(back_arrow_img.width() / 40))
+                    back_arrow_img = back_arrow_img.subsample(factor)
+            
+            back_btn = tk.Label(banner_frame, image=back_arrow_img, bg="#FF8C42", cursor="hand2")
+            back_btn.image = back_arrow_img
+            back_btn.pack(side=tk.RIGHT, padx=20, pady=15)
+            back_btn.bind("<Button-1>", lambda e: self.show_difficulty_menu(chapter, level))
+        except Exception:
+            back_btn = tk.Label(banner_frame, text="◀", font=("Arial", scale_font(20), "bold"), 
+                               bg="#FF8C42", fg="#FFFFFF", cursor="hand2")
+            back_btn.pack(side=tk.RIGHT, padx=20, pady=15)
+            back_btn.bind("<Button-1>", lambda e: self.show_difficulty_menu(chapter, level))
+        
+        # Contenido principal
+        main_frame = tk.Frame(self.current_screen, bg=COLOR_FONDO)
+        main_frame.pack(fill=tk.BOTH, expand=True, padx=20, pady=20)
+        
+        # Título del problema
+        tk.Label(main_frame, text="Obtener g(x)", font=("Arial", scale_font(18), "bold"), 
+                bg=COLOR_FONDO, fg="#20E0D0").pack(pady=10)
+        
+        # Mostrar x = 3
+        tk.Label(main_frame, text="x = 3", font=("Arial", scale_font(16), "bold"), 
+                bg=COLOR_FONDO, fg="white").pack(pady=5)
+        
+        # Tabla de datos
+        table_frame = tk.Frame(main_frame, bg="white", highlightthickness=2, highlightbackground="#20E0D0")
+        table_frame.pack(pady=15)
+        
+        # Encabezados
+        header_x = tk.Label(table_frame, text="x", font=("Arial", scale_font(14), "bold"), 
+                           bg="#20E0D0", fg="white", width=15, height=2)
+        header_x.grid(row=0, column=0, sticky="nsew")
+        
+        header_y = tk.Label(table_frame, text="y", font=("Arial", scale_font(14), "bold"), 
+                           bg="#20E0D0", fg="white", width=15, height=2)
+        header_y.grid(row=0, column=1, sticky="nsew")
+        
+        # Datos de la tabla (mismos que en la imagen)
+        data = [(1.7, 0.35), (2.4, 0.87), (3.1, 1.03)]
+        
+        for i, (x_val, y_val) in enumerate(data, 1):
+            cell_x = tk.Label(table_frame, text=str(x_val), font=("Arial", scale_font(13)), 
+                             bg="white", fg="black", width=15, height=2, relief=tk.RIDGE)
+            cell_x.grid(row=i, column=0, sticky="nsew")
+            
+            cell_y = tk.Label(table_frame, text=str(y_val), font=("Arial", scale_font(13)), 
+                             bg="white", fg="black", width=15, height=2, relief=tk.RIDGE)
+            cell_y.grid(row=i, column=1, sticky="nsew")
+        
+        # Marco con opciones y temporizador
+        options_frame = tk.Frame(main_frame, bg=COLOR_FONDO)
+        options_frame.pack(pady=15, fill=tk.BOTH, expand=True)
+        
+        # Temporizador a la derecha
+        timer_canvas = tk.Canvas(options_frame, width=120, height=80, bg=COLOR_FONDO, 
+                                highlightthickness=0)
+        timer_canvas.pack(side=tk.RIGHT, padx=10)
+        
+        if PIL_AVAILABLE:
+            img_timer = create_rounded_rect_image(120, 80, 10, "#40E0D0", "#20B0A0")
+            if img_timer:
+                tkimg_timer = ImageTk.PhotoImage(img_timer)
+                timer_canvas._img = tkimg_timer
+                timer_canvas.create_image(0, 0, anchor="nw", image=tkimg_timer)
+        else:
+            timer_canvas.create_rectangle(0, 0, 120, 80, fill="#40E0D0")
+        
+        timer_canvas.create_text(60, 20, text="⏱", font=("Arial", scale_font(20)), fill="white")
+        timer_text_id = timer_canvas.create_text(60, 55, text="20:00", font=("Arial", scale_font(14), "bold"), 
+                                                 fill="white")
+        
+        # Temporizador de 20 minutos (1200 segundos)
+        timer_state = {'seconds': 1200, 'timer_id': None}
+        
+        def _update_timer():
+            timer_state['seconds'] -= 1
+            minutes = timer_state['seconds'] // 60
+            seconds = timer_state['seconds'] % 60
+            time_str = f"{minutes}:{seconds:02d}"
+            timer_canvas.itemconfig(timer_text_id, text=time_str)
+            
+            if timer_state['seconds'] > 0:
+                timer_state['timer_id'] = self.root.after(1000, _update_timer)
+            else:
+                messagebox.showinfo("Tiempo agotado", "Se acabó el tiempo para resolver el problema.")
+                self.show_difficulty_menu(chapter, level)
+        
+        _update_timer()
+        
+        # Etiqueta g(x) =
+        tk.Label(options_frame, text="g(x) =", font=("Arial", scale_font(16), "bold"), 
+                bg=COLOR_FONDO, fg="white").pack(side=tk.LEFT, padx=10)
+        
+        # Opciones con botones de colores
+        btn_frame = tk.Frame(options_frame, bg=COLOR_FONDO)
+        btn_frame.pack(side=tk.LEFT, fill=tk.BOTH, expand=True, padx=10)
+        
+        # Opciones sin revelar la correcta (todos con color uniforme)
+        options_values = ["1.029183673", "1.019183673", "1.039183673", "1.049183673"]
+        correct_answer = "1.019183673"
+        
+        # Randomizar el orden de las opciones
+        random.shuffle(options_values)
+        
+        # Usar el mismo color para todos (sin revelar cuál es correcto)
+        btn_color = "#4A9AFF"
+        
+        def _make_handler(option_text):
+            def _handler():
+                if timer_state['timer_id']:
+                    self.root.after_cancel(timer_state['timer_id'])
+                
+                if option_text == correct_answer:
+                    messagebox.showinfo("¡Correcto!", f"¡Excelente!")
+                    self.start_lesson(chapter, level, difficulty, lesson_index + 1)
+                else:
+                    messagebox.showinfo("Incorrecto", "Lo siento, esa respuesta no es correcta.")
+                    self.errors_committed += 1
+                    self._save_progress()
+                    self.show_difficulty_menu(chapter, level)
+            return _handler
+        
+        for opt_text in options_values:
+            btn = tk.Canvas(btn_frame, width=150, height=120, bg=btn_color, 
+                           highlightthickness=0, cursor="hand2")
+            btn.pack(side=tk.LEFT, padx=8, fill=tk.BOTH, expand=True, pady=10)
+            btn.create_text(75, 60, text=opt_text, font=("Arial", scale_font(18), "bold"), fill="white", justify=tk.CENTER)
+            btn.bind("<Button-1>", lambda e, text=opt_text: _make_handler(text)())
+
     def show_practica(self, lesson, chapter, level, difficulty, lesson_index):
         """Renderiza preguntas de práctica. Si es dificultad 'Fácil', aplica estética especial.
         Caso especial: Nivel Lagrange (Fácil) — muestra la fórmula, luego preguntas individuales de cada imagen.
+        Caso especial: Nivel Lagrange (Intermedio) — ejercicio de interpolación de Lagrange.
         """
         import random
+        
+        # Caso especial: Lagrange Intermedio (formato con tabla y problema)
+        try:
+            is_lagrange_intermedio = 'Lagrange' in level and difficulty.lower() == 'intermedio'
+        except Exception:
+            is_lagrange_intermedio = False
+        
+        if is_lagrange_intermedio:
+            return self._show_lagrange_intermedio(chapter, level, difficulty, lesson_index)
         
         # Caso especial: Lagrange Fácil (formato con imágenes)
         try:
@@ -1034,9 +1243,9 @@ Zamora Pequeño, O., Zamora Pequeño, R. S., & Del Ángel Ramírez, A. (2020). M
                 if formula_path and os.path.exists(formula_path):
                     try:
                         pimg = tk.PhotoImage(file=formula_path)
-                        # scale down if too large
-                        if pimg.width() > 700:
-                            factor = max(1, int(pimg.width() / 700))
+                        # scale down if too large - más grande ahora
+                        if pimg.width() > 1200:
+                            factor = max(1, int(pimg.width() / 1200))
                             pimg = pimg.subsample(factor)
                         lbl_img = tk.Label(top_frame, image=pimg, bg=COLOR_FONDO)
                         lbl_img.image = pimg
@@ -1044,7 +1253,7 @@ Zamora Pequeño, O., Zamora Pequeño, R. S., & Del Ángel Ramírez, A. (2020). M
                     except Exception:
                         pass
 
-                tk.Label(top_frame, text="¡Esta es la formula de lagrange, memorizala!", font=("Arial", 16, "bold"), bg=COLOR_FONDO, fg="white").pack(pady=(6,12))
+                tk.Label(top_frame, text="¡Esta es la formula de lagrange, memorizala!", font=("Arial", scale_font(16), "bold"), bg=COLOR_FONDO, fg="white").pack(pady=(6,12))
 
                 def _continue_to_questions():
                     lagrange_state['formula_seen'] = True
@@ -1074,7 +1283,7 @@ Zamora Pequeño, O., Zamora Pequeño, R. S., & Del Ángel Ramírez, A. (2020). M
                 banner_frame.pack_propagate(False)
                 
                 banner_text = f"Capítulo 1 Nivel 1. Lagrange. {difficulty}"
-                tk.Label(banner_frame, text=banner_text, font=("Arial", 16, "bold"), 
+                tk.Label(banner_frame, text=banner_text, font=("Arial", scale_font(16), "bold"), 
                         bg="#20E0D0", fg="#FFFFFF").pack(side=tk.LEFT, padx=20, pady=10)
                 
                 # Botón de retroceso en la esquina derecha del banner con imagen
@@ -1099,7 +1308,7 @@ Zamora Pequeño, O., Zamora Pequeño, R. S., & Del Ángel Ramírez, A. (2020). M
                     back_btn.bind("<Button-1>", lambda e: self.show_difficulty_menu(chapter, level))
                 except Exception:
                     # Fallback al botón de texto si la imagen no carga
-                    back_btn = tk.Label(banner_frame, text="◀", font=("Arial", 20, "bold"), 
+                    back_btn = tk.Label(banner_frame, text="◀", font=("Arial", scale_font(20), "bold"), 
                                        bg="#20E0D0", fg="#FF5733", cursor="hand2")
                     back_btn.pack(side=tk.RIGHT, padx=20, pady=10)
                     back_btn.bind("<Button-1>", lambda e: self.show_difficulty_menu(chapter, level))
@@ -1116,9 +1325,9 @@ Zamora Pequeño, O., Zamora Pequeño, R. S., & Del Ángel Ramírez, A. (2020). M
                 if os.path.exists(current_image_path):
                     try:
                         display_img = tk.PhotoImage(file=current_image_path)
-                        # scale to height ~120
-                        if display_img.height() > 120:
-                            factor = max(1, int(display_img.height() / 120))
+                        # scale to height ~250 (mucho más grande)
+                        if display_img.height() > 250:
+                            factor = max(1, int(display_img.height() / 250))
                             display_img = display_img.subsample(factor)
                         img_lbl = tk.Label(img_frame, image=display_img, bg=COLOR_FONDO)
                         img_lbl.image = display_img
@@ -1127,7 +1336,7 @@ Zamora Pequeño, O., Zamora Pequeño, R. S., & Del Ángel Ramírez, A. (2020). M
                         tk.Label(img_frame, text=f"No se pudo cargar: {current_image_file}", bg=COLOR_FONDO, fg="white").pack()
 
                 # Pregunta: "¿Qué es esta imagen?"
-                tk.Label(self.current_screen, text="¿Qué es esta imagen?", font=("Arial", 14, "bold"), 
+                tk.Label(self.current_screen, text="¿Qué es esta imagen?", font=("Arial", scale_font(14), "bold"), 
                         bg=COLOR_FONDO, fg="white").pack(pady=15)
 
                 # Generar opciones: respuesta correcta + 3 falsas
@@ -1184,7 +1393,7 @@ Zamora Pequeño, O., Zamora Pequeño, R. S., & Del Ángel Ramírez, A. (2020). M
             banner_frame.pack_propagate(False)
             
             banner_text = f"Capítulo 1 {level}. {chapter.split(':')[1].strip() if ':' in chapter else chapter}. {difficulty}"
-            tk.Label(banner_frame, text=banner_text, font=("Arial", 16, "bold"), 
+            tk.Label(banner_frame, text=banner_text, font=("Arial", scale_font(16), "bold"), 
                     bg="#20E0D0", fg="#FFFFFF").pack(side=tk.LEFT, padx=20, pady=10)
             
             # Botón de retroceso en la esquina derecha del banner con imagen
@@ -1205,7 +1414,7 @@ Zamora Pequeño, O., Zamora Pequeño, R. S., & Del Ángel Ramírez, A. (2020). M
                 back_btn.pack(side=tk.RIGHT, padx=15, pady=10)
                 back_btn.bind("<Button-1>", lambda e: self.show_difficulty_menu(chapter, level))
             except Exception:
-                back_btn = tk.Label(banner_frame, text="◀", font=("Arial", 20, "bold"), 
+                back_btn = tk.Label(banner_frame, text="◀", font=("Arial", scale_font(20), "bold"), 
                                    bg="#20E0D0", fg="#FF5733", cursor="hand2")
                 back_btn.pack(side=tk.RIGHT, padx=20, pady=10)
                 back_btn.bind("<Button-1>", lambda e: self.show_difficulty_menu(chapter, level))
@@ -1217,7 +1426,7 @@ Zamora Pequeño, O., Zamora Pequeño, R. S., & Del Ángel Ramírez, A. (2020). M
             # Mostrar pregunta
             if 'content' in lesson:
                 tk.Label(content_frame, text=lesson['content'], 
-                        wraplength=700, font=("Arial", 14, "bold"), 
+                        wraplength=700, font=("Arial", scale_font(14), "bold"), 
                         bg=COLOR_FONDO, fg="white").pack(pady=20)
 
             # Mostrar opciones en fila horizontal (izquierda a derecha)
@@ -1236,7 +1445,7 @@ Zamora Pequeño, O., Zamora Pequeño, R. S., & Del Ángel Ramírez, A. (2020). M
                         bg=COLOR_FONDO, fg=COLOR_TEXTO_LBL).pack(pady=10)
                 tk.Label(content_frame, text="Ingresa tu respuesta:", 
                         bg=COLOR_FONDO, fg=COLOR_TEXTO_LBL).pack()
-                entry = tk.Entry(content_frame, font=("Arial", 12))
+                entry = tk.Entry(content_frame, font=("Arial", scale_font(12)))
                 entry.pack(pady=10)
                 RoundedButton(content_frame, text="REVISAR", width=200, height=50,
                           command=lambda: messagebox.showinfo("WIP", "Lógica de revisión no implementada")).pack(pady=20)
@@ -1245,7 +1454,7 @@ Zamora Pequeño, O., Zamora Pequeño, R. S., & Del Ángel Ramírez, A. (2020). M
 
         # ===== COMPORTAMIENTO PARA OTRAS DIFICULTADES (NO FÁCIL) =====
         tk.Label(self.current_screen, text=f"Pregunta: {lesson['content']}", 
-                 wraplength=700, font=("Arial", 14), bg=COLOR_FONDO, fg=COLOR_TEXTO_LBL).pack(pady=20, padx=40)
+                 wraplength=700, font=("Arial", scale_font(14)), bg=COLOR_FONDO, fg=COLOR_TEXTO_LBL).pack(pady=20, padx=40)
         
         options_frame = tk.Frame(self.current_screen, bg=COLOR_FONDO)
         options_frame.pack(pady=10)
@@ -1260,7 +1469,7 @@ Zamora Pequeño, O., Zamora Pequeño, R. S., & Del Ángel Ramírez, A. (2020). M
         elif 'problem_id' in lesson:
             tk.Label(self.current_screen, text=f"(Mostrando problema: {lesson['problem_id']})", bg=COLOR_FONDO, fg=COLOR_TEXTO_LBL).pack(pady=10)
             tk.Label(self.current_screen, text="Ingresa tu respuesta:", bg=COLOR_FONDO, fg=COLOR_TEXTO_LBL).pack()
-            entry = tk.Entry(self.current_screen, font=("Arial", 12))
+            entry = tk.Entry(self.current_screen, font=("Arial", scale_font(12)))
             entry.pack(pady=10)
             RoundedButton(self.current_screen, text="REVISAR", width=200, height=50,
                       command=lambda: messagebox.showinfo("WIP", "Lógica de revisión no implementada")).pack(pady=20)
@@ -1275,13 +1484,20 @@ Zamora Pequeño, O., Zamora Pequeño, R. S., & Del Ángel Ramírez, A. (2020). M
         else:
             self.errors_committed += 1
             self._save_progress()  # Guardar error cometido
-            if lesson_type == 'practica':
-                messagebox.showerror("Incorrecto", f"Respuesta correcta: '{correct_answer}'.")
-                # En práctica, a veces se retrocede o se repite. Aquí simplemente retrocedemos uno.
-                self.start_lesson(chapter, level, difficulty, max(0, lesson_index - 1))
-            elif lesson_type == 'examen':
-                messagebox.showerror("Incorrecto", "Fallo crítico. Reiniciando sección.")
-                self.start_lesson(chapter, level, difficulty, 0)
+            
+            # Comportamiento según dificultad
+            if difficulty.lower() == 'fácil':
+                # En Fácil, mostrar la respuesta correcta
+                if lesson_type == 'practica':
+                    messagebox.showerror("Incorrecto", f"Respuesta correcta: '{correct_answer}'.")
+                    self.start_lesson(chapter, level, difficulty, max(0, lesson_index - 1))
+                elif lesson_type == 'examen':
+                    messagebox.showerror("Incorrecto", "Fallo crítico. Reiniciando sección.")
+                    self.start_lesson(chapter, level, difficulty, 0)
+            else:
+                # En Intermedio y Avanzado: NO mostrar la respuesta, salir automáticamente
+                messagebox.showinfo("Incorrecto", "Lo siento, esa respuesta no es correcta.")
+                self.show_difficulty_menu(chapter, level)
 
     def _start_timer(self):
         """Inicia el temporizador que incrementa el tiempo cada segundo"""
