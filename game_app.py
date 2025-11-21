@@ -2,6 +2,7 @@ import tkinter as tk
 from tkinter import messagebox
 import tkinter.font as tkfont
 import os
+import json
 from game_data import GAME_STRUCTURE
 import methods_engine as me 
 try:
@@ -326,8 +327,17 @@ class NumericalMethodsGame:
         
         self.username = "Jugador 1"
         self.errors_committed = 0
-        self.time_elapsed = "0h 0m"
+        self.time_elapsed_seconds = 0  # Contador en segundos
         self.medals = []
+        
+        # Archivo de guardado
+        self.save_file = "game_progress.json"
+        
+        # Cargar datos guardados
+        self._load_progress()
+        
+        # Iniciar temporizador
+        self._start_timer()
         
         # --- CARGAR IMAGEN DE "VOLVER" ---
         self.back_icon = None
@@ -387,7 +397,16 @@ class NumericalMethodsGame:
         self.main_frame = tk.Frame(root, bg=COLOR_FONDO)
         self.main_frame.pack(fill=tk.BOTH, expand=True)
         self.current_screen = None
+        
+        # Guardar progreso al cerrar la aplicación
+        self.root.protocol("WM_DELETE_WINDOW", self._on_closing)
+        
         self.show_main_menu()
+
+    def _on_closing(self):
+        """Guarda el progreso cuando se cierra la aplicación"""
+        self._save_progress()
+        self.root.destroy()
 
     def clear_screen(self):
         if self.current_screen:
@@ -485,7 +504,7 @@ class NumericalMethodsGame:
         RoundedButton(second_frame, text="CONFIGURACIÓN", width=None, height=58,
                   color="#103d56", text_color="#dfefff",
                   icon_image=self.icon_config,
-                  command=lambda: messagebox.showinfo("Configuración", "Ajustes no implementados aún")).pack(pady=10)
+                  command=self.show_config_menu).pack(pady=10)
 
         RoundedButton(second_frame, text="SALIR", width=None, height=48,
                   color=COLOR_BOTON_ROJO, text_color="#ffffff",
@@ -532,7 +551,21 @@ class NumericalMethodsGame:
             time_canvas.create_rectangle(0, 0, 200, 120, fill="#20D0C0")
         time_canvas.create_text(20, 35, text="⏱", font=("Arial", 24), anchor="w", fill="white")
         time_canvas.create_text(75, 25, text="TIEMPO TRANSCURRIDO", fill="white", font=("Arial", 11, "bold"), anchor="w")
-        time_canvas.create_text(75, 65, text=self.time_elapsed, fill="white", font=("Arial", 18, "bold"), anchor="w")
+        time_text_id = time_canvas.create_text(75, 65, text=self._format_time(), fill="white", font=("Arial", 18, "bold"), anchor="w")
+        
+        # Actualizar tiempo cada segundo mientras se está viendo el menú y guardar progreso
+        def _update_time_display():
+            try:
+                time_canvas.itemconfig(time_text_id, text=self._format_time())
+                # Guardar progreso cada 5 segundos
+                if self.time_elapsed_seconds % 5 == 0:
+                    self._save_progress()
+                # Programar la siguiente actualización en 1000 ms
+                self.root.after(1000, _update_time_display)
+            except:
+                pass  # Canvas destruido, detener actualizaciones
+        
+        _update_time_display()
 
         # ERRORS card (orange-to-red gradient)
         error_canvas = tk.Canvas(row_frame, height=120, bg=COLOR_FONDO, highlightthickness=0)
@@ -565,6 +598,85 @@ class NumericalMethodsGame:
             medals_text = "Sin medallas aún"
         
         tk.Label(medals_frame, text=medals_text, font=("Arial", 12), bg=COLOR_FONDO, fg="white", justify=tk.LEFT).pack(anchor="w", padx=10)
+
+    def show_config_menu(self):
+        """Menú de configuración con opciones de sonido, idioma, créditos y reinicio"""
+        self.clear_screen()
+        
+        # Header azul con título
+        header_frame = tk.Frame(self.current_screen, bg="#003366", height=HEADER_HEIGHT)
+        header_frame.pack(fill=tk.X, side=tk.TOP)
+        header_frame.pack_propagate(False)
+        
+        tk.Label(header_frame, text="CONFIGURACIÓN", font=("Arial", 20, "bold"), 
+                 bg="#003366", fg="white").pack(side=tk.LEFT, padx=20, pady=15)
+        
+        btn_back = self.create_back_button(header_frame, self.show_main_menu, "#003366")
+        btn_back.pack(side=tk.RIGHT, anchor="center", padx=10)
+
+        # Contenido principal
+        content = tk.Frame(self.current_screen, bg=COLOR_FONDO)
+        content.pack(fill=tk.BOTH, expand=True, padx=30, pady=30)
+
+        # Botones de configuración con gradientes
+        # SONIDO - Gradiente cyan a verde
+        RoundedButton(content, text="🔊  SONIDO", width=None, height=70,
+                  color="#20D0C0", text_color="#ffffff",
+                  command=lambda: messagebox.showinfo("Sonido", "Funcionalidad próximamente")).pack(pady=15, fill=tk.X)
+
+        # IDIOMA - Gradiente cyan a naranja
+        btn_idioma = tk.Canvas(content, height=70, bg=COLOR_FONDO, highlightthickness=0)
+        btn_idioma.pack(pady=15, fill=tk.X)
+        
+        if PIL_AVAILABLE:
+            img_idioma = create_rounded_rect_image(600, 70, 20, "#20D0C0", "#FF8C5A")
+            if img_idioma:
+                tkimg_idioma = ImageTk.PhotoImage(img_idioma)
+                btn_idioma._img = tkimg_idioma
+                btn_idioma.create_image(0, 0, anchor="nw", image=tkimg_idioma)
+        
+        btn_idioma.create_text(35, 35, text="🌐  IDIOMA", fill="white", font=("Arial", 16, "bold"), anchor="w")
+        btn_idioma.bind("<Button-1>", lambda e: messagebox.showinfo("Idioma", "Funcionalidad próximamente"))
+        btn_idioma.bind("<Enter>", lambda e: btn_idioma.config(cursor="hand2"))
+        btn_idioma.bind("<Leave>", lambda e: btn_idioma.config(cursor=""))
+
+        # CRÉDITOS - Gradiente cyan a naranja
+        btn_creditos = tk.Canvas(content, height=70, bg=COLOR_FONDO, highlightthickness=0)
+        btn_creditos.pack(pady=15, fill=tk.X)
+        
+        if PIL_AVAILABLE:
+            img_creditos = create_rounded_rect_image(600, 70, 20, "#20D0C0", "#FF8C5A")
+            if img_creditos:
+                tkimg_creditos = ImageTk.PhotoImage(img_creditos)
+                btn_creditos._img = tkimg_creditos
+                btn_creditos.create_image(0, 0, anchor="nw", image=tkimg_creditos)
+        
+        btn_creditos.create_text(35, 35, text="ℹ️  CRÉDITOS", fill="white", font=("Arial", 16, "bold"), anchor="w")
+        btn_creditos.bind("<Button-1>", lambda e: messagebox.showinfo("Créditos", "Juego de Métodos Numéricos\n\nDesarrollado por: Tu Equipo"))
+        btn_creditos.bind("<Enter>", lambda e: btn_creditos.config(cursor="hand2"))
+        btn_creditos.bind("<Leave>", lambda e: btn_creditos.config(cursor=""))
+
+        # REINICIAR PROGRESO - Gradiente rojo a púrpura
+        btn_reset = tk.Canvas(content, height=70, bg=COLOR_FONDO, highlightthickness=0)
+        btn_reset.pack(pady=15, fill=tk.X)
+        
+        if PIL_AVAILABLE:
+            img_reset = create_rounded_rect_image(600, 70, 20, "#FF3333", "#D500F9")
+            if img_reset:
+                tkimg_reset = ImageTk.PhotoImage(img_reset)
+                btn_reset._img = tkimg_reset
+                btn_reset.create_image(0, 0, anchor="nw", image=tkimg_reset)
+        
+        def _on_reset_click(event):
+            response = messagebox.askyesno("Reiniciar Progreso", 
+                                          "¿Estás seguro de que deseas reiniciar tu progreso?\nEsta acción no se puede deshacer.")
+            if response:
+                self._reset_progress()
+        
+        btn_reset.create_text(35, 35, text="⚠️  REINICIAR PROGRESO", fill="white", font=("Arial", 16, "bold"), anchor="w")
+        btn_reset.bind("<Button-1>", _on_reset_click)
+        btn_reset.bind("<Enter>", lambda e: btn_reset.config(cursor="hand2"))
+        btn_reset.bind("<Leave>", lambda e: btn_reset.config(cursor=""))
 
     def show_chapter_menu(self):
         self.clear_screen()
@@ -733,6 +845,7 @@ class NumericalMethodsGame:
             self.start_lesson(chapter, level, difficulty, lesson_index + 1)
         else:
             self.errors_committed += 1
+            self._save_progress()  # Guardar error cometido
             if lesson_type == 'practica':
                 messagebox.showerror("Incorrecto", f"Respuesta correcta: '{correct_answer}'.")
                 # En práctica, a veces se retrocede o se repite. Aquí simplemente retrocedemos uno.
@@ -740,3 +853,55 @@ class NumericalMethodsGame:
             elif lesson_type == 'examen':
                 messagebox.showerror("Incorrecto", "Fallo crítico. Reiniciando sección.")
                 self.start_lesson(chapter, level, difficulty, 0)
+
+    def _start_timer(self):
+        """Inicia el temporizador que incrementa el tiempo cada segundo"""
+        def _increment_time():
+            self.time_elapsed_seconds += 1
+            # Programar la siguiente llamada en 1000 ms
+            self.root.after(1000, _increment_time)
+        
+        # Iniciar el temporizador
+        self.root.after(1000, _increment_time)
+
+    def _format_time(self):
+        """Convierte segundos a formato 'Xh Ym'"""
+        hours = self.time_elapsed_seconds // 3600
+        minutes = (self.time_elapsed_seconds % 3600) // 60
+        return f"{hours}h {minutes}m"
+
+    def _save_progress(self):
+        """Guarda el progreso en un archivo JSON"""
+        data = {
+            "time_elapsed_seconds": self.time_elapsed_seconds,
+            "errors_committed": self.errors_committed,
+            "medals": self.medals,
+            "username": self.username
+        }
+        try:
+            with open(self.save_file, "w") as f:
+                json.dump(data, f, indent=4)
+        except Exception as e:
+            print(f"Error guardando progreso: {e}")
+
+    def _load_progress(self):
+        """Carga el progreso desde el archivo JSON"""
+        if os.path.exists(self.save_file):
+            try:
+                with open(self.save_file, "r") as f:
+                    data = json.load(f)
+                    self.time_elapsed_seconds = data.get("time_elapsed_seconds", 0)
+                    self.errors_committed = data.get("errors_committed", 0)
+                    self.medals = data.get("medals", [])
+                    self.username = data.get("username", "Jugador 1")
+            except Exception as e:
+                print(f"Error cargando progreso: {e}")
+
+    def _reset_progress(self):
+        """Reinicia todo el progreso (tiempo, errores, medallas)"""
+        self.time_elapsed_seconds = 0
+        self.errors_committed = 0
+        self.medals = []
+        self._save_progress()
+        messagebox.showinfo("Progreso Reiniciado", "Tu progreso ha sido reiniciado. ¡A jugar!")
+        self.show_main_menu()
