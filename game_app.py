@@ -5,6 +5,7 @@ import os
 import json
 from game_data import GAME_STRUCTURE
 import methods_engine as me 
+from music_manager import MusicManager
 try:
     from PIL import Image, ImageDraw, ImageTk
     PIL_AVAILABLE = True
@@ -339,6 +340,9 @@ class NumericalMethodsGame:
         # Iniciar temporizador
         self._start_timer()
         
+        # --- INICIALIZAR GESTOR DE MÚSICA ---
+        self.music_manager = MusicManager(songs_folder="songs")
+        
         # --- CARGAR IMAGEN DE "VOLVER" ---
         self.back_icon = None
         img_path = os.path.join("imgs", "red-go-back-arrow.png")
@@ -438,6 +442,14 @@ class NumericalMethodsGame:
     # ... (show_main_menu y show_user_menu quedan IGUAL) ...
     def show_main_menu(self):
         self.clear_screen()
+        
+        # Iniciar la música (solo si no está ya reproduciendo)
+        try:
+            if not hasattr(self, 'music_started'):
+                self.music_manager.play()
+                self.music_started = True
+        except Exception as e:
+            print(f"Error iniciando música: {e}")
 
         # Top banner with title and subtitle (use PIL-generated rounded image for pixel-perfect corners)
         banner_h = 100
@@ -808,6 +820,12 @@ class NumericalMethodsGame:
 
     # --- MODIFICADO: AHORA ACEPTA EL PARÁMETRO 'difficulty' ---
     def start_lesson(self, chapter, level, difficulty, lesson_index):
+        # --- FADE OUT DE LA MÚSICA ---
+        try:
+            self.music_manager.fade_out(duration=5.0)
+        except Exception as e:
+            print(f"Error en fade out de música: {e}")
+        
         self.clear_screen()
         
         # Acceder al diccionario anidado: Capitulo -> Nivel -> Dificultad
