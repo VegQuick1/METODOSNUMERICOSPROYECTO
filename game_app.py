@@ -886,7 +886,7 @@ class NumericalMethodsGame:
         """
         import random
         
-        # Caso especial: Lagrange Fácil
+        # Caso especial: Lagrange Fácil (formato con imágenes)
         try:
             is_lagrange = 'Lagrange' in level and difficulty.lower() == 'fácil'
         except Exception:
@@ -1088,7 +1088,76 @@ class NumericalMethodsGame:
 
         # Fin caso especial Lagrange
 
-        # Comportamiento por defecto (general) con estética para 'Fácil'
+        # ===== ESTÉTICA FÁCIL PARA TODOS LOS NIVELES FÁCIL =====
+        if difficulty.lower() == 'fácil':
+            self.clear_screen()
+            
+            # === BANNER SUPERIOR ===
+            banner_frame = tk.Frame(self.current_screen, bg="#20E0D0", height=60)
+            banner_frame.pack(fill=tk.X, side=tk.TOP)
+            banner_frame.pack_propagate(False)
+            
+            banner_text = f"Capítulo 1 {level}. {chapter.split(':')[1].strip() if ':' in chapter else chapter}. {difficulty}"
+            tk.Label(banner_frame, text=banner_text, font=("Arial", 16, "bold"), 
+                    bg="#20E0D0", fg="#FFFFFF").pack(side=tk.LEFT, padx=20, pady=10)
+            
+            # Botón de retroceso en la esquina derecha del banner con imagen
+            try:
+                if PIL_AVAILABLE:
+                    from PIL import Image as PILImage, ImageTk as PILImageTk
+                    pil_img = PILImage.open(os.path.join('imgs', 'red-go-back-arrow.png'))
+                    pil_img.thumbnail((40, 40), PILImage.Resampling.LANCZOS)
+                    back_arrow_img = PILImageTk.PhotoImage(pil_img)
+                else:
+                    back_arrow_img = tk.PhotoImage(file=os.path.join('imgs', 'red-go-back-arrow.png'))
+                    if back_arrow_img.width() > 40:
+                        factor = max(1, int(back_arrow_img.width() / 40))
+                        back_arrow_img = back_arrow_img.subsample(factor)
+                
+                back_btn = tk.Label(banner_frame, image=back_arrow_img, bg="#20E0D0", cursor="hand2")
+                back_btn.image = back_arrow_img
+                back_btn.pack(side=tk.RIGHT, padx=15, pady=10)
+                back_btn.bind("<Button-1>", lambda e: self.show_difficulty_menu(chapter, level))
+            except Exception:
+                back_btn = tk.Label(banner_frame, text="◀", font=("Arial", 20, "bold"), 
+                                   bg="#20E0D0", fg="#FF5733", cursor="hand2")
+                back_btn.pack(side=tk.RIGHT, padx=20, pady=10)
+                back_btn.bind("<Button-1>", lambda e: self.show_difficulty_menu(chapter, level))
+
+            # Contenido de la lección
+            content_frame = tk.Frame(self.current_screen, bg=COLOR_FONDO)
+            content_frame.pack(fill=tk.BOTH, expand=True, pady=30, padx=20)
+
+            # Mostrar pregunta
+            if 'content' in lesson:
+                tk.Label(content_frame, text=lesson['content'], 
+                        wraplength=700, font=("Arial", 14, "bold"), 
+                        bg=COLOR_FONDO, fg="white").pack(pady=20)
+
+            # Mostrar opciones en fila horizontal (izquierda a derecha)
+            if 'options' in lesson:
+                btns_frame = tk.Frame(content_frame, bg=COLOR_FONDO)
+                btns_frame.pack(pady=20)
+
+                for option in lesson['options']:
+                    btn = RoundedButton(btns_frame, text=option, width=120, height=50,
+                                      color=BTN_EASY_COLOR, text_color="#000000",
+                                      command=lambda o=option: self.check_answer(o, lesson, chapter, level, difficulty, lesson_index))
+                    btn.pack(side=tk.LEFT, padx=8)
+            
+            elif 'problem_id' in lesson:
+                tk.Label(content_frame, text=f"(Problema: {lesson['problem_id']})", 
+                        bg=COLOR_FONDO, fg=COLOR_TEXTO_LBL).pack(pady=10)
+                tk.Label(content_frame, text="Ingresa tu respuesta:", 
+                        bg=COLOR_FONDO, fg=COLOR_TEXTO_LBL).pack()
+                entry = tk.Entry(content_frame, font=("Arial", 12))
+                entry.pack(pady=10)
+                RoundedButton(content_frame, text="REVISAR", width=200, height=50,
+                          command=lambda: messagebox.showinfo("WIP", "Lógica de revisión no implementada")).pack(pady=20)
+            
+            return
+
+        # ===== COMPORTAMIENTO PARA OTRAS DIFICULTADES (NO FÁCIL) =====
         tk.Label(self.current_screen, text=f"Pregunta: {lesson['content']}", 
                  wraplength=700, font=("Arial", 14), bg=COLOR_FONDO, fg=COLOR_TEXTO_LBL).pack(pady=20, padx=40)
         
@@ -1097,10 +1166,8 @@ class NumericalMethodsGame:
 
         if 'options' in lesson:
             for option in lesson['options']:
-                btn_color = BTN_EASY_COLOR if difficulty.lower() == 'fácil' else COLOR_BOTON_CLARO
-                btn_height = 60 if difficulty.lower() == 'fácil' else 50
-                btn = RoundedButton(options_frame, text=option, width=None, height=btn_height,
-                                    color=btn_color, outline_color=COLOR_BORDE_OSCURO, border_width=2,
+                btn = RoundedButton(options_frame, text=option, width=None, height=50,
+                                    color=COLOR_BOTON_CLARO, outline_color=COLOR_BORDE_OSCURO, border_width=2,
                                     command=lambda o=option: self.check_answer(o, lesson, chapter, level, difficulty, lesson_index))
                 btn.pack(pady=8)
                 
