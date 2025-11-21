@@ -494,11 +494,77 @@ class NumericalMethodsGame:
 
     def show_user_menu(self):
         self.clear_screen()
-        self.add_header_with_back(f"PERFIL DE: {self.username}", self.show_main_menu)
-        tk.Label(self.current_screen, text=f"TIEMPO: {self.time_elapsed}", bg=COLOR_FONDO, fg="white", font=("Arial", 14)).pack(pady=20)
-        tk.Label(self.current_screen, text=f"ERRORES: {self.errors_committed}", bg=COLOR_FONDO, fg="white", font=("Arial", 14)).pack(pady=5)
-        tk.Label(self.current_screen, text="MEDALLAS:", font=("Arial", 16, "bold"), bg=COLOR_FONDO, fg="white").pack(pady=20)
-        for m in self.medals: tk.Label(self.current_screen, text=f"🏅 {m}", bg=COLOR_FONDO, fg="white").pack()
+        # Add gradient blue header banner (full width, no rounded corners)
+        header_frame = tk.Frame(self.current_screen, bg="#0052CC", height=HEADER_HEIGHT)
+        header_frame.pack(fill=tk.X, side=tk.TOP)
+        header_frame.pack_propagate(False)
+        
+        # Title
+        tk.Label(header_frame, text="MENÚ DE USUARIO", font=("Arial", 20, "bold"), 
+                 bg="#0052CC", fg="white").pack(side=tk.LEFT, padx=20, pady=15)
+        
+        # Back button with icon
+        btn_back = self.create_back_button(header_frame, self.show_main_menu, "#0052CC")
+        btn_back.pack(side=tk.RIGHT, anchor="center", padx=10)
+
+        # Main content area
+        content = tk.Frame(self.current_screen, bg=COLOR_FONDO)
+        content.pack(fill=tk.BOTH, expand=True, padx=20, pady=20)
+
+        # Two columns: Time (cyan) and Errors (orange-red)
+        row_frame = tk.Frame(content, bg=COLOR_FONDO)
+        row_frame.pack(fill=tk.BOTH, expand=True, pady=10)
+        row_frame.columnconfigure(0, weight=1)
+        row_frame.columnconfigure(1, weight=1)
+
+        # TIME card (cyan-to-blue gradient)
+        time_canvas = tk.Canvas(row_frame, height=120, bg=COLOR_FONDO, highlightthickness=0)
+        time_canvas.grid(row=0, column=0, padx=10, sticky="nsew")
+        if PIL_AVAILABLE:
+            img_time = create_rounded_rect_image(time_canvas.winfo_width() or 150, 120, 15, "#20D0C0", "#00A8CC")
+            try:
+                tkimg_time = ImageTk.PhotoImage(img_time)
+                time_canvas._img_time = tkimg_time
+                time_canvas.create_image(0, 0, anchor="nw", image=tkimg_time)
+            except:
+                time_canvas.create_rectangle(0, 0, 200, 120, fill="#20D0C0")
+        else:
+            time_canvas.create_rectangle(0, 0, 200, 120, fill="#20D0C0")
+        time_canvas.create_text(20, 35, text="⏱", font=("Arial", 24), anchor="w", fill="white")
+        time_canvas.create_text(75, 25, text="TIEMPO TRANSCURRIDO", fill="white", font=("Arial", 11, "bold"), anchor="w")
+        time_canvas.create_text(75, 65, text=self.time_elapsed, fill="white", font=("Arial", 18, "bold"), anchor="w")
+
+        # ERRORS card (orange-to-red gradient)
+        error_canvas = tk.Canvas(row_frame, height=120, bg=COLOR_FONDO, highlightthickness=0)
+        error_canvas.grid(row=0, column=1, padx=10, sticky="nsew")
+        if PIL_AVAILABLE:
+            img_err = create_rounded_rect_image(error_canvas.winfo_width() or 150, 120, 15, "#FF8C42", "#E63946")
+            try:
+                tkimg_err = ImageTk.PhotoImage(img_err)
+                error_canvas._img_err = tkimg_err
+                error_canvas.create_image(0, 0, anchor="nw", image=tkimg_err)
+            except:
+                error_canvas.create_rectangle(0, 0, 200, 120, fill="#FF8C42")
+        else:
+            error_canvas.create_rectangle(0, 0, 200, 120, fill="#FF8C42")
+        error_canvas.create_text(20, 35, text="✕", font=("Arial", 24), anchor="w", fill="white")
+        error_canvas.create_text(75, 25, text="ERRORES COMETIDOS", fill="white", font=("Arial", 11, "bold"), anchor="w")
+        error_canvas.create_text(75, 65, text=str(self.errors_committed), fill="white", font=("Arial", 18, "bold"), anchor="w")
+
+        # Medals section
+        medals_label = tk.Label(content, text="MEDALLAS:", font=("Arial", 16, "bold"), bg=COLOR_FONDO, fg="white")
+        medals_label.pack(pady=(20, 10), anchor="w")
+        
+        # Medals display (scrollable if needed)
+        medals_frame = tk.Frame(content, bg=COLOR_FONDO)
+        medals_frame.pack(fill=tk.BOTH, expand=True, pady=10)
+        
+        if self.medals:
+            medals_text = "\n".join([f"🏅 {m}" for m in self.medals])
+        else:
+            medals_text = "Sin medallas aún"
+        
+        tk.Label(medals_frame, text=medals_text, font=("Arial", 12), bg=COLOR_FONDO, fg="white", justify=tk.LEFT).pack(anchor="w", padx=10)
 
     def show_chapter_menu(self):
         self.clear_screen()
