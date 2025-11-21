@@ -1034,13 +1034,13 @@ Zamora Pequeño, O., Zamora Pequeño, R. S., & Del Ángel Ramírez, A. (2020). M
         import random
         
         # === BANNER SUPERIOR ===
-        banner_frame = tk.Frame(self.current_screen, bg="#ac35e4", height=70)
+        banner_frame = tk.Frame(self.current_screen, bg="#f8cf39", height=70)
         banner_frame.pack(fill=tk.X, side=tk.TOP)
         banner_frame.pack_propagate(False)
         
         banner_text = f"Capítulo 1 Nivel 1. Lagrange. {difficulty}"
         tk.Label(banner_frame, text=banner_text, font=("Arial", scale_font(16), "bold"), 
-                bg="#FF8C42", fg="#FFFFFF").pack(side=tk.LEFT, padx=20, pady=15)
+                bg="#f8cf39", fg="#FFFFFF").pack(side=tk.LEFT, padx=20, pady=15)
         
         # Botón de retroceso
         try:
@@ -1055,7 +1055,7 @@ Zamora Pequeño, O., Zamora Pequeño, R. S., & Del Ángel Ramírez, A. (2020). M
                     factor = max(1, int(back_arrow_img.width() / 40))
                     back_arrow_img = back_arrow_img.subsample(factor)
             
-            back_btn = tk.Label(banner_frame, image=back_arrow_img, bg="#FF8C42", cursor="hand2")
+            back_btn = tk.Label(banner_frame, image=back_arrow_img, bg="#f8cf39", cursor="hand2")
             back_btn.image = back_arrow_img
             back_btn.pack(side=tk.RIGHT, padx=20, pady=15)
             back_btn.bind("<Button-1>", lambda e: self.show_difficulty_menu(chapter, level))
@@ -1184,13 +1184,13 @@ Zamora Pequeño, O., Zamora Pequeño, R. S., & Del Ángel Ramírez, A. (2020). M
         import random
         
         # === BANNER SUPERIOR ===
-        banner_frame = tk.Frame(self.current_screen, bg="#ac35e4", height=70)
+        banner_frame = tk.Frame(self.current_screen, bg="#f94255", height=70)
         banner_frame.pack(fill=tk.X, side=tk.TOP)
         banner_frame.pack_propagate(False)
         
         banner_text = f"Capítulo 1 Nivel 1. Lagrange. {difficulty}"
         tk.Label(banner_frame, text=banner_text, font=("Arial", scale_font(16), "bold"), 
-                bg="#FF8C42", fg="#FFFFFF").pack(side=tk.LEFT, padx=20, pady=15)
+                bg="#f94255", fg="#FFFFFF").pack(side=tk.LEFT, padx=20, pady=15)
         
         # Botón de retroceso
         try:
@@ -1205,13 +1205,13 @@ Zamora Pequeño, O., Zamora Pequeño, R. S., & Del Ángel Ramírez, A. (2020). M
                     factor = max(1, int(back_arrow_img.width() / 40))
                     back_arrow_img = back_arrow_img.subsample(factor)
             
-            back_btn = tk.Label(banner_frame, image=back_arrow_img, bg="#FF8C42", cursor="hand2")
+            back_btn = tk.Label(banner_frame, image=back_arrow_img, bg="#f94255", cursor="hand2")
             back_btn.image = back_arrow_img
             back_btn.pack(side=tk.RIGHT, padx=20, pady=15)
             back_btn.bind("<Button-1>", lambda e: self.show_difficulty_menu(chapter, level))
         except Exception:
             back_btn = tk.Label(banner_frame, text="◀", font=("Arial", scale_font(20), "bold"), 
-                               bg="#FF8C42", fg="#FFFFFF", cursor="hand2")
+                               bg="#f94255", fg="#FFFFFF", cursor="hand2")
             back_btn.pack(side=tk.RIGHT, padx=20, pady=15)
             back_btn.bind("<Button-1>", lambda e: self.show_difficulty_menu(chapter, level))
         
@@ -1346,7 +1346,7 @@ Zamora Pequeño, O., Zamora Pequeño, R. S., & Del Ángel Ramírez, A. (2020). M
         
         banner_text = f"Capítulo 1 Nivel 1. Lagrange. {difficulty}"
         tk.Label(banner_frame, text=banner_text, font=("Arial", scale_font(16), "bold"), 
-                bg="#FF8C42", fg="#FFFFFF").pack(side=tk.LEFT, padx=20, pady=15)
+                bg="#ac35e4", fg="#FFFFFF").pack(side=tk.LEFT, padx=20, pady=15)
         
         # Botón de retroceso
         try:
@@ -1361,13 +1361,13 @@ Zamora Pequeño, O., Zamora Pequeño, R. S., & Del Ángel Ramírez, A. (2020). M
                     factor = max(1, int(back_arrow_img.width() / 40))
                     back_arrow_img = back_arrow_img.subsample(factor)
             
-            back_btn = tk.Label(banner_frame, image=back_arrow_img, bg="#FF8C42", cursor="hand2")
+            back_btn = tk.Label(banner_frame, image=back_arrow_img, bg="#ac35e4", cursor="hand2")
             back_btn.image = back_arrow_img
             back_btn.pack(side=tk.RIGHT, padx=20, pady=15)
             back_btn.bind("<Button-1>", lambda e: self.show_difficulty_menu(chapter, level))
         except Exception:
             back_btn = tk.Label(banner_frame, text="◀", font=("Arial", scale_font(20), "bold"), 
-                               bg="#FF8C42", fg="#FFFFFF", cursor="hand2")
+                               bg="#ac35e4", fg="#FFFFFF", cursor="hand2")
             back_btn.pack(side=tk.RIGHT, padx=20, pady=15)
             back_btn.bind("<Button-1>", lambda e: self.show_difficulty_menu(chapter, level))
         
