@@ -736,8 +736,7 @@ EQUIPO 1:
   (2007916)
 • Gerardo Ulloa Loredo
   (2001913)
-• Julio César Silguero Ramírez
-  (2049923)"""
+"""
         
         btn_creditos.bind("<Button-1>", lambda e: messagebox.showinfo("Créditos", credits_text))
         btn_creditos.bind("<Enter>", lambda e: btn_creditos.config(cursor="hand2"))
@@ -1056,13 +1055,17 @@ Zamora Pequeño, O., Zamora Pequeño, R. S., & Del Ángel Ramírez, A. (2020). M
         tk.Label(main_frame, text="Obtener g(x)", font=("Arial", scale_font(18), "bold"), 
                 bg=COLOR_FONDO, fg="#20E0D0").pack(pady=10)
         
-        # Mostrar x = 3
-        tk.Label(main_frame, text="x = 3", font=("Arial", scale_font(16), "bold"), 
-                bg=COLOR_FONDO, fg="white").pack(pady=5)
+        # Frame para tabla y x = 3
+        top_content_frame = tk.Frame(main_frame, bg=COLOR_FONDO)
+        top_content_frame.pack(pady=15, fill=tk.X)
         
-        # Tabla de datos
-        table_frame = tk.Frame(main_frame, bg="white", highlightthickness=2, highlightbackground="#20E0D0")
-        table_frame.pack(pady=15)
+        # Mostrar x = 3 (izquierda)
+        tk.Label(top_content_frame, text="x = 3", font=("Arial", scale_font(16), "bold"), 
+                bg=COLOR_FONDO, fg="white").pack(side=tk.LEFT, padx=20)
+        
+        # Tabla de datos (centro)
+        table_frame = tk.Frame(top_content_frame, bg="white", highlightthickness=2, highlightbackground="#20E0D0")
+        table_frame.pack(side=tk.LEFT, padx=20)
         
         # Encabezados
         header_x = tk.Label(table_frame, text="x", font=("Arial", scale_font(14), "bold"), 
@@ -1085,27 +1088,18 @@ Zamora Pequeño, O., Zamora Pequeño, R. S., & Del Ángel Ramírez, A. (2020). M
                              bg="white", fg="black", width=15, height=2, relief=tk.RIDGE)
             cell_y.grid(row=i, column=1, sticky="nsew")
         
-        # Marco con opciones y temporizador
-        options_frame = tk.Frame(main_frame, bg=COLOR_FONDO)
-        options_frame.pack(pady=15, fill=tk.BOTH, expand=True)
-        
         # Temporizador a la derecha
-        timer_canvas = tk.Canvas(options_frame, width=120, height=80, bg=COLOR_FONDO, 
-                                highlightthickness=0)
-        timer_canvas.pack(side=tk.RIGHT, padx=10)
+        timer_container = tk.Frame(top_content_frame, bg=COLOR_FONDO)
+        timer_container.pack(side=tk.RIGHT, padx=20)
         
-        if PIL_AVAILABLE:
-            img_timer = create_rounded_rect_image(120, 80, 10, "#40E0D0", "#20B0A0")
-            if img_timer:
-                tkimg_timer = ImageTk.PhotoImage(img_timer)
-                timer_canvas._img = tkimg_timer
-                timer_canvas.create_image(0, 0, anchor="nw", image=tkimg_timer)
-        else:
-            timer_canvas.create_rectangle(0, 0, 120, 80, fill="#40E0D0")
+        tk.Label(timer_container, text="⏱", font=("Arial", scale_font(24)), 
+                bg=COLOR_FONDO, fg="white").pack(pady=5)
+        tk.Label(timer_container, text="Tiempo restante", font=("Arial", scale_font(12), "bold"), 
+                bg=COLOR_FONDO, fg="white").pack()
         
-        timer_canvas.create_text(60, 20, text="⏱", font=("Arial", scale_font(20)), fill="white")
-        timer_text_id = timer_canvas.create_text(60, 55, text="20:00", font=("Arial", scale_font(14), "bold"), 
-                                                 fill="white")
+        timer_label = tk.Label(timer_container, text="20:00", font=("Arial", scale_font(20), "bold"), 
+                              bg=COLOR_FONDO, fg="#20E0D0")
+        timer_label.pack(pady=5)
         
         # Temporizador de 20 minutos (1200 segundos)
         timer_state = {'seconds': 1200, 'timer_id': None}
@@ -1115,7 +1109,7 @@ Zamora Pequeño, O., Zamora Pequeño, R. S., & Del Ángel Ramírez, A. (2020). M
             minutes = timer_state['seconds'] // 60
             seconds = timer_state['seconds'] % 60
             time_str = f"{minutes}:{seconds:02d}"
-            timer_canvas.itemconfig(timer_text_id, text=time_str)
+            timer_label.config(text=time_str)
             
             if timer_state['seconds'] > 0:
                 timer_state['timer_id'] = self.root.after(1000, _update_timer)
@@ -1125,23 +1119,24 @@ Zamora Pequeño, O., Zamora Pequeño, R. S., & Del Ángel Ramírez, A. (2020). M
         
         _update_timer()
         
+        # Marco con opciones
+        options_frame = tk.Frame(main_frame, bg=COLOR_FONDO)
+        options_frame.pack(pady=30, fill=tk.BOTH, expand=True)
+        
         # Etiqueta g(x) =
         tk.Label(options_frame, text="g(x) =", font=("Arial", scale_font(16), "bold"), 
-                bg=COLOR_FONDO, fg="white").pack(side=tk.LEFT, padx=10)
+                bg=COLOR_FONDO, fg="white").pack(pady=15)
         
-        # Opciones con botones de colores
+        # Opciones con RoundedButton (como nivel fácil)
         btn_frame = tk.Frame(options_frame, bg=COLOR_FONDO)
-        btn_frame.pack(side=tk.LEFT, fill=tk.BOTH, expand=True, padx=10)
+        btn_frame.pack(pady=20)
         
-        # Opciones sin revelar la correcta (todos con color uniforme)
+        # Opciones sin revelar la correcta
         options_values = ["1.029183673", "1.019183673", "1.039183673", "1.049183673"]
         correct_answer = "1.019183673"
         
         # Randomizar el orden de las opciones
         random.shuffle(options_values)
-        
-        # Usar el mismo color para todos (sin revelar cuál es correcto)
-        btn_color = "#4A9AFF"
         
         def _make_handler(option_text):
             def _handler():
@@ -1158,12 +1153,12 @@ Zamora Pequeño, O., Zamora Pequeño, R. S., & Del Ángel Ramírez, A. (2020). M
                     self.show_difficulty_menu(chapter, level)
             return _handler
         
+        # Crear botones en fila horizontal (como nivel fácil)
         for opt_text in options_values:
-            btn = tk.Canvas(btn_frame, width=150, height=120, bg=btn_color, 
-                           highlightthickness=0, cursor="hand2")
-            btn.pack(side=tk.LEFT, padx=8, fill=tk.BOTH, expand=True, pady=10)
-            btn.create_text(75, 60, text=opt_text, font=("Arial", scale_font(18), "bold"), fill="white", justify=tk.CENTER)
-            btn.bind("<Button-1>", lambda e, text=opt_text: _make_handler(text)())
+            btn = RoundedButton(btn_frame, text=opt_text, width=200, height=90,
+                              color=BTN_EASY_COLOR, text_color="#000000",
+                              command=_make_handler(opt_text))
+            btn.pack(side=tk.LEFT, padx=15)
 
     def show_practica(self, lesson, chapter, level, difficulty, lesson_index):
         """Renderiza preguntas de práctica. Si es dificultad 'Fácil', aplica estética especial.
