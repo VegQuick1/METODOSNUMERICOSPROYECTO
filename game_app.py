@@ -334,6 +334,10 @@ class NumericalMethodsGame:
         # Archivo de guardado
         self.save_file = "game_progress.json"
         
+        # Estado de sonido
+        self.music_enabled = True
+        self.music_volume = 0.7
+        
         # Cargar datos guardados
         self._load_progress()
         
@@ -342,6 +346,10 @@ class NumericalMethodsGame:
         
         # --- INICIALIZAR GESTOR DE MÚSICA ---
         self.music_manager = MusicManager(songs_folder="songs")
+        if not self.music_enabled:
+            self.music_manager.set_volume(0.0)
+        else:
+            self.music_manager.set_volume(self.music_volume)
         
         # --- CARGAR IMAGEN DE "VOLVER" ---
         self.back_icon = None
@@ -446,7 +454,8 @@ class NumericalMethodsGame:
         # Iniciar la música (solo si no está ya reproduciendo)
         try:
             if not hasattr(self, 'music_started'):
-                self.music_manager.play()
+                if self.music_enabled:
+                    self.music_manager.play()
                 self.music_started = True
         except Exception as e:
             print(f"Error iniciando música: {e}")
@@ -626,54 +635,105 @@ class NumericalMethodsGame:
         btn_back = self.create_back_button(header_frame, self.show_main_menu, "#003366")
         btn_back.pack(side=tk.RIGHT, anchor="center", padx=10)
 
-        # Contenido principal
+        # Contenido principal - centrado
         content = tk.Frame(self.current_screen, bg=COLOR_FONDO)
         content.pack(fill=tk.BOTH, expand=True, padx=30, pady=30)
+        
+        # Contenedor interno para centrar los botones
+        buttons_container = tk.Frame(content, bg=COLOR_FONDO)
+        buttons_container.pack(expand=True, fill=tk.X)
 
         # Botones de configuración con gradientes
         # SONIDO - Gradiente cyan a verde
-        RoundedButton(content, text="🔊  SONIDO", width=None, height=70,
+        def _toggle_music():
+            self.music_enabled = not self.music_enabled
+            if self.music_enabled:
+                self.music_manager.set_volume(self.music_volume)
+                self.music_manager.play()
+                status_msg = "Música activada ✓"
+            else:
+                self.music_manager.set_volume(0.0)
+                status_msg = "Música desactivada ✗"
+            messagebox.showinfo("Sonido", status_msg)
+            self._save_progress()
+            self.show_config_menu()
+        
+        music_action = "Ensordecer" if self.music_enabled else "Desensordecer"
+        music_status = "🔊" if self.music_enabled else "🔇"
+        RoundedButton(buttons_container, text=f"{music_status}  {music_action}", width=380, height=70,
                   color="#20D0C0", text_color="#ffffff",
-                  command=lambda: messagebox.showinfo("Sonido", "Funcionalidad próximamente")).pack(pady=15, fill=tk.X)
+                  command=_toggle_music).pack(pady=15)
 
         # IDIOMA - Gradiente cyan a naranja
-        btn_idioma = tk.Canvas(content, height=70, bg=COLOR_FONDO, highlightthickness=0)
-        btn_idioma.pack(pady=15, fill=tk.X)
+        btn_idioma = tk.Canvas(buttons_container, width=380, height=70, bg=COLOR_FONDO, highlightthickness=0)
+        btn_idioma.pack(pady=15)
         
         if PIL_AVAILABLE:
-            img_idioma = create_rounded_rect_image(600, 70, 20, "#20D0C0", "#FF8C5A")
+            img_idioma = create_rounded_rect_image(380, 70, 20, "#20D0C0", "#FF8C5A")
             if img_idioma:
                 tkimg_idioma = ImageTk.PhotoImage(img_idioma)
                 btn_idioma._img = tkimg_idioma
                 btn_idioma.create_image(0, 0, anchor="nw", image=tkimg_idioma)
         
-        btn_idioma.create_text(35, 35, text="🌐  IDIOMA", fill="white", font=("Arial", 16, "bold"), anchor="w")
+        btn_idioma.create_text(190, 35, text="🌐  IDIOMA", fill="white", font=("Arial", 16, "bold"), anchor="c")
         btn_idioma.bind("<Button-1>", lambda e: messagebox.showinfo("Idioma", "Funcionalidad próximamente"))
         btn_idioma.bind("<Enter>", lambda e: btn_idioma.config(cursor="hand2"))
         btn_idioma.bind("<Leave>", lambda e: btn_idioma.config(cursor=""))
 
         # CRÉDITOS - Gradiente cyan a naranja
-        btn_creditos = tk.Canvas(content, height=70, bg=COLOR_FONDO, highlightthickness=0)
-        btn_creditos.pack(pady=15, fill=tk.X)
+        btn_creditos = tk.Canvas(buttons_container, width=380, height=70, bg=COLOR_FONDO, highlightthickness=0)
+        btn_creditos.pack(pady=15)
         
         if PIL_AVAILABLE:
-            img_creditos = create_rounded_rect_image(600, 70, 20, "#20D0C0", "#FF8C5A")
+            img_creditos = create_rounded_rect_image(380, 70, 20, "#20D0C0", "#FF8C5A")
             if img_creditos:
                 tkimg_creditos = ImageTk.PhotoImage(img_creditos)
                 btn_creditos._img = tkimg_creditos
                 btn_creditos.create_image(0, 0, anchor="nw", image=tkimg_creditos)
         
-        btn_creditos.create_text(35, 35, text="ℹ️  CRÉDITOS", fill="white", font=("Arial", 16, "bold"), anchor="w")
-        btn_creditos.bind("<Button-1>", lambda e: messagebox.showinfo("Créditos", "Juego de Métodos Numéricos\n\nDesarrollado por: Tu Equipo"))
+        btn_creditos.create_text(190, 35, text="ℹ️  CRÉDITOS", fill="white", font=("Arial", 16, "bold"), anchor="c")
+        
+        credits_text = """Juego de Métodos Numéricos
+
+EQUIPO 1:
+• Jorge Aaron Cuellar Fuentes
+  (2007916)
+• Gerardo Ulloa Loredo
+  (2001913)
+• Julio César Silguero Ramírez
+  (2049923)"""
+        
+        btn_creditos.bind("<Button-1>", lambda e: messagebox.showinfo("Créditos", credits_text))
         btn_creditos.bind("<Enter>", lambda e: btn_creditos.config(cursor="hand2"))
         btn_creditos.bind("<Leave>", lambda e: btn_creditos.config(cursor=""))
 
-        # REINICIAR PROGRESO - Gradiente rojo a púrpura
-        btn_reset = tk.Canvas(content, height=70, bg=COLOR_FONDO, highlightthickness=0)
-        btn_reset.pack(pady=15, fill=tk.X)
+        # BIBLIOGRAFÍA - Gradiente cyan a naranja
+        btn_bibliografia = tk.Canvas(buttons_container, width=380, height=70, bg=COLOR_FONDO, highlightthickness=0)
+        btn_bibliografia.pack(pady=15)
         
         if PIL_AVAILABLE:
-            img_reset = create_rounded_rect_image(600, 70, 20, "#FF3333", "#D500F9")
+            img_bibliografia = create_rounded_rect_image(380, 70, 20, "#20D0C0", "#FF8C5A")
+            if img_bibliografia:
+                tkimg_bibliografia = ImageTk.PhotoImage(img_bibliografia)
+                btn_bibliografia._img = tkimg_bibliografia
+                btn_bibliografia.create_image(0, 0, anchor="nw", image=tkimg_bibliografia)
+        
+        btn_bibliografia.create_text(190, 35, text="📚  BIBLIOGRAFÍA", fill="white", font=("Arial", 16, "bold"), anchor="c")
+        
+        bibliography_text = """Referencias Bibliográficas
+
+Zamora Pequeño, O., Zamora Pequeño, R. S., & Del Ángel Ramírez, A. (2020). Métodos numéricos (2.ª ed.). Universidad Autónoma de Nuevo León."""
+        
+        btn_bibliografia.bind("<Button-1>", lambda e: messagebox.showinfo("Bibliografía", bibliography_text))
+        btn_bibliografia.bind("<Enter>", lambda e: btn_bibliografia.config(cursor="hand2"))
+        btn_bibliografia.bind("<Leave>", lambda e: btn_bibliografia.config(cursor=""))
+
+        # REINICIAR PROGRESO - Gradiente rojo a púrpura
+        btn_reset = tk.Canvas(buttons_container, width=380, height=70, bg=COLOR_FONDO, highlightthickness=0)
+        btn_reset.pack(pady=15)
+        
+        if PIL_AVAILABLE:
+            img_reset = create_rounded_rect_image(380, 70, 20, "#FF3333", "#D500F9")
             if img_reset:
                 tkimg_reset = ImageTk.PhotoImage(img_reset)
                 btn_reset._img = tkimg_reset
@@ -685,7 +745,7 @@ class NumericalMethodsGame:
             if response:
                 self._reset_progress()
         
-        btn_reset.create_text(35, 35, text="⚠️  REINICIAR PROGRESO", fill="white", font=("Arial", 16, "bold"), anchor="w")
+        btn_reset.create_text(190, 35, text="⚠️  REINICIAR PROGRESO", fill="white", font=("Arial", 16, "bold"), anchor="c")
         btn_reset.bind("<Button-1>", _on_reset_click)
         btn_reset.bind("<Enter>", lambda e: btn_reset.config(cursor="hand2"))
         btn_reset.bind("<Leave>", lambda e: btn_reset.config(cursor=""))
@@ -790,6 +850,13 @@ class NumericalMethodsGame:
     def show_difficulty_menu(self, chapter, level):
         self.clear_screen()
         
+        # Reanudar música con fade in cuando vuelves
+        try:
+            if self.music_enabled:
+                self.music_manager.fade_in(duration=3.0, target_volume=self.music_volume)
+        except Exception as e:
+            print(f"Error en fade in de música: {e}")
+        
         # Header con botón volver al menú de lecciones
         self.add_header_with_back(level, self.show_chapter_menu)
         
@@ -822,7 +889,8 @@ class NumericalMethodsGame:
     def start_lesson(self, chapter, level, difficulty, lesson_index):
         # --- FADE OUT DE LA MÚSICA ---
         try:
-            self.music_manager.fade_out(duration=5.0)
+            if self.music_enabled:
+                self.music_manager.fade_out(duration=5.0)
         except Exception as e:
             print(f"Error en fade out de música: {e}")
         
@@ -1237,7 +1305,9 @@ class NumericalMethodsGame:
             "time_elapsed_seconds": self.time_elapsed_seconds,
             "errors_committed": self.errors_committed,
             "medals": self.medals,
-            "username": self.username
+            "username": self.username,
+            "music_enabled": self.music_enabled,
+            "music_volume": self.music_volume
         }
         try:
             with open(self.save_file, "w") as f:
@@ -1255,6 +1325,8 @@ class NumericalMethodsGame:
                     self.errors_committed = data.get("errors_committed", 0)
                     self.medals = data.get("medals", [])
                     self.username = data.get("username", "Jugador 1")
+                    self.music_enabled = data.get("music_enabled", True)
+                    self.music_volume = data.get("music_volume", 0.7)
             except Exception as e:
                 print(f"Error cargando progreso: {e}")
 
@@ -1263,6 +1335,8 @@ class NumericalMethodsGame:
         self.time_elapsed_seconds = 0
         self.errors_committed = 0
         self.medals = []
+        self.music_enabled = True
+        self.music_volume = 0.7
         self._save_progress()
         messagebox.showinfo("Progreso Reiniciado", "Tu progreso ha sido reiniciado. ¡A jugar!")
         self.show_main_menu()
