@@ -11,14 +11,18 @@ from numerical_methods_lessons import *
 # Referencia a la aplicación (será asignada después)
 app_ref = None
 scale_font = None  # Se asignará en set_app_reference
+PIL_AVAILABLE = False  # Se asignará en set_app_reference
+COLOR_FONDO = "#001F3F"  # Se asignará en set_app_reference
 
 def set_app_reference(app):
     """Establecer referencia a la aplicación principal"""
-    global app_ref, scale_font
+    global app_ref, scale_font, PIL_AVAILABLE, COLOR_FONDO
     app_ref = app
     # Importar scale_font desde game_app
-    from game_app import scale_font as sf
+    from game_app import scale_font as sf, PIL_AVAILABLE as pil_avail, COLOR_FONDO as cf
     scale_font = sf
+    PIL_AVAILABLE = pil_avail
+    COLOR_FONDO = cf
 
 # ============================================================================
 # CAPÍTULO 1: INTERPOLACIÓN - MÉTODOS ADICIONALES
@@ -28,25 +32,34 @@ def show_interpolacion_lineal(chapter, level, difficulty, lesson_index):
     """Mostrar ejercicio de Interpolación Lineal"""
     difficulty_key = difficulty.lower().replace(' ', '').replace('pruebafinal', 'final')
     data = LINEAL_LESSONS[difficulty_key]
-    _show_generic_interpolation_exercise(chapter, level, difficulty, lesson_index, data, "Interpolación Lineal", "#FFB6C1")
+    # Colores diferentes por dificultad
+    colors = {'intermedio': '#FFB6C1', 'avanzado': '#FF69B4', 'final': '#FF1493'}
+    color = colors.get(difficulty_key, '#FFB6C1')
+    _show_generic_interpolation_exercise(chapter, level, difficulty, lesson_index, data, "Interpolación Lineal", color)
 
 def show_newton_forward(chapter, level, difficulty, lesson_index):
     """Mostrar ejercicio de Newton Hacia Adelante"""
     difficulty_key = difficulty.lower().replace(' ', '').replace('pruebafinal', 'final')
     data = NEWTON_FORWARD_LESSONS[difficulty_key]
-    _show_generic_interpolation_exercise(chapter, level, difficulty, lesson_index, data, "Newton Hacia Adelante", "#90EE90")
+    colors = {'intermedio': '#90EE90', 'avanzado': '#32CD32', 'final': '#228B22'}
+    color = colors.get(difficulty_key, '#90EE90')
+    _show_generic_interpolation_exercise(chapter, level, difficulty, lesson_index, data, "Newton Hacia Adelante", color)
 
 def show_newton_backward(chapter, level, difficulty, lesson_index):
     """Mostrar ejercicio de Newton Hacia Atrás"""
     difficulty_key = difficulty.lower().replace(' ', '').replace('pruebafinal', 'final')
     data = NEWTON_BACKWARD_LESSONS[difficulty_key]
-    _show_generic_interpolation_exercise(chapter, level, difficulty, lesson_index, data, "Newton Hacia Atrás", "#87CEEB")
+    colors = {'intermedio': '#87CEEB', 'avanzado': '#4169E1', 'final': '#00008B'}
+    color = colors.get(difficulty_key, '#87CEEB')
+    _show_generic_interpolation_exercise(chapter, level, difficulty, lesson_index, data, "Newton Hacia Atrás", color)
 
 def show_newton_divided_diff(chapter, level, difficulty, lesson_index):
     """Mostrar ejercicio de Newton Diferencias Divididas"""
     difficulty_key = difficulty.lower().replace(' ', '').replace('pruebafinal', 'final')
     data = NEWTON_DIVIDED_DIFF_LESSONS[difficulty_key]
-    _show_generic_interpolation_exercise(chapter, level, difficulty, lesson_index, data, "Newton Diferencias Divididas", "#DDA0DD")
+    colors = {'intermedio': '#DDA0DD', 'avanzado': '#BA55D3', 'final': '#8B008B'}
+    color = colors.get(difficulty_key, '#DDA0DD')
+    _show_generic_interpolation_exercise(chapter, level, difficulty, lesson_index, data, "Newton Diferencias Divididas", color)
 
 def _show_generic_interpolation_exercise(chapter, level, difficulty, lesson_index, data, method_name, banner_color):
     """Función genérica para mostrar ejercicios de interpolación"""
@@ -63,7 +76,7 @@ def _show_generic_interpolation_exercise(chapter, level, difficulty, lesson_inde
             return
     
     # === BANNER SUPERIOR ===
-    banner_frame = tk.Frame(app_ref.current_screen, bg=banner_color, height=60)
+    banner_frame = tk.Frame(app_ref.current_screen, bg=banner_color, height=70)
     banner_frame.pack(fill=tk.X, side=tk.TOP)
     banner_frame.pack_propagate(False)
     
@@ -75,38 +88,46 @@ def _show_generic_interpolation_exercise(chapter, level, difficulty, lesson_inde
     
     banner_text = f"Capítulo {chapter_num} Nivel {level_num}. {method_name}. {difficulty}"
     tk.Label(banner_frame, text=banner_text, font=("Arial", scale_font(16), "bold"), 
-            bg=banner_color, fg="#FFFFFF").pack(side=tk.LEFT, padx=20, pady=10)
+            bg=banner_color, fg="#FFFFFF").pack(side=tk.LEFT, padx=20, pady=15)
     
     # Botón de retroceso
     try:
-        from PIL import Image as PILImage, ImageTk as PILImageTk
-        pil_img = PILImage.open(os.path.join('imgs', 'red-go-back-arrow.png'))
-        pil_img.thumbnail((40, 40), PILImage.Resampling.LANCZOS)
-        back_arrow_img = PILImageTk.PhotoImage(pil_img)
+        if PIL_AVAILABLE:
+            from PIL import Image as PILImage, ImageTk as PILImageTk
+            pil_img = PILImage.open(os.path.join('imgs', 'red-go-back-arrow.png'))
+            pil_img.thumbnail((40, 40), PILImage.Resampling.LANCZOS)
+            back_arrow_img = PILImageTk.PhotoImage(pil_img)
+        else:
+            back_arrow_img = tk.PhotoImage(file=os.path.join('imgs', 'red-go-back-arrow.png'))
+            if back_arrow_img.width() > 40:
+                factor = max(1, int(back_arrow_img.width() / 40))
+                back_arrow_img = back_arrow_img.subsample(factor)
+        
         back_btn = tk.Label(banner_frame, image=back_arrow_img, bg=banner_color, cursor="hand2")
         back_btn.image = back_arrow_img
-    except:
+        back_btn.pack(side=tk.RIGHT, padx=20, pady=15)
+        back_btn.bind("<Button-1>", lambda e: app_ref.show_difficulty_menu(chapter, level))
+    except Exception:
         back_btn = tk.Label(banner_frame, text="◀", font=("Arial", scale_font(20), "bold"), 
                            bg=banner_color, fg="#FFFFFF", cursor="hand2")
-    
-    back_btn.pack(side=tk.RIGHT, padx=20, pady=10)
-    back_btn.bind("<Button-1>", lambda e: app_ref.show_difficulty_menu(chapter, level))
+        back_btn.pack(side=tk.RIGHT, padx=20, pady=15)
+        back_btn.bind("<Button-1>", lambda e: app_ref.show_difficulty_menu(chapter, level))
     
     # Contenido principal
-    main_frame = tk.Frame(app_ref.current_screen, bg=app_ref.COLOR_FONDO)
+    main_frame = tk.Frame(app_ref.current_screen, bg=COLOR_FONDO)
     main_frame.pack(fill=tk.BOTH, expand=True, padx=20, pady=20)
     
     # Título del problema
     tk.Label(main_frame, text="Obtener g(x)", font=("Arial", scale_font(18), "bold"), 
-            bg=app_ref.COLOR_FONDO, fg="#20E0D0").pack(pady=10)
+            bg=COLOR_FONDO, fg="#20E0D0").pack(pady=10)
     
     # Frame para tabla y x
-    top_content_frame = tk.Frame(main_frame, bg=app_ref.COLOR_FONDO)
+    top_content_frame = tk.Frame(main_frame, bg=COLOR_FONDO)
     top_content_frame.pack(pady=15, fill=tk.X)
     
     # Mostrar x a encontrar
     tk.Label(top_content_frame, text=f"x = {data['x_to_find']}", font=("Arial", scale_font(16), "bold"), 
-            bg=app_ref.COLOR_FONDO, fg="white").pack(side=tk.LEFT, padx=20)
+            bg=COLOR_FONDO, fg="white").pack(side=tk.LEFT, padx=20)
     
     # Tabla de datos
     table_frame = tk.Frame(top_content_frame, bg="white", highlightthickness=2, highlightbackground="#20E0D0")
@@ -132,16 +153,16 @@ def _show_generic_interpolation_exercise(chapter, level, difficulty, lesson_inde
         cell_y.grid(row=i, column=1, sticky="nsew")
     
     # Temporizador
-    timer_container = tk.Frame(top_content_frame, bg=app_ref.COLOR_FONDO)
+    timer_container = tk.Frame(top_content_frame, bg=COLOR_FONDO)
     timer_container.pack(side=tk.RIGHT, padx=20)
     
     tk.Label(timer_container, text="⏱", font=("Arial", scale_font(24)), 
-            bg=app_ref.COLOR_FONDO, fg="white").pack(pady=5)
+            bg=COLOR_FONDO, fg="white").pack(pady=5)
     tk.Label(timer_container, text="Tiempo restante", font=("Arial", scale_font(12), "bold"), 
-            bg=app_ref.COLOR_FONDO, fg="white").pack()
+            bg=COLOR_FONDO, fg="white").pack()
     
     timer_label = tk.Label(timer_container, text="00:00", font=("Arial", scale_font(20), "bold"), 
-                          bg=app_ref.COLOR_FONDO, fg="#20E0D0")
+                          bg=COLOR_FONDO, fg="#20E0D0")
     timer_label.pack(pady=5)
     
     # Temporizador
@@ -163,13 +184,13 @@ def _show_generic_interpolation_exercise(chapter, level, difficulty, lesson_inde
     _update_timer()
     
     # Marco con opciones
-    options_frame = tk.Frame(main_frame, bg=app_ref.COLOR_FONDO)
+    options_frame = tk.Frame(main_frame, bg=COLOR_FONDO)
     options_frame.pack(pady=30, fill=tk.BOTH, expand=True)
     
     tk.Label(options_frame, text="g(x) =", font=("Arial", scale_font(16), "bold"), 
-            bg=app_ref.COLOR_FONDO, fg="white").pack(pady=15)
+            bg=COLOR_FONDO, fg="white").pack(pady=15)
     
-    btn_frame = tk.Frame(options_frame, bg=app_ref.COLOR_FONDO)
+    btn_frame = tk.Frame(options_frame, bg=COLOR_FONDO)
     btn_frame.pack(pady=20)
     
     options_values = data['options'].copy()
