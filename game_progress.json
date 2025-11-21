@@ -1,6 +1,9 @@
 {
-    "time_elapsed_seconds": 0,
-    "errors_committed": 0,
-    "medals": [],
+    "time_elapsed_seconds": 3491,
+    "errors_committed": 13,
+    "medals": [
+        "Nivel 1: Gauss-Seidel (F\u00e1cil)",
+        "Nivel 1: Lagrange (F\u00e1cil)"
+    ],
     "username": "Jugador 1"
 }

@@ -679,41 +679,86 @@ class NumericalMethodsGame:
         btn_reset.bind("<Leave>", lambda e: btn_reset.config(cursor=""))
 
     def show_chapter_menu(self):
+        """Menú unificado de capítulos y niveles con diseño desplegable"""
         self.clear_screen()
         self.add_header_with_back("LECCIONES", self.show_main_menu)
         
         scroll_container = ScrollableFrame(self.current_screen, bg_color=COLOR_FONDO)
-        scroll_container.pack(fill="both", expand=True, pady=10)
+        scroll_container.pack(fill="both", expand=True, pady=20, padx=15)
 
         for chapter_name in GAME_STRUCTURE.keys():
-            btn = RoundedButton(scroll_container.scrollable_frame, 
-                                text=chapter_name, width=None, height=55,
-                                color=COLOR_BOTON_CLARO, outline_color=COLOR_BORDE_OSCURO, border_width=3,
-                                command=lambda c=chapter_name: self.show_level_menu(c))
-            btn.pack(pady=8)
+            # Marco del capítulo
+            chapter_frame = tk.Frame(scroll_container.scrollable_frame, bg=COLOR_FONDO)
+            chapter_frame.pack(fill=tk.X, pady=15)
+
+            # Título del capítulo (azul como en la imagen)
+            chapter_title_canvas = tk.Canvas(chapter_frame, height=50, bg=COLOR_FONDO, highlightthickness=0)
+            chapter_title_canvas.pack(fill=tk.X, pady=(0, 10))
+            
+            if PIL_AVAILABLE:
+                img_title = create_rounded_rect_image(600, 50, 12, "#0047AB", "#0047AB")
+                if img_title:
+                    tkimg_title = ImageTk.PhotoImage(img_title)
+                    chapter_title_canvas._img = tkimg_title
+                    chapter_title_canvas.create_image(0, 0, anchor="nw", image=tkimg_title)
+            
+            chapter_title_canvas.create_text(20, 25, text=chapter_name, fill="white", font=("Arial", 16, "bold"), anchor="w")
+            chapter_title_canvas.configure(height=50, width=600)
+
+            # Niveles dentro del capítulo
+            levels = GAME_STRUCTURE[chapter_name]['levels']
+            for level_name in levels.keys():
+                # Marco del nivel con ícono de botón a la derecha
+                level_frame = tk.Frame(chapter_frame, bg="#1a3a52", highlightthickness=0)
+                level_frame.pack(fill=tk.X, pady=8, padx=10)
+                
+                # Contenido del nivel (texto) - NO CLICKEABLE
+                level_label = tk.Label(level_frame, text=level_name, 
+                                      font=("Arial", 13, "bold"), 
+                                      bg="#1a3a52", fg="white", 
+                                      padx=15, pady=12, anchor="w")
+                level_label.pack(side=tk.LEFT, fill=tk.X, expand=True)
+                
+                # Botón imagen a la derecha (navegación) - ÚNICO CLICKEABLE
+                def _on_level_click(event, c=chapter_name, l=level_name):
+                    self.show_difficulty_menu(c, l)
+                
+                try:
+                    if PIL_AVAILABLE:
+                        from PIL import Image, ImageTk as PILImageTk
+                        btn_img = Image.open(os.path.join('imgs', 'botonnivel.png'))
+                        btn_img.thumbnail((45, 45), Image.Resampling.LANCZOS)
+                        nivel_btn_img = PILImageTk.PhotoImage(btn_img)
+                        level_btn = tk.Label(level_frame, image=nivel_btn_img, bg="#1a3a52", cursor="hand2")
+                        level_btn.image = nivel_btn_img
+                    else:
+                        level_btn = tk.Label(level_frame, text="➤", 
+                                            font=("Arial", 18, "bold"), 
+                                            bg="#1a3a52", fg="white", 
+                                            cursor="hand2")
+                except Exception:
+                    level_btn = tk.Label(level_frame, text="➤", 
+                                        font=("Arial", 18, "bold"), 
+                                        bg="#1a3a52", fg="white", 
+                                        cursor="hand2")
+                
+                level_btn.pack(side=tk.RIGHT, padx=10)
+                level_btn.bind("<Button-1>", _on_level_click)
+                
+                # Cambiar color al pasar el mouse SOLO EN EL BOTÓN
+                level_btn.bind("<Enter>", lambda e, lf=level_frame: lf.config(bg="#2a4a62"))
+                level_btn.bind("<Leave>", lambda e, lf=level_frame: lf.config(bg="#1a3a52"))
             
     def show_level_menu(self, chapter_name):
-        self.clear_screen()
-        self.add_header_with_back(chapter_name, self.show_chapter_menu)
-        
-        scroll_container = ScrollableFrame(self.current_screen, bg_color=COLOR_FONDO)
-        scroll_container.pack(fill="both", expand=True, pady=10)
-
-        levels = GAME_STRUCTURE[chapter_name]['levels']
-        for level_name in levels.keys():
-            # AQUI CAMBIA: En lugar de start_lesson, vamos a show_difficulty_menu
-            btn = RoundedButton(scroll_container.scrollable_frame, 
-                                text=level_name, width=None, height=55,
-                                color=COLOR_BOTON_CLARO, outline_color=COLOR_BORDE_OSCURO, border_width=3,
-                                command=lambda l=level_name: self.show_difficulty_menu(chapter_name, l))
-            btn.pack(pady=8)
+        """Este método está deprecado - Se usa show_chapter_menu en su lugar"""
+        pass
 
     # --- NUEVA FUNCIÓN: MENÚ DE DIFICULTAD (Estilo Imagen Adjunta) ---
     def show_difficulty_menu(self, chapter, level):
         self.clear_screen()
         
-        # Header con botón volver al menú de niveles
-        self.add_header_with_back(level, lambda: self.show_level_menu(chapter))
+        # Header con botón volver al menú de lecciones
+        self.add_header_with_back(level, self.show_chapter_menu)
         
         # Contenedor centrado
         container = tk.Frame(self.current_screen, bg=COLOR_FONDO)
@@ -815,6 +860,121 @@ class NumericalMethodsGame:
                       command=lambda: self.start_lesson(chapter, level, difficulty, lesson_index + 1)).pack(pady=10)
 
     def show_practica(self, lesson, chapter, level, difficulty, lesson_index):
+        """Renderiza preguntas de práctica. Si es dificultad 'Fácil', aplica estética especial.
+        Todos los niveles Fácil usan formato con banner, respuestas horizontales, etc.
+        """
+        import random
+        
+        # TODOS LOS NIVELES FÁCIL usan el nuevo formato con banner y respuestas horizontales
+        is_easy_mode = difficulty.lower() == 'fácil'
+
+        if is_easy_mode:
+            # Estado para rastrear el progreso en las preguntas - GENÉRICO PARA TODOS LOS NIVELES FÁCIL
+            easy_state = {
+                'current_lesson_index': lesson_index,
+                'total_correct': 0,
+                'lessons': []  # Lista de lecciones en esta dificultad
+            }
+
+            # Obtener todas las lecciones de esta dificultad
+            try:
+                lessons = GAME_STRUCTURE[chapter]['levels'][level][difficulty]
+                easy_state['lessons'] = lessons
+            except KeyError:
+                tk.Label(self.current_screen, text="Error al cargar lecciones.", bg=COLOR_FONDO, fg='white').pack(pady=20)
+                return
+
+            def _show_easy_question():
+                """Muestra la siguiente pregunta en modo Fácil con banner y respuestas horizontales."""
+                for w in self.current_screen.winfo_children():
+                    w.destroy()
+
+                # Verificar si completamos todas las lecciones
+                if easy_state['current_lesson_index'] >= len(easy_state['lessons']):
+                    messagebox.showinfo("¡Completado!", f"¡Felicidades! Has completado {level} en modo {difficulty}.")
+                    medal_str = f"{level} ({difficulty})"
+                    if medal_str not in self.medals:
+                        self.medals.append(medal_str)
+                    self._save_progress()
+                    self.show_difficulty_menu(chapter, level)
+                    return
+
+                current_lesson = easy_state['lessons'][easy_state['current_lesson_index']]
+
+                # === BANNER SUPERIOR ===
+                banner_frame = tk.Frame(self.current_screen, bg="#20E0D0", height=60)
+                banner_frame.pack(fill=tk.X, side=tk.TOP)
+                banner_frame.pack_propagate(False)
+                
+                banner_text = f"Capítulo 1 {level}. {difficulty} - Pregunta {easy_state['current_lesson_index'] + 1}"
+                tk.Label(banner_frame, text=banner_text, font=("Arial", 16, "bold"), 
+                        bg="#20E0D0", fg="#FFFFFF").pack(side=tk.LEFT, padx=20, pady=10)
+                
+                # Botón de retroceso en la esquina derecha del banner
+                try:
+                    if PIL_AVAILABLE:
+                        from PIL import Image, ImageTk as PILImageTk
+                        pil_img = Image.open(os.path.join('imgs', 'red-go-back-arrow.png'))
+                        pil_img.thumbnail((40, 40), Image.Resampling.LANCZOS)
+                        back_arrow_img = PILImageTk.PhotoImage(pil_img)
+                    else:
+                        back_arrow_img = tk.PhotoImage(file=os.path.join('imgs', 'red-go-back-arrow.png'))
+                        if back_arrow_img.width() > 40:
+                            factor = max(1, int(back_arrow_img.width() / 40))
+                            back_arrow_img = back_arrow_img.subsample(factor)
+                    
+                    back_btn = tk.Label(banner_frame, image=back_arrow_img, bg="#20E0D0", cursor="hand2")
+                    back_btn.image = back_arrow_img
+                    back_btn.pack(side=tk.RIGHT, padx=15, pady=10)
+                    back_btn.bind("<Button-1>", lambda e: self.show_difficulty_menu(chapter, level))
+                except Exception:
+                    back_btn = tk.Label(banner_frame, text="◀", font=("Arial", 20, "bold"), 
+                                       bg="#20E0D0", fg="#FF5733", cursor="hand2")
+                    back_btn.pack(side=tk.RIGHT, padx=20, pady=10)
+                    back_btn.bind("<Button-1>", lambda e: self.show_difficulty_menu(chapter, level))
+
+                # Mostrar contenido de la pregunta
+                tk.Label(self.current_screen, text=f"Pregunta: {current_lesson['content']}", 
+                        wraplength=700, font=("Arial", 14, "bold"), bg=COLOR_FONDO, fg=COLOR_TEXTO_LBL).pack(pady=20, padx=40)
+
+                # Mostrar opciones en fila horizontal
+                options_frame = tk.Frame(self.current_screen, bg=COLOR_FONDO)
+                options_frame.pack(pady=20)
+
+                if 'options' in current_lesson:
+                    correct_answer = current_lesson['answer']
+                    
+                    def _make_easy_answer_handler(selected_option):
+                        def _handler():
+                            if selected_option == correct_answer:
+                                messagebox.showinfo("¡Correcto!", "¡Respuesta correcta!")
+                                easy_state['total_correct'] += 1
+                            else:
+                                messagebox.showerror("Incorrecto", f"Respuesta incorrecta.\nLa respuesta correcta es: {correct_answer}")
+                                self.errors_committed += 1
+
+                            easy_state['current_lesson_index'] += 1
+                            self._save_progress()
+                            _show_easy_question()
+
+                        return _handler
+
+                    # Crear botones en fila horizontal
+                    for option in current_lesson['options']:
+                        btn = RoundedButton(options_frame, text=option, width=120, height=50,
+                                          color=BTN_EASY_COLOR, text_color="#000000",
+                                          command=_make_easy_answer_handler(option))
+                        btn.pack(side=tk.LEFT, padx=8)
+                else:
+                    tk.Label(self.current_screen, text="(Formato de lección no soportado)", bg=COLOR_FONDO, fg='white').pack(pady=20)
+
+            # Iniciar el flujo de preguntas en modo Fácil
+            _show_easy_question()
+            return
+
+        # Fin modo Fácil
+
+        # Comportamiento por defecto (para Intermedio, Avanzado, Prueba Final)
         tk.Label(self.current_screen, text=f"Pregunta: {lesson['content']}", 
                  wraplength=700, font=("Arial", 14), bg=COLOR_FONDO, fg=COLOR_TEXTO_LBL).pack(pady=20, padx=40)
         
@@ -826,7 +986,7 @@ class NumericalMethodsGame:
                 btn = RoundedButton(options_frame, text=option, width=None, height=50,
                                     color=COLOR_BOTON_CLARO, outline_color=COLOR_BORDE_OSCURO, border_width=2,
                                     command=lambda o=option: self.check_answer(o, lesson, chapter, level, difficulty, lesson_index))
-                btn.pack(pady=5)
+                btn.pack(pady=8)
                 
         elif 'problem_id' in lesson:
             tk.Label(self.current_screen, text=f"(Mostrando problema: {lesson['problem_id']})", bg=COLOR_FONDO, fg=COLOR_TEXTO_LBL).pack(pady=10)
