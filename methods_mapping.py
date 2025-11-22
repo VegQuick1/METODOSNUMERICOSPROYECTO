@@ -1,10 +1,5 @@
-"""
-methods_mapping.py
-Mapeo de todos los métodos numéricos con sus propiedades
-"""
-
+﻿
 METHODS_MAPPING = {
-    # CAPÍTULO 1: INTERPOLACIÓN
     "Capítulo 1: Interpolación": {
         "Nivel 1: Lagrange": {
             "Intermedio": {"function": "_show_lagrange_intermedio", "banner_color": "#f8cf39"},
@@ -32,8 +27,6 @@ METHODS_MAPPING = {
             "Prueba Final": {"function": "show_newton_backward", "banner_color": "#87CEEB"},
         },
     },
-    
-    # CAPÍTULO 2: ECUACIONES LINEALES
     "Capítulo 2: Ecuaciones Lineales": {
         "Nivel 1: Montante": {
             "Intermedio": {"function": "show_montante", "banner_color": "#FFD700"},
@@ -61,8 +54,6 @@ METHODS_MAPPING = {
             "Prueba Final": {"function": "show_jacobi", "banner_color": "#4ECDC4"},
         },
     },
-    
-    # CAPÍTULO 3: ECUACIONES NO LINEALES
     "Capítulo 3: Ecuaciones No Lineales": {
         "Nivel 1: Bisección (Bisectriz)": {
             "Intermedio": {"function": "show_bisection", "banner_color": "#FF7F50"},
@@ -90,8 +81,6 @@ METHODS_MAPPING = {
             "Prueba Final": {"function": "show_secante", "banner_color": "#FF69B4"},
         },
     },
-    
-    # CAPÍTULO 4: ECUACIONES DIFERENCIALES ORDINARIAS
     "Capítulo 4: Ecuaciones Diferenciales Ordinarias": {
         "Nivel 1: Euler": {
             "Intermedio": {"function": "show_euler", "banner_color": "#FFD700"},
@@ -119,8 +108,6 @@ METHODS_MAPPING = {
             "Prueba Final": {"function": "show_rk4", "banner_color": "#FF6347"},
         },
     },
-    
-    # CAPÍTULO 5: INTEGRACIÓN NUMÉRICA
     "Capítulo 5: Integración Numérica": {
         "Nivel 1: Regla Trapezoidal": {
             "Intermedio": {"function": "show_trapezoidal", "banner_color": "#9932CC"},
@@ -148,8 +135,6 @@ METHODS_MAPPING = {
             "Prueba Final": {"function": "show_newton_cotes_abiertas", "banner_color": "#2E8B57"},
         },
     },
-    
-    # CAPÍTULO 6: MÍNIMOS CUADRADOS
     "Capítulo 6: Mínimos Cuadrados": {
         "Nivel 1: Línea Recta": {
             "Intermedio": {"function": "show_minimos_cuadrados_lineal", "banner_color": "#EE82EE"},
@@ -178,9 +163,7 @@ METHODS_MAPPING = {
         },
     },
 }
-
 def get_method_info(chapter, level, difficulty):
-    """Obtener información de un método específico"""
     try:
         return METHODS_MAPPING[chapter][level][difficulty]
     except KeyError:

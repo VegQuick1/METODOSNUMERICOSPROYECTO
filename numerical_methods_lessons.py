@@ -1,14 +1,4 @@
-"""
-numerical_methods_lessons.py
-Módulo con funciones auxiliares para lecciones de métodos numéricos
-Contiene datos de problemas y soluciones para cada método
-"""
-
-# ============================================================================
-# CAPÍTULO 1: INTERPOLACIÓN
-# ============================================================================
-
-# --- INTERPOLACIÓN LINEAL ---
+﻿
 LINEAL_LESSONS = {
     'intermedio': {
         'title': 'Interpolación Lineal',
@@ -35,8 +25,6 @@ LINEAL_LESSONS = {
         'time': 1500  # 25 minutos
     }
 }
-
-# --- NEWTON HACIA ADELANTE ---
 NEWTON_FORWARD_LESSONS = {
     'intermedio': {
         'title': 'Newton Hacia Adelante',
@@ -63,8 +51,6 @@ NEWTON_FORWARD_LESSONS = {
         'time': 1500
     }
 }
-
-# --- NEWTON HACIA ATRÁS ---
 NEWTON_BACKWARD_LESSONS = {
     'intermedio': {
         'title': 'Newton Hacia Atrás',
@@ -91,8 +77,6 @@ NEWTON_BACKWARD_LESSONS = {
         'time': 1500
     }
 }
-
-# --- NEWTON DIFERENCIAS DIVIDIDAS ---
 NEWTON_DIVIDED_DIFF_LESSONS = {
     'intermedio': {
         'title': 'Newton Diferencias Divididas',
@@ -119,12 +103,6 @@ NEWTON_DIVIDED_DIFF_LESSONS = {
         'time': 1500
     }
 }
-
-# ============================================================================
-# CAPÍTULO 2: ECUACIONES LINEALES
-# ============================================================================
-
-# --- GAUSS-SEIDEL ---
 GAUSS_SEIDEL_LESSONS = {
     'intermedio': {
         'title': 'Método de Gauss-Seidel',
@@ -154,8 +132,6 @@ GAUSS_SEIDEL_LESSONS = {
         'time': 1800  # 30 minutos
     }
 }
-
-# --- JACOBI ---
 JACOBI_LESSONS = {
     'intermedio': {
         'title': 'Método de Jacobi',
@@ -185,12 +161,6 @@ JACOBI_LESSONS = {
         'time': 1800
     }
 }
-
-# ============================================================================
-# CAPÍTULO 3: ECUACIONES NO LINEALES
-# ============================================================================
-
-# --- BISECCIÓN ---
 BISECTION_LESSONS = {
     'intermedio': {
         'title': 'Método de Bisección',
@@ -220,8 +190,6 @@ BISECTION_LESSONS = {
         'time': 1500
     }
 }
-
-# --- FALSA POSICIÓN ---
 FALSA_POSICION_LESSONS = {
     'intermedio': {
         'title': 'Falsa Posición (Regula-Falsi)',
@@ -251,8 +219,6 @@ FALSA_POSICION_LESSONS = {
         'time': 1500
     }
 }
-
-# --- NEWTON-RAPHSON ---
 NEWTON_RAPHSON_LESSONS = {
     'intermedio': {
         'title': 'Método Newton-Raphson',
@@ -285,8 +251,6 @@ NEWTON_RAPHSON_LESSONS = {
         'time': 1500
     }
 }
-
-# --- PUNTO FIJO ---
 PUNTO_FIJO_LESSONS = {
     'intermedio': {
         'title': 'Método de Punto Fijo',
@@ -319,8 +283,6 @@ PUNTO_FIJO_LESSONS = {
         'time': 1500
     }
 }
-
-# --- SECANTE ---
 SECANTE_LESSONS = {
     'intermedio': {
         'title': 'Método de la Secante',
@@ -350,12 +312,6 @@ SECANTE_LESSONS = {
         'time': 1500
     }
 }
-
-# ============================================================================
-# CAPÍTULO 4: ECUACIONES DIFERENCIALES ORDINARIAS
-# ============================================================================
-
-# --- EULER MODIFICADO ---
 EULER_MODIFICADO_LESSONS = {
     'intermedio': {
         'title': 'Método Euler Modificado',
@@ -385,8 +341,6 @@ EULER_MODIFICADO_LESSONS = {
         'time': 1800
     }
 }
-
-# --- RUNGE-KUTTA 2do ORDEN ---
 RK2_LESSONS = {
     'intermedio': {
         'title': 'Runge-Kutta 2º Orden',
@@ -416,8 +370,6 @@ RK2_LESSONS = {
         'time': 1800
     }
 }
-
-# --- RUNGE-KUTTA 4to ORDEN ---
 RK4_LESSONS = {
     'intermedio': {
         'title': 'Runge-Kutta 4º Orden (Simpson 1/3)',
@@ -447,12 +399,6 @@ RK4_LESSONS = {
         'time': 1800
     }
 }
-
-# ============================================================================
-# CAPÍTULO 5: INTEGRACIÓN NUMÉRICA
-# ============================================================================
-
-# --- REGLA TRAPEZOIDAL ---
 TRAPEZOIDAL_LESSONS = {
     'intermedio': {
         'title': 'Regla Trapezoidal',
@@ -479,8 +425,6 @@ TRAPEZOIDAL_LESSONS = {
         'time': 1500
     }
 }
-
-# --- REGLA DE SIMPSON 1/3 ---
 SIMPSON_13_LESSONS = {
     'intermedio': {
         'title': 'Regla de Simpson 1/3',
@@ -507,8 +451,6 @@ SIMPSON_13_LESSONS = {
         'time': 1500
     }
 }
-
-# --- REGLA DE SIMPSON 3/8 ---
 SIMPSON_38_LESSONS = {
     'intermedio': {
         'title': 'Regla de Simpson 3/8',
@@ -535,12 +477,6 @@ SIMPSON_38_LESSONS = {
         'time': 1500
     }
 }
-
-# ============================================================================
-# CAPÍTULO 6: MÍNIMOS CUADRADOS
-# ============================================================================
-
-# --- LÍNEA RECTA ---
 MINIMOS_CUADRADOS_LINEAL = {
     'intermedio': {
         'title': 'Mínimos Cuadrados - Línea Recta',
@@ -567,8 +503,6 @@ MINIMOS_CUADRADOS_LINEAL = {
         'time': 1500
     }
 }
-
-# --- PARÁBOLA (CUADRÁTICA) ---
 MINIMOS_CUADRADOS_CUADRATICA = {
     'intermedio': {
         'title': 'Mínimos Cuadrados - Parábola',

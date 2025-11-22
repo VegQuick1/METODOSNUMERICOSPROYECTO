@@ -1,13 +1,11 @@
 {
-    "time_elapsed_seconds": 7015,
-    "errors_committed": 24,
+    "time_elapsed_seconds": 197,
+    "errors_committed": 0,
     "medals": [
-        "Nivel 1: Gauss-Seidel (F\u00e1cil)",
         "Nivel 1: Lagrange (F\u00e1cil)",
-        "Nivel 2: Lineal (F\u00e1cil)",
-        "Nivel 1: Lagrange (Intermedio)"
+        "Nivel 1: Lagrange (Prueba Final)"
     ],
     "username": "Jugador 1",
-    "music_enabled": false,
+    "music_enabled": true,
     "music_volume": 0.7
 }

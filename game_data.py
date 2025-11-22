@@ -1,14 +1,17 @@
-"""
-Tipos de Lecciones:
-- 'Explicativa': Muestra texto y fórmulas. 
-- 'Practica': Un problema donde se muestra la solución si se falla.
-- 'Examen': Un problema donde fallar reinicia la lección.
-"""
+﻿
+LAGRANGE_FAKE_ANSWERS = {
+    'yi': ['y', 'yi+1', 'y(i)', 'yn'],
+    'n': ['m', 'k', 'l', 'i'],
+    'x-xj': ['x-xi', 'x-x0', 'x-xn', 'xi-x'],
+    'xi-xj': ['xi-xk', 'xj-xi', 'xk-xi', 'x-xj'],
+    'Σ': ['Σ', 'Π', '∫', 'Δ'],
+    'Nada': ['?', '*', '·', '—']
+}
 
 GAME_STRUCTURE = {
-    "Capítulo 1: Interpolación": {
+    "Interpolación": {
         "levels": {
-            "Nivel 1: Lagrange": {
+            "Lagrange": {
                 "Fácil": [
                     {'type': 'practica', 'content': '¿El método de Lagrange requiere intervalos uniformes obligatoriamente?', 'options': ['Si', 'No'], 'answer': 'No'},
                 ],
@@ -22,7 +25,7 @@ GAME_STRUCTURE = {
                     {'type': 'examen', 'problem_id': 'lagrange_final'}
                 ]
             },
-            "Nivel 2: Lineal": {
+            "Lineal": {
                 "Fácil": [
                     {'type': 'practica', 'content': 'La interpolación lineal une dos puntos mediante una...', 'options': ['Parábola', 'Línea Recta'], 'answer': 'Línea Recta'},
                 ],
@@ -36,7 +39,7 @@ GAME_STRUCTURE = {
                     {'type': 'examen', 'problem_id': 'linear_interp_1'}
                 ]
             },
-            "Nivel 3: Newton con Diferencias Divididas": {
+            "Newton con Diferencias Divididas": {
                 "Fácil": [                    {'type': 'practica', 'content': '¿Qué tipo de intervalos maneja principalmente este método?', 'options': ['Uniformes', 'No Uniformes'], 'answer': 'No Uniformes'},
                 ],
                 "Intermedio": [
@@ -49,7 +52,7 @@ GAME_STRUCTURE = {
                     {'type': 'examen', 'problem_id': 'newton_div_diff_1'}
                 ]
             },
-            "Nivel 4: Newton Hacia Adelante": {
+            "Newton Hacia Adelante": {
                 "Fácil": [
                     {'type': 'practica', 'content': 'En Newton Adelante, el factor "s" se calcula como:', 'options': ['(x - xi) / h', '(x + xi) / h'], 'answer': '(x - xi) / h'},
                 ],
@@ -63,7 +66,7 @@ GAME_STRUCTURE = {
                     {'type': 'examen', 'problem_id': 'newton_forward_1'}
                 ]
             },
-            "Nivel 5: Newton Hacia Atrás": {
+            "Newton Hacia Atrás": {
                 "Fácil": [
                     {'type': 'practica', 'content': 'El signo del factor binomial "s" en este método es generalmente:', 'options': ['Positivo', 'Negativo'], 'answer': 'Negativo'},
                 ],
@@ -79,9 +82,9 @@ GAME_STRUCTURE = {
             },
         }
     },
-    "Capítulo 2: Ecuaciones No Lineales": {
+    "Ecuaciones No Lineales": {
         "levels": {
-            "Nivel 1: Bisección (Bisectriz)": {
+            "Bisección (Bisectriz)": {
                 "Fácil": [
                     {'type': 'practica', 'content': 'Si f(a) es positivo y f(b) positivo, ¿hay raíz garantizada?', 'options': ['Si', 'No'], 'answer': 'No'},
                 ],
@@ -95,7 +98,7 @@ GAME_STRUCTURE = {
                     {'type': 'examen', 'problem_id': 'bisection_1'}
                 ]
             },
-            "Nivel 2: Falsa Posición (Regula-Falsi)": {
+            "Falsa Posición (Regula-Falsi)": {
                 "Fácil": [
                     {'type': 'practica', 'content': 'Este método se basa en una visualización:', 'options': ['Gráfica', 'Aleatoria'], 'answer': 'Gráfica'},
                 ],
@@ -109,7 +112,7 @@ GAME_STRUCTURE = {
                     {'type': 'examen', 'problem_id': 'false_position_1'}
                 ]
             },
-            "Nivel 3: Newton-Raphson": {
+            "Newton-Raphson": {
                 "Fácil": [
                     {'type': 'practica', 'content': '¿Qué requiere este método obligatoriamente?', 'options': ['La derivada f\'(x)', 'Dos puntos iniciales'], 'answer': 'La derivada f\'(x)'},
                 ],
@@ -123,7 +126,7 @@ GAME_STRUCTURE = {
                     {'type': 'examen', 'problem_id': 'newton_raphson_1'}
                 ]
             },
-            "Nivel 4: Punto Fijo": {
+            "Punto Fijo": {
                 "Fácil": [
                     {'type': 'practica', 'content': 'Si $2x^2 - x - 5 = 0$, una posible g(x) es:', 'options': ['$2x^2 - 5$', '$\\sqrt{(x+5)/2}$'], 'answer': '$2x^2 - 5$'},
                 ],
@@ -137,7 +140,7 @@ GAME_STRUCTURE = {
                     {'type': 'examen', 'problem_id': 'fixed_point_1'}
                 ]
             },
-            "Nivel 5: Secante": {
+            "Secante": {
                 "Fácil": [
                     {'type': 'practica', 'content': '¿Cuántos valores iniciales requiere la Secante?', 'options': ['1', '2'], 'answer': '2'},
                 ],
@@ -151,7 +154,7 @@ GAME_STRUCTURE = {
                     {'type': 'examen', 'problem_id': 'secant_1'}
                 ]
             },
-            "Nivel 6: Método Gráfico": {
+            "Método Gráfico": {
                 "Fácil": [                    {'type': 'practica', 'content': 'Una raíz se identifica visualmente cuando la curva cruza el eje:', 'options': ['X', 'Y'], 'answer': 'X'},
                 ],
                 "Intermedio": [
@@ -166,9 +169,9 @@ GAME_STRUCTURE = {
             },
         }
     },
-    "Capítulo 3: Ecuaciones Lineales": {
+    "Ecuaciones Lineales": {
         "levels": {
-            "Nivel 1: Gauss-Seidel": {
+            "Gauss-Seidel": {
                 "Fácil": [                    {'type': 'practica', 'content': '¿Qué valores usa para calcular la variable "b" en la iteración 1?', 'options': ['Los iniciales (0)', 'El nuevo "a" recién calculado'], 'answer': 'El nuevo "a" recién calculado'},
                 ],
                 "Intermedio": [
@@ -181,7 +184,7 @@ GAME_STRUCTURE = {
                     {'type': 'examen', 'problem_id': 'gauss_seidel_1'}
                 ]
             },
-            "Nivel 2: Jacobi": {
+            "Jacobi": {
                 "Fácil": [                    {'type': 'practica', 'content': 'Diferencia clave con Gauss-Seidel:', 'options': ['Uso de valores anteriores', 'No iterativo'], 'answer': 'Uso de valores anteriores'},
                 ],
                 "Intermedio": [
@@ -194,7 +197,7 @@ GAME_STRUCTURE = {
                     {'type': 'examen', 'problem_id': 'jacobi_1'}
                 ]
             },
-            "Nivel 3: Montante": {
+            "Montante": {
                 "Fácil": [                    {'type': 'practica', 'content': 'El método Montante utiliza principalmente aritmética de:', 'options': ['Enteros', 'Fracciones'], 'answer': 'Enteros'},
                 ],
                 "Intermedio": [
@@ -207,7 +210,7 @@ GAME_STRUCTURE = {
                     {'type': 'examen', 'problem_id': 'montante_1'}
                 ]
             },
-            "Nivel 4: Gauss-Jordan": {
+            "Gauss-Jordan": {
                 "Fácil": [                    {'type': 'practica', 'content': 'La matriz final en Gauss-Jordan debe ser:', 'options': ['Identidad', 'Triangular'], 'answer': 'Identidad'},
                 ],
                 "Intermedio": [
@@ -220,7 +223,7 @@ GAME_STRUCTURE = {
                     {'type': 'examen', 'problem_id': 'gauss_jordan_1'}
                 ]
             },
-            "Nivel 5: Eliminación Gaussiana": {
+            "Eliminación Gaussiana": {
                 "Fácil": [                    {'type': 'practica', 'content': 'A diferencia de Gauss-Jordan, aquí solo buscamos una matriz:', 'options': ['Triangular Superior', 'Identidad'], 'answer': 'Triangular Superior'},
                 ],
                 "Intermedio": [
@@ -235,9 +238,9 @@ GAME_STRUCTURE = {
             },
         }
     },
-    "Capítulo 4: Integración Numérica": {
+    "Integración Numérica": {
         "levels": {
-            "Nivel 1: Regla Trapezoidal": {
+            "Regla Trapezoidal": {
                 "Fácil": [
                     {'type': 'practica', 'content': '¿A qué grado de polinomio corresponde el trapecio?', 'options': ['1er Grado', '2do Grado'], 'answer': '1er Grado'},
                 ],
@@ -251,7 +254,7 @@ GAME_STRUCTURE = {
                     {'type': 'examen', 'problem_id': 'trapezoidal_1'}
                 ]
             },
-            "Nivel 2: Regla de 1/3 Simpson": {
+            "Regla de 1/3 Simpson": {
                 "Fácil": [
                     {'type': 'practica', 'content': 'Requisito indispensable de "n" para 1/3 Simpson:', 'options': ['Debe ser Par', 'Debe ser Impar'], 'answer': 'Debe ser Par'},
                 ],
@@ -265,7 +268,7 @@ GAME_STRUCTURE = {
                     {'type': 'examen', 'problem_id': 'simpson_1_3_1'}
                 ]
             },
-            "Nivel 3: Regla de 3/8 Simpson": {
+            "Regla de 3/8 Simpson": {
                 "Fácil": [
                     {'type': 'practica', 'content': 'Simpson 3/8 requiere que "n" sea:', 'options': ['Múltiplo de 3', 'Par'], 'answer': 'Múltiplo de 3'},
                 ],
@@ -279,7 +282,7 @@ GAME_STRUCTURE = {
                     {'type': 'examen', 'problem_id': 'simpson_3_8_1'}
                 ]
             },
-            "Nivel 4: Newton-Cotes Cerradas": {
+            "Newton-Cotes Cerradas": {
                 "Fácil": [                    {'type': 'practica', 'content': 'En fórmulas cerradas, ¿se incluyen los límites a y b?', 'options': ['Si', 'No'], 'answer': 'Si'},
                 ],
                 "Intermedio": [
@@ -292,7 +295,7 @@ GAME_STRUCTURE = {
                     {'type': 'examen', 'problem_id': 'cotes_closed_1'}
                 ]
             },
-            "Nivel 5: Newton-Cotes Abiertas": {
+            "Newton-Cotes Abiertas": {
                 "Fácil": [
                     {'type': 'practica', 'content': 'Fórmula para calcular h en Cotes Abiertas:', 'options': ['(b-a)/(n+2)', '(b-a)/n'], 'answer': '(b-a)/(n+2)'},
                 ],
@@ -308,9 +311,9 @@ GAME_STRUCTURE = {
             },
         }
     },
-    "Capítulo 5: Mínimos Cuadrados": {
+    "Mínimos Cuadrados": {
         "levels": {
-            "Nivel 1: Línea Recta": {
+            "Línea Recta": {
                 "Fácil": [                    {'type': 'practica', 'content': 'El objetivo es minimizar:', 'options': ['La dispersión (error)', 'El valor de x'], 'answer': 'La dispersión (error)'},
                 ],
                 "Intermedio": [
@@ -323,7 +326,7 @@ GAME_STRUCTURE = {
                     {'type': 'examen', 'problem_id': 'least_sq_linear_1'}
                 ]
             },
-            "Nivel 2: Cuadrática": {
+            "Cuadrática": {
                 "Fácil": [                    {'type': 'practica', 'content': '¿Cuántas incógnitas (coeficientes) se buscan?', 'options': ['3 (a0, a1, a2)', '2'], 'answer': '3 (a0, a1, a2)'},
                 ],
                 "Intermedio": [
@@ -336,7 +339,7 @@ GAME_STRUCTURE = {
                     {'type': 'examen', 'problem_id': 'least_sq_quadratic_1'}
                 ]
             },
-            "Nivel 3: Cúbica": {
+            "Cúbica": {
                 "Fácil": [                    {'type': 'practica', 'content': 'El sistema de ecuaciones resultante es de tamaño:', 'options': ['4x4', '3x3'], 'answer': '4x4'},
                 ],
                 "Intermedio": [
@@ -349,7 +352,7 @@ GAME_STRUCTURE = {
                     {'type': 'examen', 'problem_id': 'least_sq_cubic_1'}
                 ]
             },
-            "Nivel 4: Lineal con Función": {
+            "Lineal con Función": {
                 "Fácil": [                    {'type': 'practica', 'content': 'En lugar de $x^2$, el tercer término depende de:', 'options': ['f(x)', 'x^3'], 'answer': 'f(x)'},
                 ],
                 "Intermedio": [
@@ -362,7 +365,7 @@ GAME_STRUCTURE = {
                     {'type': 'examen', 'problem_id': 'least_sq_linear_func_1'}
                 ]
             },
-            "Nivel 5: Cuadrática con Función": {
+            "Cuadrática con Función": {
                 "Fácil": [                    {'type': 'practica', 'content': 'Este modelo tiene 4 coeficientes, incluyendo:', 'options': ['El término f(x)', 'Término cúbico'], 'answer': 'El término f(x)'},
                 ],
                 "Intermedio": [
@@ -377,9 +380,9 @@ GAME_STRUCTURE = {
             },
         }
     },
-    "Capítulo 6: Ecuaciones Diferenciales Ordinarias (EDO)": {
+    "Ecuaciones Diferenciales Ordinarias (EDO)": {
         "levels": {
-            "Nivel 1: Euler Modificado": {
+            "Euler Modificado": {
                 "Fácil": [
                     {'type': 'practica', 'content': '¿Qué regla de integración usa Euler Modificado?', 'options': ['Trapezoidal', 'Simpson'], 'answer': 'Trapezoidal'},
                 ],
@@ -393,7 +396,7 @@ GAME_STRUCTURE = {
                     {'type': 'examen', 'problem_id': 'euler_modified_1'}
                 ]
             },
-            "Nivel 2: Runge-Kutta 2do Orden": {
+            "Runge-Kutta 2do Orden": {
                 "Fácil": [
                     {'type': 'practica', 'content': '¿Cuántas evaluaciones de la función (k) se hacen?', 'options': ['2', '4'], 'answer': '2'},
                 ],
@@ -407,7 +410,7 @@ GAME_STRUCTURE = {
                     {'type': 'examen', 'problem_id': 'rk2_1'}
                 ]
             },
-            "Nivel 3: Runge-Kutta 3er Orden": {
+            "Runge-Kutta 3er Orden": {
                 "Fácil": [
                     {'type': 'practica', 'content': 'El peso mayor se le da a la pendiente intermedia:', 'options': ['k2 (x4)', 'k1 (x1)'], 'answer': 'k2 (x4)'},
                 ],
@@ -421,7 +424,7 @@ GAME_STRUCTURE = {
                     {'type': 'examen', 'problem_id': 'rk3_1'}
                 ]
             },
-            "Nivel 4: Runge-Kutta 4to Orden (1/3 Simpson)": {
+            "Runge-Kutta 4to Orden (1/3 Simpson)": {
                 "Fácil": [
                     {'type': 'practica', 'content': '¿Cuáles pendientes se multiplican por 2?', 'options': ['k2 y k3', 'k1 y k4'], 'answer': 'k2 y k3'},
                 ],
@@ -435,7 +438,7 @@ GAME_STRUCTURE = {
                     {'type': 'examen', 'problem_id': 'rk4_simpson13_1'}
                 ]
             },
-            "Nivel 5: Runge-Kutta 4to Orden (3/8 Simpson)": {
+            "Runge-Kutta 4to Orden (3/8 Simpson)": {
                 "Fácil": [
                     {'type': 'practica', 'content': 'En esta variante, el divisor de la fórmula es:', 'options': ['8', '6'], 'answer': '8'},
                 ],
@@ -449,7 +452,7 @@ GAME_STRUCTURE = {
                     {'type': 'examen', 'problem_id': 'rk4_simpson38_1'}
                 ]
             },
-            "Nivel 6: Runge-Kutta Orden Superior": {
+            "Runge-Kutta Orden Superior": {
                 "Fácil": [                    {'type': 'practica', 'content': 'Para una EDO de 2do orden, necesitamos calcular:', 'options': ['k y m', 'Solo k'], 'answer': 'k y m'},
                 ],
                 "Intermedio": [
@@ -463,5 +466,280 @@ GAME_STRUCTURE = {
                 ]
             },
         }
+    },
+}
+
+PROBLEM_DATA = {
+    'lagrange_intermedio': {
+        'title': 'Interpolar g(2.4) usando Lagrange',
+        'x_value': 2.4,
+        'table': [(2.2, 2.54), (2.5, 2.82)],
+        'options': ['2.6680', '2.7680', '2.5680', '2.8680', '2.4680'],
+        'correct': '2.6680',
+        'time_minutes': 15
+    },
+    'lagrange_avanzado': {
+        'title': 'Obtener g(x)',
+        'x_value': 2.4,
+        'table': [(2.2, 2.54), (2.5, 2.82), (2.8, 3.21)],
+        'options': ['2.67646', '2.77646', '2.57646', '2.87646', '2.47646'],
+        'correct': '2.67646',
+        'time_minutes': 30
+    },
+    'lagrange_final': {
+        'title': 'Obtener g(x)',
+        'x_value': 2.4,
+        'table': [(2.2, 2.54), (2.5, 2.82), (2.8, 3.21), (3.1, 3.32), (3.4, 3.41)],
+        'options': ['2.67646', '2.77646', '2.57646', '3.67646', '1.67646'],
+        'correct': '2.77646',
+        'time_minutes': 25
+    },
+    'linear_interp_1': {
+        'title': 'Prueba Final: Interpolación Lineal',
+        'x_value': 3,
+        'table': [(2, 0.693), (5, 1.609)],
+        'options': ['0.998', '1.098', '1.198', '0.898', '1.298'],
+        'correct': '0.998',
+        'time_minutes': 20
+    },
+    'newton_div_diff_1': {
+        'title': 'Prueba Final: Newton Diferencias Divididas',
+        'x_value': 7,
+        'table': [(6.5, -1.35), (7.3, -0.28), (8.1, 0.98)],
+        'options': ['-0.657', '-0.557', '-0.757', '-0.457', '-0.857'],
+        'correct': '-0.657',
+        'time_minutes': 25
+    },
+    'newton_forward_1': {
+        'title': 'Prueba Final: Newton Hacia Adelante',
+        'x_value': 3,
+        'table': [(1.7, 0.53), (2.4, 0.88), (3.1, 1.09)],
+        'options': ['1.029', '1.129', '0.929', '1.229', '0.829'],
+        'correct': '1.029',
+        'time_minutes': 25
+    },
+    'newton_backward_1': {
+        'title': 'Prueba Final: Newton Hacia Atrás',
+        'x_value': 3,
+        'table': [(1.7, 0.53), (2.4, 0.88), (3.1, 1.09)],
+        'options': ['1.029', '1.129', '0.929', '1.229', '0.829'],
+        'correct': '1.029',
+        'time_minutes': 25
+    },
+    'bisection_1': {
+        'title': 'Prueba Final: Método de Bisección',
+        'x_value': None,
+        'table': [('Función: f(x) = x² - 2',), ('Intervalo: [1, 2]',), ('Encuentra la raíz con 5 iteraciones',)],
+        'options': ['1.5', '1.6', '1.4', '1.7', '1.3'],
+        'correct': '1.5',
+        'time_minutes': 30
+    },
+    'false_position_1': {
+        'title': 'Prueba Final: Método de Falsa Posición',
+        'x_value': None,
+        'table': [('Función: f(x) = x² - 2',), ('Intervalo: [1, 2]',), ('Encuentra la raíz',)],
+        'options': ['1.52', '1.62', '1.42', '1.72', '1.32'],
+        'correct': '1.52',
+        'time_minutes': 30
+    },
+    'newton_raphson_1': {
+        'title': 'Prueba Final: Método de Newton-Raphson',
+        'x_value': None,
+        'table': [('Función: f(x) = x² - 2',), ("f'(x) = 2x",), ('Valor inicial: x₀ = 2',)],
+        'options': ['1.414', '1.514', '1.314', '1.614', '1.214'],
+        'correct': '1.414',
+        'time_minutes': 25
+    },
+    'fixed_point_1': {
+        'title': 'Prueba Final: Método de Punto Fijo',
+        'x_value': None,
+        'table': [('Función: g(x) = √(x + 1)',), ('Valor inicial: x₀ = 1',), ('Encuentra el punto fijo',)],
+        'options': ['1.732', '1.832', '1.632', '1.932', '1.532'],
+        'correct': '1.732',
+        'time_minutes': 25
+    },
+    'secant_1': {
+        'title': 'Prueba Final: Método de la Secante',
+        'x_value': None,
+        'table': [('Función: f(x) = x³ - 5',), ('Valores iniciales: x₀ = 1, x₁ = 2',), ('Encuentra la raíz',)],
+        'options': ['2.094', '2.194', '1.994', '2.294', '1.894'],
+        'correct': '2.094',
+        'time_minutes': 25
+    },
+    'graphical_1': {
+        'title': 'Prueba Final: Método Gráfico',
+        'x_value': None,
+        'table': [('Función: f(x) = x² - 2',), ('Intervalo: [0, 3]',), ('Identifica la raíz visualmente',)],
+        'options': ['1.5', '1.6', '1.4', '1.7', '1.3'],
+        'correct': '1.5',
+        'time_minutes': 20
+    },
+    'gauss_seidel_1': {
+        'title': 'Prueba Final: Gauss-Seidel',
+        'x_value': None,
+        'table': [('Sistema de ecuaciones:',), ('4x + y = 9',), ('x + 3y = 10',)],
+        'options': ['x=2, y=1', 'x=1, y=3', 'x=3, y=2', 'x=2, y=2', 'x=1, y=2'],
+        'correct': 'x=2, y=1',
+        'time_minutes': 30
+    },
+    'jacobi_1': {
+        'title': 'Prueba Final: Método de Jacobi',
+        'x_value': None,
+        'table': [('Sistema de ecuaciones:',), ('5x + y = 11',), ('x + 4y = 9',)],
+        'options': ['x=2, y=1', 'x=1, y=2', 'x=3, y=1', 'x=2, y=2', 'x=1, y=3'],
+        'correct': 'x=2, y=1',
+        'time_minutes': 30
+    },
+    'montante_1': {
+        'title': 'Prueba Final: Método de Montante',
+        'x_value': None,
+        'table': [('Sistema de ecuaciones:',), ('2x + y = 5',), ('x + 3y = 8',)],
+        'options': ['x=1, y=3', 'x=2, y=1', 'x=3, y=2', 'x=2, y=2', 'x=1, y=2'],
+        'correct': 'x=1, y=3',
+        'time_minutes': 30
+    },
+    'gauss_jordan_1': {
+        'title': 'Prueba Final: Gauss-Jordan',
+        'x_value': None,
+        'table': [('Sistema de ecuaciones:',), ('3x + 2y = 12',), ('x + 4y = 14',)],
+        'options': ['x=2, y=3', 'x=3, y=2', 'x=1, y=4', 'x=4, y=1', 'x=2, y=2'],
+        'correct': 'x=2, y=3',
+        'time_minutes': 30
+    },
+    'gaussian_elim_1': {
+        'title': 'Prueba Final: Eliminación Gaussiana',
+        'x_value': None,
+        'table': [('Sistema de ecuaciones:',), ('2x + 3y = 13',), ('x + 2y = 8',)],
+        'options': ['x=2, y=3', 'x=3, y=2', 'x=1, y=4', 'x=4, y=1', 'x=2, y=2'],
+        'correct': 'x=2, y=3',
+        'time_minutes': 30
+    },
+    'trapezoidal_1': {
+        'title': 'Prueba Final: Regla del Trapecio',
+        'x_value': None,
+        'table': [('Integrar: ∫ f(x) dx desde 0 hasta 2',), ('Datos de la función:',), (0, 1), (1, 2), (2, 5)],
+        'options': ['5.5', '6.5', '4.5', '7.5', '3.5'],
+        'correct': '5.5',
+        'time_minutes': 25
+    },
+    'simpson_1_3_1': {
+        'title': 'Prueba Final: Simpson 1/3',
+        'x_value': None,
+        'table': [('Integrar: ∫ f(x) dx desde 0 hasta 2',), ('Datos de la función:',), (0, 1), (1, 2), (2, 5)],
+        'options': ['5.333', '6.333', '4.333', '7.333', '3.333'],
+        'correct': '5.333',
+        'time_minutes': 25
+    },
+    'simpson_3_8_1': {
+        'title': 'Prueba Final: Simpson 3/8',
+        'x_value': None,
+        'table': [('Integrar: ∫ f(x) dx desde 0 hasta 3',), ('Datos de la función:',), (0, 1), (1, 2), (2, 5), (3, 10)],
+        'options': ['11.25', '12.25', '10.25', '13.25', '9.25'],
+        'correct': '11.25',
+        'time_minutes': 25
+    },
+    'cotes_closed_1': {
+        'title': 'Prueba Final: Newton-Cotes Cerrado',
+        'x_value': None,
+        'table': [('Integrar: ∫ f(x) dx desde 0 hasta 2',), ('Datos de la función:',), (0, 1), (0.5, 1.5), (1, 2.5), (1.5, 4), (2, 6)],
+        'options': ['5.208', '6.208', '4.208', '7.208', '3.208'],
+        'correct': '5.208',
+        'time_minutes': 30
+    },
+    'cotes_open_1': {
+        'title': 'Prueba Final: Newton-Cotes Abierto',
+        'x_value': None,
+        'table': [('Integrar: ∫ f(x) dx',), ('Datos de la función:',), (0.5, 1.5), (1, 2.5), (1.5, 4)],
+        'options': ['4.5', '5.5', '3.5', '6.5', '2.5'],
+        'correct': '4.5',
+        'time_minutes': 30
+    },
+    'least_sq_linear_1': {
+        'title': 'Prueba Final: Mínimos Cuadrados Lineal',
+        'x_value': 5,
+        'table': [('Ajustar: y = a + bx',), ('Datos:',), (1, 2), (2, 4), (3, 5), (4, 7)],
+        'options': ['8.5', '9.5', '7.5', '10.5', '6.5'],
+        'correct': '8.5',
+        'time_minutes': 25
+    },
+    'least_sq_quadratic_1': {
+        'title': 'Prueba Final: Mínimos Cuadrados Cuadrático',
+        'x_value': 5,
+        'table': [('Ajustar: y = a + bx + cx²',), ('Datos:',), (1, 1), (2, 3), (3, 7), (4, 13)],
+        'options': ['21', '22', '20', '23', '19'],
+        'correct': '21',
+        'time_minutes': 30
+    },
+    'least_sq_cubic_1': {
+        'title': 'Prueba Final: Mínimos Cuadrados Cúbico',
+        'x_value': 3,
+        'table': [('Ajustar: y = a + bx + cx² + dx³',), ('Datos:',), (0, 1), (1, 2), (2, 5), (3, 10), (4, 20)],
+        'options': ['10.2', '11.2', '9.2', '12.2', '8.2'],
+        'correct': '10.2',
+        'time_minutes': 30
+    },
+    'least_sq_linear_func_1': {
+        'title': 'Prueba Final: Mínimos Cuadrados Linealización',
+        'x_value': 4,
+        'table': [('Linealizar y ajustar',), ('Datos:',), (1, 2.5), (2, 5.2), (3, 8.8), (4, 13.1)],
+        'options': ['13.5', '14.5', '12.5', '15.5', '11.5'],
+        'correct': '13.5',
+        'time_minutes': 25
+    },
+    'least_sq_quadratic_func_1': {
+        'title': 'Prueba Final: Mínimos Cuadrados Func. Cuadrática',
+        'x_value': 3,
+        'table': [('Ajustar función cuadrática',), ('Datos:',), (0, 1), (1, 1.5), (2, 3.8), (3, 8.2)],
+        'options': ['8.5', '9.5', '7.5', '10.5', '6.5'],
+        'correct': '8.5',
+        'time_minutes': 30
+    },
+    'euler_modified_1': {
+        'title': 'Prueba Final: Euler Modificado',
+        'x_value': 0.2,
+        'table': [("Ecuación: dy/dx = x + y", "Condición inicial: y(0) = 1", "Paso: h = 0.1")],
+        'options': ['1.221', '1.321', '1.121', '1.421', '1.021'],
+        'correct': '1.221',
+        'time_minutes': 25
+    },
+    'rk2_1': {
+        'title': 'Prueba Final: Runge-Kutta Orden 2',
+        'x_value': 0.2,
+        'table': [("Ecuación: dy/dx = x + y", "Condición inicial: y(0) = 1", "Paso: h = 0.1")],
+        'options': ['1.242', '1.342', '1.142', '1.442', '1.042'],
+        'correct': '1.242',
+        'time_minutes': 25
+    },
+    'rk3_1': {
+        'title': 'Prueba Final: Runge-Kutta Orden 3',
+        'x_value': 0.2,
+        'table': [("Ecuación: dy/dx = x + y", "Condición inicial: y(0) = 1", "Paso: h = 0.1")],
+        'options': ['1.246', '1.346', '1.146', '1.446', '1.046'],
+        'correct': '1.246',
+        'time_minutes': 30
+    },
+    'rk4_simpson13_1': {
+        'title': 'Prueba Final: RK4 Simpson 1/3',
+        'x_value': 0.2,
+        'table': [("Ecuación: dy/dx = x + y", "Condición inicial: y(0) = 1", "Paso: h = 0.1")],
+        'options': ['1.2428', '1.3428', '1.1428', '1.4428', '1.0428'],
+        'correct': '1.2428',
+        'time_minutes': 30
+    },
+    'rk4_simpson38_1': {
+        'title': 'Prueba Final: RK4 Simpson 3/8',
+        'x_value': 0.2,
+        'table': [("Ecuación: dy/dx = x + y", "Condición inicial: y(0) = 1", "Paso: h = 0.1")],
+        'options': ['1.2431', '1.3431', '1.1431', '1.4431', '1.0431'],
+        'correct': '1.2431',
+        'time_minutes': 30
+    },
+    'rk_higher_order_1': {
+        'title': 'Prueba Final: RK Orden Superior',
+        'x_value': 0.2,
+        'table': [("Ecuación: dy/dx = x + y", "Condición inicial: y(0) = 1", "Paso: h = 0.05")],
+        'options': ['1.2435', '1.3435', '1.1435', '1.4435', '1.0435'],
+        'correct': '1.2435',
+        'time_minutes': 35
     },
 }
