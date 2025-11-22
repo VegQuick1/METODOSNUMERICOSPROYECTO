@@ -860,17 +860,26 @@ class NumericalMethodsGame:
                             tk.Label(table_frame, text=str(item), font=("Arial", scale_font(12), "italic"),
                                     bg="#34495e", fg="#ecf0f1", padx=10, pady=5, relief=tk.RAISED).pack(pady=3)
         timer_container = tk.Frame(top_content_frame, bg=COLOR_FONDO)
-        timer_container.pack(side=tk.RIGHT, padx=20)
-        tk.Label(timer_container, text="⏱", font=("Arial", scale_font(24)),
-                bg=COLOR_FONDO, fg="white").pack(pady=5)
-        tk.Label(timer_container, text="Tiempo restante", font=("Arial", scale_font(12), "bold"),
-                bg=COLOR_FONDO, fg="white").pack()
-        time_min = problem_data.get('time_minutes', 30)
-        timer_label = tk.Label(timer_container, text=f"{time_min}:00", font=("Arial", scale_font(20), "bold"),
-                              bg=COLOR_FONDO, fg=style['timer_color'])
-        timer_label.pack(pady=5)
-        timer_state = {'seconds': time_min * 60, 'timer_id': None}
+        time_min = problem_data.get('time_minutes')
+        
+        # Los problemas Fácil no tienen temporizador
+        if time_min is None or difficulty.lower() == 'fácil':
+            timer_container.pack_forget()  # No mostrar timer para Fácil
+            timer_state = {'seconds': 0, 'timer_id': None}
+            timer_label = None
+        else:
+            timer_container.pack(side=tk.RIGHT, padx=20)
+            tk.Label(timer_container, text="⏱", font=("Arial", scale_font(24)),
+                    bg=COLOR_FONDO, fg="white").pack(pady=5)
+            tk.Label(timer_container, text="Tiempo restante", font=("Arial", scale_font(12), "bold"),
+                    bg=COLOR_FONDO, fg="white").pack()
+            timer_label = tk.Label(timer_container, text=f"{time_min}:00", font=("Arial", scale_font(20), "bold"),
+                                  bg=COLOR_FONDO, fg=style['timer_color'])
+            timer_label.pack(pady=5)
+            timer_state = {'seconds': time_min * 60, 'timer_id': None}
         def _update_timer():
+            if timer_label is None:  # No hay timer para Fácil
+                return
             timer_state['seconds'] -= 1
             minutes = timer_state['seconds'] // 60
             seconds = timer_state['seconds'] % 60
@@ -996,17 +1005,26 @@ class NumericalMethodsGame:
                              bg="white", fg="black", width=15, height=2, relief=tk.RIDGE)
             cell_y.grid(row=i, column=1, sticky="nsew")
         timer_container = tk.Frame(top_content_frame, bg=COLOR_FONDO)
-        timer_container.pack(side=tk.RIGHT, padx=20)
-        tk.Label(timer_container, text="⏱", font=("Arial", scale_font(24)),
-                bg=COLOR_FONDO, fg="white").pack(pady=5)
-        tk.Label(timer_container, text="Tiempo restante", font=("Arial", scale_font(12), "bold"),
-                bg=COLOR_FONDO, fg="white").pack()
-        time_min = problem_data.get('time_minutes', 15)
-        timer_label = tk.Label(timer_container, text=f"{time_min}:00", font=("Arial", scale_font(20), "bold"),
-                              bg=COLOR_FONDO, fg="#20E0D0")
-        timer_label.pack(pady=5)
-        timer_state = {'seconds': time_min * 60, 'timer_id': None}
+        time_min = problem_data.get('time_minutes')
+        
+        # Los problemas Fácil no tienen temporizador
+        if time_min is None or difficulty.lower() == 'fácil':
+            timer_container.pack_forget()  # No mostrar timer para Fácil
+            timer_state = {'seconds': 0, 'timer_id': None}
+            timer_label = None
+        else:
+            timer_container.pack(side=tk.RIGHT, padx=20)
+            tk.Label(timer_container, text="⏱", font=("Arial", scale_font(24)),
+                    bg=COLOR_FONDO, fg="white").pack(pady=5)
+            tk.Label(timer_container, text="Tiempo restante", font=("Arial", scale_font(12), "bold"),
+                    bg=COLOR_FONDO, fg="white").pack()
+            timer_label = tk.Label(timer_container, text=f"{time_min}:00", font=("Arial", scale_font(20), "bold"),
+                                  bg=COLOR_FONDO, fg="#20E0D0")
+            timer_label.pack(pady=5)
+            timer_state = {'seconds': time_min * 60, 'timer_id': None}
         def _update_timer():
+            if timer_label is None:  # No hay timer para Fácil
+                return
             timer_state['seconds'] -= 1
             minutes = timer_state['seconds'] // 60
             seconds = timer_state['seconds'] % 60

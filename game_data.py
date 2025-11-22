@@ -1,4 +1,4 @@
-﻿
+
 LAGRANGE_FAKE_ANSWERS = {
     'yi': ['y', 'yi+1', 'y(i)', 'yn'],
     'n': ['m', 'k', 'l', 'i'],
@@ -13,13 +13,13 @@ GAME_STRUCTURE = {
         "levels": {
             "Lagrange": {
                 "Fácil": [
-                    {'type': 'practica', 'content': '¿El método de Lagrange requiere intervalos uniformes obligatoriamente?', 'options': ['Si', 'No'], 'answer': 'No'},
+                    {'type': 'practica'}
                 ],
                 "Intermedio": [
-                    {'type': 'practica', 'content': 'Dados los puntos (2, 2.54) y (2.5, 2.82), configura el primer término de Lagrange para x=2.4...', 'options': ['A', 'B'], 'answer': 'A'},
+                    {'type': 'practica', 'problem_id': 'lagrange_intermedio'}
                 ],
                 "Avanzado": [
-                    {'type': 'practica', 'content': 'Calcula g(2.4) usando Lagrange con 3 puntos...', 'options': ['3.32', '3.15'], 'answer': '3.15'},
+                    {'type': 'practica', 'problem_id': 'lagrange_avanzado'}
                 ],
                 "Prueba Final": [
                     {'type': 'examen', 'problem_id': 'lagrange_final'}
@@ -27,26 +27,27 @@ GAME_STRUCTURE = {
             },
             "Lineal": {
                 "Fácil": [
-                    {'type': 'practica', 'content': 'La interpolación lineal une dos puntos mediante una...', 'options': ['Parábola', 'Línea Recta'], 'answer': 'Línea Recta'},
+                    {'type': 'practica', 'problem_id': 'linear_facil_1'}
                 ],
                 "Intermedio": [
-                    {'type': 'practica', 'content': 'Calcula la pendiente (m) entre Ln(2) y Ln(5)...', 'options': ['0.305', '0.609'], 'answer': '0.305'},
+                    {'type': 'practica', 'problem_id': 'linear_intermedio_1'}
                 ],
                 "Avanzado": [
-                    {'type': 'practica', 'content': 'Estimar Ln(3) usando interpolación lineal entre Ln(2) y Ln(5)...', 'options': ['1.098', '0.998'], 'answer': '0.998'},
+                    {'type': 'practica', 'problem_id': 'linear_avanzado_1'}
                 ],
                 "Prueba Final": [
                     {'type': 'examen', 'problem_id': 'linear_interp_1'}
                 ]
             },
             "Newton con Diferencias Divididas": {
-                "Fácil": [                    {'type': 'practica', 'content': '¿Qué tipo de intervalos maneja principalmente este método?', 'options': ['Uniformes', 'No Uniformes'], 'answer': 'No Uniformes'},
+                "Fácil": [
+                    {'type': 'practica', 'problem_id': 'newton_div_diff_facil_1'}
                 ],
                 "Intermedio": [
-                    {'type': 'practica', 'content': 'Calcula la primera diferencia dividida $D_1$ entre (7.3, -0.28) y (6.5, -1.35)...', 'options': ['1.3375', '-1.22'], 'answer': '1.3375'},
+                    {'type': 'practica', 'problem_id': 'newton_div_diff_intermedio_1'}
                 ],
                 "Avanzado": [
-                    {'type': 'practica', 'content': 'Construye el polinomio completo para interpolar x=7...', 'options': ['-0.657', '-0.28'], 'answer': '-0.657'},
+                    {'type': 'practica', 'problem_id': 'newton_div_diff_avanzado_1'}
                 ],
                 "Prueba Final": [
                     {'type': 'examen', 'problem_id': 'newton_div_diff_1'}
@@ -54,13 +55,13 @@ GAME_STRUCTURE = {
             },
             "Newton Hacia Adelante": {
                 "Fácil": [
-                    {'type': 'practica', 'content': 'En Newton Adelante, el factor "s" se calcula como:', 'options': ['(x - xi) / h', '(x + xi) / h'], 'answer': '(x - xi) / h'},
+                    {'type': 'practica', 'problem_id': 'newton_forward_facil_1'}
                 ],
                 "Intermedio": [
-                    {'type': 'practica', 'content': 'Dada una h=0.7 y x=3 con xi=1.7, calcula s...', 'options': ['1.857', '0.5'], 'answer': '1.857'},
+                    {'type': 'practica', 'problem_id': 'newton_forward_intermedio_1'}
                 ],
                 "Avanzado": [
-                    {'type': 'practica', 'content': 'Resuelve g(3) usando la tabla de diferencias finitas...', 'options': ['1.029', '0.87'], 'answer': '1.029'},
+                    {'type': 'practica', 'problem_id': 'newton_forward_avanzado_1'}
                 ],
                 "Prueba Final": [
                     {'type': 'examen', 'problem_id': 'newton_forward_1'}
@@ -68,13 +69,13 @@ GAME_STRUCTURE = {
             },
             "Newton Hacia Atrás": {
                 "Fácil": [
-                    {'type': 'practica', 'content': 'El signo del factor binomial "s" en este método es generalmente:', 'options': ['Positivo', 'Negativo'], 'answer': 'Negativo'},
+                    {'type': 'practica', 'problem_id': 'newton_backward_facil_1'}
                 ],
                 "Intermedio": [
-                    {'type': 'practica', 'content': 'Calcula s para x=3, x_final=3.1, h=0.7...', 'options': ['-0.1428', '0.1428'], 'answer': '-0.1428'},
+                    {'type': 'practica', 'problem_id': 'newton_backward_intermedio_1'}
                 ],
                 "Avanzado": [
-                    {'type': 'practica', 'content': 'Calcula g(3) usando diferencias hacia atrás...', 'options': ['1.029', '1.05'], 'answer': '1.029'},
+                    {'type': 'practica', 'problem_id': 'newton_backward_avanzado_1'}
                 ],
                 "Prueba Final": [
                     {'type': 'examen', 'problem_id': 'newton_backward_1'}
@@ -86,13 +87,13 @@ GAME_STRUCTURE = {
         "levels": {
             "Bisección (Bisectriz)": {
                 "Fácil": [
-                    {'type': 'practica', 'content': 'Si f(a) es positivo y f(b) positivo, ¿hay raíz garantizada?', 'options': ['Si', 'No'], 'answer': 'No'},
+                    {'type': 'practica', 'problem_id': 'bisection_facil_1'}
                 ],
                 "Intermedio": [
-                    {'type': 'practica', 'content': 'Calcula la primera iteración entre a=0 y b=1...', 'options': ['0.5', '0.25'], 'answer': '0.5'},
+                    {'type': 'practica', 'problem_id': 'bisection_intermedio_1'}
                 ],
                 "Avanzado": [
-                    {'type': 'practica', 'content': 'Realiza 3 iteraciones para $x^3 - 6.5x + 2 = 0$...', 'options': ['0.3125', '0.5'], 'answer': '0.3125'},
+                    {'type': 'practica', 'problem_id': 'bisection_avanzado_1'}
                 ],
                 "Prueba Final": [
                     {'type': 'examen', 'problem_id': 'bisection_1'}
@@ -100,13 +101,13 @@ GAME_STRUCTURE = {
             },
             "Falsa Posición (Regula-Falsi)": {
                 "Fácil": [
-                    {'type': 'practica', 'content': 'Este método se basa en una visualización:', 'options': ['Gráfica', 'Aleatoria'], 'answer': 'Gráfica'},
+                    {'type': 'practica', 'problem_id': 'false_position_facil_1'}
                 ],
                 "Intermedio": [
-                    {'type': 'practica', 'content': 'Sustituye valores: a=1, f(a)=-2, b=2, f(b)=17...', 'options': ['1.105', '1.5'], 'answer': '1.105'},
+                    {'type': 'practica', 'problem_id': 'false_position_intermedio_1'}
                 ],
                 "Avanzado": [
-                    {'type': 'practica', 'content': 'Encuentra la raíz de $3x^3 - 2x - 3$ tras 2 iteraciones...', 'options': ['1.162', '1.105'], 'answer': '1.162'},
+                    {'type': 'practica', 'problem_id': 'false_position_avanzado_1'}
                 ],
                 "Prueba Final": [
                     {'type': 'examen', 'problem_id': 'false_position_1'}
@@ -114,13 +115,13 @@ GAME_STRUCTURE = {
             },
             "Newton-Raphson": {
                 "Fácil": [
-                    {'type': 'practica', 'content': '¿Qué requiere este método obligatoriamente?', 'options': ['La derivada f\'(x)', 'Dos puntos iniciales'], 'answer': 'La derivada f\'(x)'},
+                    {'type': 'practica', 'problem_id': 'newton_raphson_facil_1'}
                 ],
                 "Intermedio": [
-                    {'type': 'practica', 'content': 'Calcula f\'(x) para $x^3 + 2x^2 + 10x - 20$...', 'options': ['$3x^2 + 4x + 10$', '$3x^2 + 2x$'], 'answer': '$3x^2 + 4x + 10$'},
+                    {'type': 'practica', 'problem_id': 'newton_raphson_intermedio_1'}
                 ],
                 "Avanzado": [
-                    {'type': 'practica', 'content': 'Itera una vez desde x0=1 para la función anterior...', 'options': ['1.411', '1.2'], 'answer': '1.411'},
+                    {'type': 'practica', 'problem_id': 'newton_raphson_avanzado_1'}
                 ],
                 "Prueba Final": [
                     {'type': 'examen', 'problem_id': 'newton_raphson_1'}
@@ -128,13 +129,13 @@ GAME_STRUCTURE = {
             },
             "Punto Fijo": {
                 "Fácil": [
-                    {'type': 'practica', 'content': 'Si $2x^2 - x - 5 = 0$, una posible g(x) es:', 'options': ['$2x^2 - 5$', '$\\sqrt{(x+5)/2}$'], 'answer': '$2x^2 - 5$'},
+                    {'type': 'practica', 'problem_id': 'fixed_point_facil_1'}
                 ],
                 "Intermedio": [
-                    {'type': 'practica', 'content': 'Despeja x de $e^{-x} - x = 0$...', 'options': ['$x = e^{-x}$', '$x = e^x$'], 'answer': '$x = e^{-x}$'},
+                    {'type': 'practica', 'problem_id': 'fixed_point_intermedio_1'}
                 ],
                 "Avanzado": [
-                    {'type': 'practica', 'content': 'Calcula x2 iterando $x = e^{-x}$ iniciando en x0=0...', 'options': ['0.367', '0.567'], 'answer': '0.367'},
+                    {'type': 'practica', 'problem_id': 'fixed_point_avanzado_1'}
                 ],
                 "Prueba Final": [
                     {'type': 'examen', 'problem_id': 'fixed_point_1'}
@@ -142,26 +143,27 @@ GAME_STRUCTURE = {
             },
             "Secante": {
                 "Fácil": [
-                    {'type': 'practica', 'content': '¿Cuántos valores iniciales requiere la Secante?', 'options': ['1', '2'], 'answer': '2'},
+                    {'type': 'practica', 'problem_id': 'secant_facil_1'}
                 ],
                 "Intermedio": [
-                    {'type': 'practica', 'content': 'Calcula el denominador de la fórmula con f(x1)=-0.63 y f(x0)=1...', 'options': ['-1.63', '0.37'], 'answer': '-1.63'},
+                    {'type': 'practica', 'problem_id': 'secant_intermedio_1'}
                 ],
                 "Avanzado": [
-                    {'type': 'practica', 'content': 'Calcula la primera iteración para $e^{-x} - x$ con x0=0, x1=1...', 'options': ['0.6127', '0.5'], 'answer': '0.6127'},
+                    {'type': 'practica', 'problem_id': 'secant_avanzado_1'}
                 ],
                 "Prueba Final": [
                     {'type': 'examen', 'problem_id': 'secant_1'}
                 ]
             },
             "Método Gráfico": {
-                "Fácil": [                    {'type': 'practica', 'content': 'Una raíz se identifica visualmente cuando la curva cruza el eje:', 'options': ['X', 'Y'], 'answer': 'X'},
+                "Fácil": [
+                    {'type': 'practica', 'problem_id': 'graphical_facil_1'}
                 ],
                 "Intermedio": [
-                    {'type': 'practica', 'content': 'Si f(-2)=7 y f(-1)=7.5, ¿hay raíz segura entre -2 y -1?', 'options': ['No', 'Si'], 'answer': 'No'},
+                    {'type': 'practica', 'problem_id': 'graphical_intermedio_1'}
                 ],
                 "Avanzado": [
-                    {'type': 'practica', 'content': 'Identifica el intervalo de la raíz para $x^3 - 6.5x + 2$ observando cambio de signo...', 'options': ['Entre 0 y 1', 'Entre 1 y 2'], 'answer': 'Entre 0 y 1'},
+                    {'type': 'practica', 'problem_id': 'graphical_avanzado_1'}
                 ],
                 "Prueba Final": [
                     {'type': 'examen', 'problem_id': 'graphical_1'}
@@ -172,65 +174,70 @@ GAME_STRUCTURE = {
     "Ecuaciones Lineales": {
         "levels": {
             "Gauss-Seidel": {
-                "Fácil": [                    {'type': 'practica', 'content': '¿Qué valores usa para calcular la variable "b" en la iteración 1?', 'options': ['Los iniciales (0)', 'El nuevo "a" recién calculado'], 'answer': 'El nuevo "a" recién calculado'},
+                "Fácil": [
+                    {'type': 'practica', 'problem_id': 'gauss_seidel_facil_1'}
                 ],
                 "Intermedio": [
-                    {'type': 'practica', 'content': 'Despeja "a" de la ecuación $3a - 0.1b - 0.2c = 7.85$...', 'options': ['$(7.85 + 0.1b + 0.2c)/3$', '$(7.85 - 0.1b)/3$'], 'answer': '$(7.85 + 0.1b + 0.2c)/3$'},
+                    {'type': 'practica', 'problem_id': 'gauss_seidel_intermedio_1'}
                 ],
                 "Avanzado": [
-                    {'type': 'practica', 'content': 'Realiza la 1ra iteración completa del sistema 3x3 de ejemplo...', 'options': ['a=2.61, b=-2.79, c=7.00', 'a=2, b=2, c=2'], 'answer': 'a=2.61, b=-2.79, c=7.00'},
+                    {'type': 'practica', 'problem_id': 'gauss_seidel_avanzado_1'}
                 ],
                 "Prueba Final": [
                     {'type': 'examen', 'problem_id': 'gauss_seidel_1'}
                 ]
             },
             "Jacobi": {
-                "Fácil": [                    {'type': 'practica', 'content': 'Diferencia clave con Gauss-Seidel:', 'options': ['Uso de valores anteriores', 'No iterativo'], 'answer': 'Uso de valores anteriores'},
+                "Fácil": [
+                    {'type': 'practica', 'problem_id': 'jacobi_facil_1'}
                 ],
                 "Intermedio": [
-                    {'type': 'practica', 'content': 'Con a0=1, b0=1, c0=1, calcula a1 para $3a - 0.1b - 0.2c = 7.85$...', 'options': ['2.716', '2.616'], 'answer': '2.716'},
+                    {'type': 'practica', 'problem_id': 'jacobi_intermedio_1'}
                 ],
                 "Avanzado": [
-                    {'type': 'practica', 'content': 'Calcula el error $\\epsilon_a$ entre la iteración 3 y 4...', 'options': ['0.00056', '0.001'], 'answer': '0.00056'},
+                    {'type': 'practica', 'problem_id': 'jacobi_avanzado_1'}
                 ],
                 "Prueba Final": [
                     {'type': 'examen', 'problem_id': 'jacobi_1'}
                 ]
             },
             "Montante": {
-                "Fácil": [                    {'type': 'practica', 'content': 'El método Montante utiliza principalmente aritmética de:', 'options': ['Enteros', 'Fracciones'], 'answer': 'Enteros'},
+                "Fácil": [
+                    {'type': 'practica', 'problem_id': 'montante_facil_1'}
                 ],
                 "Intermedio": [
-                    {'type': 'practica', 'content': 'Calcula el nuevo elemento usando la fórmula del pivote: (Piv*Act - Ant*Corr)/PivAnt...', 'options': ['1', '2'], 'answer': '1'},
+                    {'type': 'practica', 'problem_id': 'montante_intermedio_1'}
                 ],
                 "Avanzado": [
-                    {'type': 'practica', 'content': 'Resuelve un sistema 2x2 usando Montante...', 'options': ['x=1, y=2', 'x=0, y=0'], 'answer': 'x=1, y=2'},
+                    {'type': 'practica', 'problem_id': 'montante_avanzado_1'}
                 ],
                 "Prueba Final": [
                     {'type': 'examen', 'problem_id': 'montante_1'}
                 ]
             },
             "Gauss-Jordan": {
-                "Fácil": [                    {'type': 'practica', 'content': 'La matriz final en Gauss-Jordan debe ser:', 'options': ['Identidad', 'Triangular'], 'answer': 'Identidad'},
+                "Fácil": [
+                    {'type': 'practica', 'problem_id': 'gauss_jordan_facil_1'}
                 ],
                 "Intermedio": [
-                    {'type': 'practica', 'content': 'Operación para hacer cero un elemento debajo del pivote...', 'options': ['Fila - k*FilaPivote', 'Fila + FilaPivote'], 'answer': 'Fila - k*FilaPivote'},
+                    {'type': 'practica', 'problem_id': 'gauss_jordan_intermedio_1'}
                 ],
                 "Avanzado": [
-                    {'type': 'practica', 'content': 'Obtén la solución final de un sistema 3x3 tras reducirlo...', 'options': ['Vector columna final', 'Fila final'], 'answer': 'Vector columna final'},
+                    {'type': 'practica', 'problem_id': 'gauss_jordan_avanzado_1'}
                 ],
                 "Prueba Final": [
                     {'type': 'examen', 'problem_id': 'gauss_jordan_1'}
                 ]
             },
             "Eliminación Gaussiana": {
-                "Fácil": [                    {'type': 'practica', 'content': 'A diferencia de Gauss-Jordan, aquí solo buscamos una matriz:', 'options': ['Triangular Superior', 'Identidad'], 'answer': 'Triangular Superior'},
+                "Fácil": [
+                    {'type': 'practica', 'problem_id': 'gaussian_elim_facil_1'}
                 ],
                 "Intermedio": [
-                    {'type': 'practica', 'content': 'Realiza la sustitución hacia atrás para $10c = 70$...', 'options': ['c=7', 'c=10'], 'answer': 'c=7'},
+                    {'type': 'practica', 'problem_id': 'gaussian_elim_intermedio_1'}
                 ],
                 "Avanzado": [
-                    {'type': 'practica', 'content': 'Resuelve el sistema completo tras triangular la matriz...', 'options': ['x=1, y=1, z=1', 'x=3, y=2, z=1'], 'answer': 'x=3, y=2, z=1'},
+                    {'type': 'practica', 'problem_id': 'gaussian_elim_avanzado_1'}
                 ],
                 "Prueba Final": [
                     {'type': 'examen', 'problem_id': 'gaussian_elim_1'}
@@ -242,13 +249,13 @@ GAME_STRUCTURE = {
         "levels": {
             "Regla Trapezoidal": {
                 "Fácil": [
-                    {'type': 'practica', 'content': '¿A qué grado de polinomio corresponde el trapecio?', 'options': ['1er Grado', '2do Grado'], 'answer': '1er Grado'},
+                    {'type': 'practica', 'problem_id': 'trapezoidal_facil_1'}
                 ],
                 "Intermedio": [
-                    {'type': 'practica', 'content': 'Para $\\int_0^1 (1-x^2)dx$ con n=4, calcula h...', 'options': ['0.25', '1'], 'answer': '0.25'},
+                    {'type': 'practica', 'problem_id': 'trapezoidal_intermedio_1'}
                 ],
                 "Avanzado": [
-                    {'type': 'practica', 'content': 'Calcula la integral completa por trapecio (resultado: 0.656)...', 'options': ['0.65625', '0.666'], 'answer': '0.65625'},
+                    {'type': 'practica', 'problem_id': 'trapezoidal_avanzado_1'}
                 ],
                 "Prueba Final": [
                     {'type': 'examen', 'problem_id': 'trapezoidal_1'}
@@ -256,13 +263,13 @@ GAME_STRUCTURE = {
             },
             "Regla de 1/3 Simpson": {
                 "Fácil": [
-                    {'type': 'practica', 'content': 'Requisito indispensable de "n" para 1/3 Simpson:', 'options': ['Debe ser Par', 'Debe ser Impar'], 'answer': 'Debe ser Par'},
+                    {'type': 'practica', 'problem_id': 'simpson_1_3_facil_1'}
                 ],
                 "Intermedio": [
-                    {'type': 'practica', 'content': 'Coeficiente que multiplica a la sumatoria de índices impares:', 'options': ['4', '2'], 'answer': '4'},
+                    {'type': 'practica', 'problem_id': 'simpson_1_3_intermedio_1'}
                 ],
                 "Avanzado": [
-                    {'type': 'practica', 'content': 'Calcula la integral de $1-x^2$ con n=4 usando Simpson 1/3...', 'options': ['0.6666', '0.5'], 'answer': '0.6666'},
+                    {'type': 'practica', 'problem_id': 'simpson_1_3_avanzado_1'}
                 ],
                 "Prueba Final": [
                     {'type': 'examen', 'problem_id': 'simpson_1_3_1'}
@@ -270,26 +277,27 @@ GAME_STRUCTURE = {
             },
             "Regla de 3/8 Simpson": {
                 "Fácil": [
-                    {'type': 'practica', 'content': 'Simpson 3/8 requiere que "n" sea:', 'options': ['Múltiplo de 3', 'Par'], 'answer': 'Múltiplo de 3'},
+                    {'type': 'practica', 'problem_id': 'simpson_3_8_facil_1'}
                 ],
                 "Intermedio": [
-                    {'type': 'practica', 'content': '¿Qué fracción multiplica a h en esta fórmula?', 'options': ['3/8', '1/3'], 'answer': '3/8'},
+                    {'type': 'practica', 'problem_id': 'simpson_3_8_intermedio_1'}
                 ],
                 "Avanzado": [
-                    {'type': 'practica', 'content': 'Aplica Simpson 3/8 si los datos son 4 puntos (n=3)...', 'options': ['Resultado de fórmula', 'Error'], 'answer': 'Resultado de fórmula'},
+                    {'type': 'practica', 'problem_id': 'simpson_3_8_avanzado_1'}
                 ],
                 "Prueba Final": [
                     {'type': 'examen', 'problem_id': 'simpson_3_8_1'}
                 ]
             },
             "Newton-Cotes Cerradas": {
-                "Fácil": [                    {'type': 'practica', 'content': 'En fórmulas cerradas, ¿se incluyen los límites a y b?', 'options': ['Si', 'No'], 'answer': 'Si'},
+                "Fácil": [
+                    {'type': 'practica', 'problem_id': 'cotes_closed_facil_1'}
                 ],
                 "Intermedio": [
-                    {'type': 'practica', 'content': 'Identifica el coeficiente $\\alpha$ para n=1 (Trapecio)...', 'options': ['1/2', '1/3'], 'answer': '1/2'},
+                    {'type': 'practica', 'problem_id': 'cotes_closed_intermedio_1'}
                 ],
                 "Avanzado": [
-                    {'type': 'practica', 'content': 'Calcula usando coeficientes para n=4 (Cotes cerrada)...', 'options': ['X', 'Y'], 'answer': 'X'},
+                    {'type': 'practica', 'problem_id': 'cotes_closed_avanzado_1'}
                 ],
                 "Prueba Final": [
                     {'type': 'examen', 'problem_id': 'cotes_closed_1'}
@@ -297,13 +305,13 @@ GAME_STRUCTURE = {
             },
             "Newton-Cotes Abiertas": {
                 "Fácil": [
-                    {'type': 'practica', 'content': 'Fórmula para calcular h en Cotes Abiertas:', 'options': ['(b-a)/(n+2)', '(b-a)/n'], 'answer': '(b-a)/(n+2)'},
+                    {'type': 'practica', 'problem_id': 'cotes_open_facil_1'}
                 ],
                 "Intermedio": [
-                    {'type': 'practica', 'content': 'Para n=4 (abierta), ¿cuántos intervalos h hay en total?', 'options': ['6', '4'], 'answer': '6'},
+                    {'type': 'practica', 'problem_id': 'cotes_open_intermedio_1'}
                 ],
                 "Avanzado": [
-                    {'type': 'practica', 'content': 'Calcula la integral usando Cotes Abierta n=4 (res: 0.666)...', 'options': ['0.666', '0.555'], 'answer': '0.666'},
+                    {'type': 'practica', 'problem_id': 'cotes_open_avanzado_1'}
                 ],
                 "Prueba Final": [
                     {'type': 'examen', 'problem_id': 'cotes_open_1'}
@@ -314,65 +322,70 @@ GAME_STRUCTURE = {
     "Mínimos Cuadrados": {
         "levels": {
             "Línea Recta": {
-                "Fácil": [                    {'type': 'practica', 'content': 'El objetivo es minimizar:', 'options': ['La dispersión (error)', 'El valor de x'], 'answer': 'La dispersión (error)'},
+                "Fácil": [
+                    {'type': 'practica', 'problem_id': 'least_sq_linear_facil_1'}
                 ],
                 "Intermedio": [
-                    {'type': 'practica', 'content': 'Calcula $\\sum x^2$ para los datos: 1, 2, 3...', 'options': ['14', '6'], 'answer': '14'},
+                    {'type': 'practica', 'problem_id': 'least_sq_linear_intermedio_1'}
                 ],
                 "Avanzado": [
-                    {'type': 'practica', 'content': 'Resuelve a0 y a1 para el sistema de ejemplo...', 'options': ['a0=2.0, a1=0.63', 'a0=0, a1=1'], 'answer': 'a0=2.0, a1=0.63'},
+                    {'type': 'practica', 'problem_id': 'least_sq_linear_avanzado_1'}
                 ],
                 "Prueba Final": [
                     {'type': 'examen', 'problem_id': 'least_sq_linear_1'}
                 ]
             },
             "Cuadrática": {
-                "Fácil": [                    {'type': 'practica', 'content': '¿Cuántas incógnitas (coeficientes) se buscan?', 'options': ['3 (a0, a1, a2)', '2'], 'answer': '3 (a0, a1, a2)'},
+                "Fácil": [
+                    {'type': 'practica', 'problem_id': 'least_sq_quadratic_facil_1'}
                 ],
                 "Intermedio": [
-                    {'type': 'practica', 'content': 'El término nuevo en el sistema es la suma de potencias a la...', 'options': ['4ta', '3ra'], 'answer': '4ta'},
+                    {'type': 'practica', 'problem_id': 'least_sq_quadratic_intermedio_1'}
                 ],
                 "Avanzado": [
-                    {'type': 'practica', 'content': 'Plantea la matriz para el ajuste cuadrático...', 'options': ['Matriz 3x3', 'Matriz 2x2'], 'answer': 'Matriz 3x3'},
+                    {'type': 'practica', 'problem_id': 'least_sq_quadratic_avanzado_1'}
                 ],
                 "Prueba Final": [
                     {'type': 'examen', 'problem_id': 'least_sq_quadratic_1'}
                 ]
             },
             "Cúbica": {
-                "Fácil": [                    {'type': 'practica', 'content': 'El sistema de ecuaciones resultante es de tamaño:', 'options': ['4x4', '3x3'], 'answer': '4x4'},
+                "Fácil": [
+                    {'type': 'practica', 'problem_id': 'least_sq_cubic_facil_1'}
                 ],
                 "Intermedio": [
-                    {'type': 'practica', 'content': '¿Hasta qué potencia de x necesitamos sumar ($\sum x^?$)?', 'options': ['6', '5'], 'answer': '6'},
+                    {'type': 'practica', 'problem_id': 'least_sq_cubic_intermedio_1'}
                 ],
                 "Avanzado": [
-                    {'type': 'practica', 'content': 'Resuelve para los coeficientes del polinomio cúbico...', 'options': ['a0..a3', 'a0..a2'], 'answer': 'a0..a3'},
+                    {'type': 'practica', 'problem_id': 'least_sq_cubic_avanzado_1'}
                 ],
                 "Prueba Final": [
                     {'type': 'examen', 'problem_id': 'least_sq_cubic_1'}
                 ]
             },
             "Lineal con Función": {
-                "Fácil": [                    {'type': 'practica', 'content': 'En lugar de $x^2$, el tercer término depende de:', 'options': ['f(x)', 'x^3'], 'answer': 'f(x)'},
+                "Fácil": [
+                    {'type': 'practica', 'problem_id': 'least_sq_linear_func_facil_1'}
                 ],
                 "Intermedio": [
-                    {'type': 'practica', 'content': 'Calcula $\\sum x \\cdot f(x)$ si f(x)=ln(x)...', 'options': ['Suma de productos', 'Suma simple'], 'answer': 'Suma de productos'},
+                    {'type': 'practica', 'problem_id': 'least_sq_linear_func_intermedio_1'}
                 ],
                 "Avanzado": [
-                    {'type': 'practica', 'content': 'Encuentra los coeficientes para un ajuste con $e^x$...', 'options': ['X', 'Y'], 'answer': 'X'},
+                    {'type': 'practica', 'problem_id': 'least_sq_linear_func_avanzado_1'}
                 ],
                 "Prueba Final": [
                     {'type': 'examen', 'problem_id': 'least_sq_linear_func_1'}
                 ]
             },
             "Cuadrática con Función": {
-                "Fácil": [                    {'type': 'practica', 'content': 'Este modelo tiene 4 coeficientes, incluyendo:', 'options': ['El término f(x)', 'Término cúbico'], 'answer': 'El término f(x)'},
+                "Fácil": [
+                    {'type': 'practica', 'problem_id': 'least_sq_quadratic_func_facil_1'}
                 ],
                 "Intermedio": [
-                    {'type': 'practica', 'content': 'Forma la última columna de la matriz extendida: $\\sum y \\cdot f(x)$...', 'options': ['Correcto', 'Incorrecto'], 'answer': 'Correcto'},
+                    {'type': 'practica', 'problem_id': 'least_sq_quadratic_func_intermedio_1'}
                 ],
                 "Avanzado": [
-                    {'type': 'practica', 'content': 'Resuelve el sistema 4x4 híbrido...', 'options': ['X', 'Y'], 'answer': 'X'},
+                    {'type': 'practica', 'problem_id': 'least_sq_quadratic_func_avanzado_1'}
                 ],
                 "Prueba Final": [
                     {'type': 'examen', 'problem_id': 'least_sq_quadratic_func_1'}
@@ -384,13 +397,13 @@ GAME_STRUCTURE = {
         "levels": {
             "Euler Modificado": {
                 "Fácil": [
-                    {'type': 'practica', 'content': '¿Qué regla de integración usa Euler Modificado?', 'options': ['Trapezoidal', 'Simpson'], 'answer': 'Trapezoidal'},
+                    {'type': 'practica', 'problem_id': 'euler_modified_facil_1'}
                 ],
                 "Intermedio": [
-                    {'type': 'practica', 'content': 'Calcula el predictor (Euler simple) para la primera iteración...', 'options': ['Valor inicial estimado', 'Valor final'], 'answer': 'Valor inicial estimado'},
+                    {'type': 'practica', 'problem_id': 'euler_modified_intermedio_1'}
                 ],
                 "Avanzado": [
-                    {'type': 'practica', 'content': 'Realiza una iteración completa de Euler Modificado...', 'options': ['1.99', '2.0'], 'answer': '1.99'},
+                    {'type': 'practica', 'problem_id': 'euler_modified_avanzado_1'}
                 ],
                 "Prueba Final": [
                     {'type': 'examen', 'problem_id': 'euler_modified_1'}
@@ -398,13 +411,13 @@ GAME_STRUCTURE = {
             },
             "Runge-Kutta 2do Orden": {
                 "Fácil": [
-                    {'type': 'practica', 'content': '¿Cuántas evaluaciones de la función (k) se hacen?', 'options': ['2', '4'], 'answer': '2'},
+                    {'type': 'practica', 'problem_id': 'rk2_facil_1'}
                 ],
                 "Intermedio": [
-                    {'type': 'practica', 'content': 'Calcula $k_1 = h \\cdot f(y_n, t_n)$ con h=0.2...', 'options': ['-0.2', '0.5'], 'answer': '-0.2'},
+                    {'type': 'practica', 'problem_id': 'rk2_intermedio_1'}
                 ],
                 "Avanzado": [
-                    {'type': 'practica', 'content': 'Obtén y1 usando RK 2do orden...', 'options': ['1.98', '2.0'], 'answer': '1.98'},
+                    {'type': 'practica', 'problem_id': 'rk2_avanzado_1'}
                 ],
                 "Prueba Final": [
                     {'type': 'examen', 'problem_id': 'rk2_1'}
@@ -412,13 +425,13 @@ GAME_STRUCTURE = {
             },
             "Runge-Kutta 3er Orden": {
                 "Fácil": [
-                    {'type': 'practica', 'content': 'El peso mayor se le da a la pendiente intermedia:', 'options': ['k2 (x4)', 'k1 (x1)'], 'answer': 'k2 (x4)'},
+                    {'type': 'practica', 'problem_id': 'rk3_facil_1'}
                 ],
                 "Intermedio": [
-                    {'type': 'practica', 'content': 'Calcula k2 evaluando en $t_n + h/2$...', 'options': ['X', 'Y'], 'answer': 'X'},
+                    {'type': 'practica', 'problem_id': 'rk3_intermedio_1'}
                 ],
                 "Avanzado": [
-                    {'type': 'practica', 'content': 'Resuelve para y1 con RK 3er orden...', 'options': ['X', 'Y'], 'answer': 'X'},
+                    {'type': 'practica', 'problem_id': 'rk3_avanzado_1'}
                 ],
                 "Prueba Final": [
                     {'type': 'examen', 'problem_id': 'rk3_1'}
@@ -426,13 +439,13 @@ GAME_STRUCTURE = {
             },
             "Runge-Kutta 4to Orden (1/3 Simpson)": {
                 "Fácil": [
-                    {'type': 'practica', 'content': '¿Cuáles pendientes se multiplican por 2?', 'options': ['k2 y k3', 'k1 y k4'], 'answer': 'k2 y k3'},
+                    {'type': 'practica', 'problem_id': 'rk4_simpson13_facil_1'}
                 ],
                 "Intermedio": [
-                    {'type': 'practica', 'content': 'Calcula k3 usando el resultado de k2...', 'options': ['-0.0005', '-0.01'], 'answer': '-0.0005'},
+                    {'type': 'practica', 'problem_id': 'rk4_simpson13_intermedio_1'}
                 ],
                 "Avanzado": [
-                    {'type': 'practica', 'content': 'Calcula el valor final y1 tras sumar las k...', 'options': ['1.996', '2.0'], 'answer': '1.996'},
+                    {'type': 'practica', 'problem_id': 'rk4_simpson13_avanzado_1'}
                 ],
                 "Prueba Final": [
                     {'type': 'examen', 'problem_id': 'rk4_simpson13_1'}
@@ -440,26 +453,27 @@ GAME_STRUCTURE = {
             },
             "Runge-Kutta 4to Orden (3/8 Simpson)": {
                 "Fácil": [
-                    {'type': 'practica', 'content': 'En esta variante, el divisor de la fórmula es:', 'options': ['8', '6'], 'answer': '8'},
+                    {'type': 'practica', 'problem_id': 'rk4_simpson38_facil_1'}
                 ],
                 "Intermedio": [
-                    {'type': 'practica', 'content': 'Evalúa k2 y k3 en pasos de h/3...', 'options': ['Si', 'No'], 'answer': 'Si'},
+                    {'type': 'practica', 'problem_id': 'rk4_simpson38_intermedio_1'}
                 ],
                 "Avanzado": [
-                    {'type': 'practica', 'content': 'Compara el resultado con RK 1/3 Simpson...', 'options': ['Similar', 'Muy diferente'], 'answer': 'Similar'},
+                    {'type': 'practica', 'problem_id': 'rk4_simpson38_avanzado_1'}
                 ],
                 "Prueba Final": [
                     {'type': 'examen', 'problem_id': 'rk4_simpson38_1'}
                 ]
             },
             "Runge-Kutta Orden Superior": {
-                "Fácil": [                    {'type': 'practica', 'content': 'Para una EDO de 2do orden, necesitamos calcular:', 'options': ['k y m', 'Solo k'], 'answer': 'k y m'},
+                "Fácil": [
+                    {'type': 'practica', 'problem_id': 'rk_higher_order_facil_1'}
                 ],
                 "Intermedio": [
-                    {'type': 'practica', 'content': 'Define $V_n = y\'$ y $U_n = y$...', 'options': ['Si', 'No'], 'answer': 'Si'},
+                    {'type': 'practica', 'problem_id': 'rk_higher_order_intermedio_1'}
                 ],
                 "Avanzado": [
-                    {'type': 'practica', 'content': 'Resuelve para $y_1$ y $y\'_1$ simultáneamente...', 'options': ['y=2.125, y\'=3.06', 'y=2, y\'=2'], 'answer': 'y=2.125, y\'=3.06'},
+                    {'type': 'practica', 'problem_id': 'rk_higher_order_avanzado_1'}
                 ],
                 "Prueba Final": [
                     {'type': 'examen', 'problem_id': 'rk_higher_order_1'}
@@ -471,19 +485,17 @@ GAME_STRUCTURE = {
 
 PROBLEM_DATA = {
     'lagrange_intermedio': {
-        'title': 'Interpolar g(2.4) usando Lagrange',
-        'x_value': 2.4,
-        'table': [(2.2, 2.54), (2.5, 2.82)],
-        'options': ['2.6680', '2.7680', '2.5680', '2.8680', '2.4680'],
-        'correct': '2.6680',
-        'time_minutes': 15
+        'title': 'Lagrange: Interpola f(2.5) con puntos (2, 4) y (3, 7)',
+        'options': ['5.5', '6.5', '5', '6'],
+        'time_minutes': 25,
+        'correct': '5.5'
     },
     'lagrange_avanzado': {
-        'title': 'Obtener g(x)',
+        'title': 'Lagrange: Interpola f(2.4) con puntos (2, 2.54), (2.5, 2.82), (3, 3.21)',
         'x_value': 2.4,
-        'table': [(2.2, 2.54), (2.5, 2.82), (2.8, 3.21)],
-        'options': ['2.67646', '2.77646', '2.57646', '2.87646', '2.47646'],
-        'correct': '2.67646',
+        'table': [(2, 2.54), (2.5, 2.82), (3, 3.21)],
+        'options': ['2.672', '2.772', '2.572', '2.872'],
+        'correct': '2.672',
         'time_minutes': 30
     },
     'lagrange_final': {
@@ -500,7 +512,7 @@ PROBLEM_DATA = {
         'table': [(2, 0.693), (5, 1.609)],
         'options': ['0.998', '1.098', '1.198', '0.898', '1.298'],
         'correct': '0.998',
-        'time_minutes': 20
+        'time_minutes': 25
     },
     'newton_div_diff_1': {
         'title': 'Prueba Final: Newton Diferencias Divididas',
@@ -532,7 +544,7 @@ PROBLEM_DATA = {
         'table': [('Función: f(x) = x² - 2',), ('Intervalo: [1, 2]',), ('Encuentra la raíz con 5 iteraciones',)],
         'options': ['1.5', '1.6', '1.4', '1.7', '1.3'],
         'correct': '1.5',
-        'time_minutes': 30
+        'time_minutes': 25
     },
     'false_position_1': {
         'title': 'Prueba Final: Método de Falsa Posición',
@@ -540,7 +552,7 @@ PROBLEM_DATA = {
         'table': [('Función: f(x) = x² - 2',), ('Intervalo: [1, 2]',), ('Encuentra la raíz',)],
         'options': ['1.52', '1.62', '1.42', '1.72', '1.32'],
         'correct': '1.52',
-        'time_minutes': 30
+        'time_minutes': 25
     },
     'newton_raphson_1': {
         'title': 'Prueba Final: Método de Newton-Raphson',
@@ -572,7 +584,7 @@ PROBLEM_DATA = {
         'table': [('Función: f(x) = x² - 2',), ('Intervalo: [0, 3]',), ('Identifica la raíz visualmente',)],
         'options': ['1.5', '1.6', '1.4', '1.7', '1.3'],
         'correct': '1.5',
-        'time_minutes': 20
+        'time_minutes': 25
     },
     'gauss_seidel_1': {
         'title': 'Prueba Final: Gauss-Seidel',
@@ -580,7 +592,7 @@ PROBLEM_DATA = {
         'table': [('Sistema de ecuaciones:',), ('4x + y = 9',), ('x + 3y = 10',)],
         'options': ['x=2, y=1', 'x=1, y=3', 'x=3, y=2', 'x=2, y=2', 'x=1, y=2'],
         'correct': 'x=2, y=1',
-        'time_minutes': 30
+        'time_minutes': 25
     },
     'jacobi_1': {
         'title': 'Prueba Final: Método de Jacobi',
@@ -588,7 +600,7 @@ PROBLEM_DATA = {
         'table': [('Sistema de ecuaciones:',), ('5x + y = 11',), ('x + 4y = 9',)],
         'options': ['x=2, y=1', 'x=1, y=2', 'x=3, y=1', 'x=2, y=2', 'x=1, y=3'],
         'correct': 'x=2, y=1',
-        'time_minutes': 30
+        'time_minutes': 25
     },
     'montante_1': {
         'title': 'Prueba Final: Método de Montante',
@@ -596,7 +608,7 @@ PROBLEM_DATA = {
         'table': [('Sistema de ecuaciones:',), ('2x + y = 5',), ('x + 3y = 8',)],
         'options': ['x=1, y=3', 'x=2, y=1', 'x=3, y=2', 'x=2, y=2', 'x=1, y=2'],
         'correct': 'x=1, y=3',
-        'time_minutes': 30
+        'time_minutes': 25
     },
     'gauss_jordan_1': {
         'title': 'Prueba Final: Gauss-Jordan',
@@ -604,7 +616,7 @@ PROBLEM_DATA = {
         'table': [('Sistema de ecuaciones:',), ('3x + 2y = 12',), ('x + 4y = 14',)],
         'options': ['x=2, y=3', 'x=3, y=2', 'x=1, y=4', 'x=4, y=1', 'x=2, y=2'],
         'correct': 'x=2, y=3',
-        'time_minutes': 30
+        'time_minutes': 25
     },
     'gaussian_elim_1': {
         'title': 'Prueba Final: Eliminación Gaussiana',
@@ -612,7 +624,7 @@ PROBLEM_DATA = {
         'table': [('Sistema de ecuaciones:',), ('2x + 3y = 13',), ('x + 2y = 8',)],
         'options': ['x=2, y=3', 'x=3, y=2', 'x=1, y=4', 'x=4, y=1', 'x=2, y=2'],
         'correct': 'x=2, y=3',
-        'time_minutes': 30
+        'time_minutes': 25
     },
     'trapezoidal_1': {
         'title': 'Prueba Final: Regla del Trapecio',
@@ -644,7 +656,7 @@ PROBLEM_DATA = {
         'table': [('Integrar: ∫ f(x) dx desde 0 hasta 2',), ('Datos de la función:',), (0, 1), (0.5, 1.5), (1, 2.5), (1.5, 4), (2, 6)],
         'options': ['5.208', '6.208', '4.208', '7.208', '3.208'],
         'correct': '5.208',
-        'time_minutes': 30
+        'time_minutes': 25
     },
     'cotes_open_1': {
         'title': 'Prueba Final: Newton-Cotes Abierto',
@@ -652,7 +664,7 @@ PROBLEM_DATA = {
         'table': [('Integrar: ∫ f(x) dx',), ('Datos de la función:',), (0.5, 1.5), (1, 2.5), (1.5, 4)],
         'options': ['4.5', '5.5', '3.5', '6.5', '2.5'],
         'correct': '4.5',
-        'time_minutes': 30
+        'time_minutes': 25
     },
     'least_sq_linear_1': {
         'title': 'Prueba Final: Mínimos Cuadrados Lineal',
@@ -668,7 +680,7 @@ PROBLEM_DATA = {
         'table': [('Ajustar: y = a + bx + cx²',), ('Datos:',), (1, 1), (2, 3), (3, 7), (4, 13)],
         'options': ['21', '22', '20', '23', '19'],
         'correct': '21',
-        'time_minutes': 30
+        'time_minutes': 25
     },
     'least_sq_cubic_1': {
         'title': 'Prueba Final: Mínimos Cuadrados Cúbico',
@@ -676,7 +688,7 @@ PROBLEM_DATA = {
         'table': [('Ajustar: y = a + bx + cx² + dx³',), ('Datos:',), (0, 1), (1, 2), (2, 5), (3, 10), (4, 20)],
         'options': ['10.2', '11.2', '9.2', '12.2', '8.2'],
         'correct': '10.2',
-        'time_minutes': 30
+        'time_minutes': 25
     },
     'least_sq_linear_func_1': {
         'title': 'Prueba Final: Mínimos Cuadrados Linealización',
@@ -692,12 +704,12 @@ PROBLEM_DATA = {
         'table': [('Ajustar función cuadrática',), ('Datos:',), (0, 1), (1, 1.5), (2, 3.8), (3, 8.2)],
         'options': ['8.5', '9.5', '7.5', '10.5', '6.5'],
         'correct': '8.5',
-        'time_minutes': 30
+        'time_minutes': 25
     },
     'euler_modified_1': {
         'title': 'Prueba Final: Euler Modificado',
         'x_value': 0.2,
-        'table': [("Ecuación: dy/dx = x + y", "Condición inicial: y(0) = 1", "Paso: h = 0.1")],
+        'table': [("Ecuación: dy/dx = x + y",), ("Condición inicial: y(0) = 1",), ("Paso: h = 0.1",)],
         'options': ['1.221', '1.321', '1.121', '1.421', '1.021'],
         'correct': '1.221',
         'time_minutes': 25
@@ -705,7 +717,7 @@ PROBLEM_DATA = {
     'rk2_1': {
         'title': 'Prueba Final: Runge-Kutta Orden 2',
         'x_value': 0.2,
-        'table': [("Ecuación: dy/dx = x + y", "Condición inicial: y(0) = 1", "Paso: h = 0.1")],
+        'table': [("Ecuación: dy/dx = x + y",), ("Condición inicial: y(0) = 1",), ("Paso: h = 0.1",)],
         'options': ['1.242', '1.342', '1.142', '1.442', '1.042'],
         'correct': '1.242',
         'time_minutes': 25
@@ -713,33 +725,618 @@ PROBLEM_DATA = {
     'rk3_1': {
         'title': 'Prueba Final: Runge-Kutta Orden 3',
         'x_value': 0.2,
-        'table': [("Ecuación: dy/dx = x + y", "Condición inicial: y(0) = 1", "Paso: h = 0.1")],
+        'table': [("Ecuación: dy/dx = x + y",), ("Condición inicial: y(0) = 1",), ("Paso: h = 0.1",)],
         'options': ['1.246', '1.346', '1.146', '1.446', '1.046'],
         'correct': '1.246',
-        'time_minutes': 30
+        'time_minutes': 25
     },
     'rk4_simpson13_1': {
         'title': 'Prueba Final: RK4 Simpson 1/3',
         'x_value': 0.2,
-        'table': [("Ecuación: dy/dx = x + y", "Condición inicial: y(0) = 1", "Paso: h = 0.1")],
+        'table': [("Ecuación: dy/dx = x + y",), ("Condición inicial: y(0) = 1",), ("Paso: h = 0.1",)],
         'options': ['1.2428', '1.3428', '1.1428', '1.4428', '1.0428'],
         'correct': '1.2428',
-        'time_minutes': 30
+        'time_minutes': 25
     },
     'rk4_simpson38_1': {
         'title': 'Prueba Final: RK4 Simpson 3/8',
         'x_value': 0.2,
-        'table': [("Ecuación: dy/dx = x + y", "Condición inicial: y(0) = 1", "Paso: h = 0.1")],
+        'table': [("Ecuación: dy/dx = x + y",), ("Condición inicial: y(0) = 1",), ("Paso: h = 0.1",)],
         'options': ['1.2431', '1.3431', '1.1431', '1.4431', '1.0431'],
         'correct': '1.2431',
-        'time_minutes': 30
+        'time_minutes': 25
     },
     'rk_higher_order_1': {
         'title': 'Prueba Final: RK Orden Superior',
         'x_value': 0.2,
-        'table': [("Ecuación: dy/dx = x + y", "Condición inicial: y(0) = 1", "Paso: h = 0.05")],
+        'table': [("Ecuación: dy/dx = x + y",), ("Condición inicial: y(0) = 1",), ("Paso: h = 0.05",)],
         'options': ['1.2435', '1.3435', '1.1435', '1.4435', '1.0435'],
         'correct': '1.2435',
-        'time_minutes': 35
+        'time_minutes': 25
+    },
+    'linear_facil_1': {
+        'title': 'La interpolación lineal une dos puntos mediante una...',
+        'options': ['Parábola', 'Línea Recta'],
+        'correct': 'Línea Recta'
+    },
+    'linear_intermedio_1': {
+        'title': 'Interpola f(3) usando los puntos (2, 0.693) y (5, 1.609)',
+        'x_value': 3,
+        'table': [(2, 0.693), (5, 1.609)],
+        'options': ['0.998', '1.098', '0.898', '1.198'],
+        'time_minutes': 25,
+        'correct': '0.998'
+    },
+    'linear_avanzado_1': {
+        'title': 'Interpolación Lineal: Estima Ln(3) con (2, 0.693) y (5, 1.609)',
+        'x_value': 3,
+        'table': [(2, 0.693), (5, 1.609)],
+        'options': ['0.998', '1.098', '0.898', '1.198'],
+        'correct': '0.998',
+        'time_minutes': 30
+    },
+    'newton_div_diff_facil_1': {
+        'title': '¿Qué tipo de intervalos maneja principalmente este método?',
+        'options': ['Uniformes', 'No Uniformes'],
+        'correct': 'No Uniformes'
+    },
+    'newton_div_diff_intermedio_1': {
+        'title': 'Calcula la 1ra diferencia dividida entre (6.5, -1.35) y (7.3, -0.28)',
+        'options': ['1.3375', '0.8375', '1.0375', '1.2375'],
+        'time_minutes': 25,
+        'correct': '1.3375'
+    },
+    'newton_div_diff_avanzado_1': {
+        'title': 'Newton Diferencias Divididas: Interpola x=7 con (6.5, -1.35), (7.3, -0.28), (8.1, 0.98)',
+        'x_value': 7,
+        'table': [(6.5, -1.35), (7.3, -0.28), (8.1, 0.98)],
+        'options': ['-0.657', '-0.557', '-0.757', '-0.457'],
+        'correct': '-0.657',
+        'time_minutes': 30
+    },
+    'newton_forward_facil_1': {
+        'title': 'En Newton Adelante, el factor "s" se calcula como:',
+        'options': ['(x - xi) / h', '(x + xi) / h'],
+        'correct': '(x - xi) / h'
+    },
+    'newton_forward_intermedio_1': {
+        'title': 'Con h=0.7 y x=3, x0=1.7, calcula s = (x - x0)/h',
+        'options': ['1.857', '1.657', '2.057', '1.457'],
+        'time_minutes': 25,
+        'correct': '1.857'
+    },
+    'newton_forward_avanzado_1': {
+        'title': 'Newton Adelante: Interpola g(3) con (1.7, 0.53), (2.4, 0.88), (3.1, 1.09)',
+        'x_value': 3,
+        'table': [(1.7, 0.53), (2.4, 0.88), (3.1, 1.09)],
+        'options': ['1.029', '1.129', '0.929', '1.229'],
+        'correct': '1.029',
+        'time_minutes': 30
+    },
+    'newton_backward_facil_1': {
+        'title': 'El signo del factor binomial "s" en este método es generalmente:',
+        'options': ['Positivo', 'Negativo'],
+        'correct': 'Negativo'
+    },
+    'newton_backward_intermedio_1': {
+        'title': 'Con x=3, xn=3.1, h=0.7, calcula s = (x - xn)/h',
+        'options': ['-0.1428', '0.1428', '-0.2428', '0.2428'],
+        'time_minutes': 25,
+        'correct': '-0.1428'
+    },
+    'newton_backward_avanzado_1': {
+        'title': 'Newton Atrás: Interpola g(3) con (1.7, 0.53), (2.4, 0.88), (3.1, 1.09)',
+        'x_value': 3,
+        'table': [(1.7, 0.53), (2.4, 0.88), (3.1, 1.09)],
+        'options': ['1.029', '1.129', '0.929', '1.229'],
+        'correct': '1.029',
+        'time_minutes': 30
+    },
+    'bisection_facil_1': {
+        'title': 'Si f(a) es positivo y f(b) positivo, ¿hay raíz garantizada?',
+        'options': ['Si', 'No'],
+        'correct': 'No'
+    },
+    'bisection_intermedio_1': {
+        'title': 'Bisección: Primera iteración entre a=1, f(a)=-1 y b=2, f(b)=5. Calcula c',
+        'options': ['1.5', '1.25', '1.75', '1.0'],
+        'time_minutes': 25,
+        'correct': '1.5'
+    },
+    'bisection_avanzado_1': {
+        'title': 'Bisección: Encuentra raíz de f(x)=x³-6.5x+2 en [0,1] tras 3 iteraciones',
+        'x_value': None,
+        'table': [('Función: f(x) = x³ - 6.5x + 2',), ('Intervalo: [0, 1]',), ('Realiza 3 iteraciones',)],
+        'options': ['0.3125', '0.5', '0.25', '0.375'],
+        'correct': '0.3125',
+        'time_minutes': 30
+    },
+    'false_position_facil_1': {
+        'title': 'Este método se basa en una visualización:',
+        'options': ['Gráfica', 'Aleatoria'],
+        'correct': 'Gráfica'
+    },
+    'false_position_intermedio_1': {
+        'title': 'Falsa Posición: Con a=1, f(a)=-2, b=2, f(b)=17, calcula c',
+        'options': ['1.105', '1.205', '1.005', '1.305'],
+        'time_minutes': 25,
+        'correct': '1.105'
+    },
+    'false_position_avanzado_1': {
+        'title': 'Falsa Posición: Encuentra raíz de f(x)=3x³-2x-3 tras 2 iteraciones',
+        'x_value': None,
+        'table': [('Función: f(x) = 3x³ - 2x - 3',), ('f(1) = -2, f(2) = 17',)],
+        'options': ['1.162', '1.105', '1.232', '1.042'],
+        'correct': '1.162',
+        'time_minutes': 30
+    },
+    'newton_raphson_facil_1': {
+        'title': '¿Qué requiere este método obligatoriamente?',
+        'options': ['La derivada f\'(x)', 'Dos puntos iniciales'],
+        'correct': 'La derivada f\'(x)'
+    },
+    'newton_raphson_intermedio_1': {
+        'title': 'Newton-Raphson: f(x)=x³+2x²+10x-20, f\'(x)=3x²+4x+10. Con x0=1, calcula x1',
+        'options': ['1.411', '1.311', '1.511', '1.211'],
+        'time_minutes': 25,
+        'correct': '1.411'
+    },
+    'newton_raphson_avanzado_1': {
+        'title': 'Newton-Raphson: Encuentra raíz de f(x)=x²-2 con x0=2',
+        'x_value': None,
+        'table': [('Función: f(x) = x² - 2',), ("f'(x) = 2x",), ('Valor inicial: x₀ = 2',)],
+        'options': ['1.414', '1.514', '1.314', '1.614'],
+        'correct': '1.414',
+        'time_minutes': 30
+    },
+    'fixed_point_facil_1': {
+        'title': 'Si $2x^2 - x - 5 = 0$, una posible g(x) es:',
+        'options': ['$2x^2 - 5$', '$\\sqrt{(x+5)/2}$'],
+        'correct': '$2x^2 - 5$'
+    },
+    'fixed_point_intermedio_1': {
+        'title': 'Punto Fijo: Para e^(-x) = x, usa g(x)=e^(-x). Con x0=1, calcula x1',
+        'options': ['0.367', '0.467', '0.267', '0.567'],
+        'time_minutes': 25,
+        'correct': '0.367'
+    },
+    'fixed_point_avanzado_1': {
+        'title': 'Punto Fijo: Encuentra raíz de f(x) = e^(-x) - x con g(x) = e^(-x)',
+        'x_value': None,
+        'table': [('Función: g(x) = √(x + 1)',), ('Valor inicial: x₀ = 1',), ('Encuentra el punto fijo',)],
+        'options': ['1.732', '1.832', '1.632', '1.932'],
+        'correct': '1.732',
+        'time_minutes': 30
+    },
+    'secant_facil_1': {
+        'title': '¿Cuántos valores iniciales requiere la Secante?',
+        'options': ['1', '2'],
+        'correct': '2'
+    },
+    'secant_intermedio_1': {
+        'title': 'Secante: Con x0=0, f(x0)=0, x1=1, f(x1)=-0.63. Calcula x2 para e^(-x)-x=0',
+        'options': ['0.6127', '0.7127', '0.5127', '0.8127'],
+        'time_minutes': 25,
+        'correct': '0.6127'
+    },
+    'secant_avanzado_1': {
+        'title': 'Secante: Encuentra raíz de f(x)=x³-5 con x0=1, x1=2',
+        'x_value': None,
+        'table': [('Función: f(x) = x³ - 5',), ('Valores iniciales: x₀ = 1, x₁ = 2',), ('Encuentra la raíz',)],
+        'options': ['2.094', '2.194', '1.994', '2.294'],
+        'correct': '2.094',
+        'time_minutes': 30
+    },
+    'graphical_facil_1': {
+        'title': 'Una raíz se identifica visualmente cuando la curva cruza el eje:',
+        'options': ['X', 'Y'],
+        'correct': 'X'
+    },
+    'graphical_intermedio_1': {
+        'title': 'Gráfico: Evalúa f(x)=x³-6.5x+2 en x=0: f(0)=? ¿Hay raíz entre 0 y 1?',
+        'options': ['f(0)=2, sí hay raíz', 'f(0)=0, no hay raíz', 'f(0)=-1, sí hay raíz', 'f(0)=1, no hay raíz'],
+        'time_minutes': 25,
+        'correct': 'f(0)=2, sí hay raíz'
+    },
+    'graphical_avanzado_1': {
+        'title': 'Gráfico: Localiza raíz de f(x)=x³-6.5x+2 usando cambios de signo',
+        'x_value': None,
+        'table': [('Función: f(x) = x³ - 6.5x + 2',), ('Intervalo: [0, 3]',), ('Identifica la raíz visualmente',)],
+        'options': ['1.5', '1.6', '1.4', '1.7'],
+        'correct': '1.5',
+        'time_minutes': 30
+    },
+    'gauss_seidel_facil_1': {
+        'title': '¿Qué valores usa para calcular la variable "b" en la iteración 1?',
+        'options': ['Los iniciales (0)', 'El nuevo "a" recién calculado'],
+        'correct': 'El nuevo "a" recién calculado'
+    },
+    'gauss_seidel_intermedio_1': {
+        'title': 'Gauss-Seidel: Sistema 2x2: 4x+y=9, x+3y=10. Con x0=y0=0, calcula x1',
+        'options': ['2.25', '2.0', '2.5', '2.75'],
+        'time_minutes': 25,
+        'correct': '2.25'
+    },
+    'gauss_seidel_avanzado_1': {
+        'title': 'Gauss-Seidel: Resuelve el sistema 4x+y=9, x+3y=10',
+        'x_value': None,
+        'table': [('Sistema de ecuaciones:',), ('4x + y = 9',), ('x + 3y = 10',)],
+        'options': ['x=2, y=1', 'x=1, y=3', 'x=3, y=2', 'x=2, y=2'],
+        'correct': 'x=2, y=1',
+        'time_minutes': 30
+    },
+    'jacobi_facil_1': {
+        'title': 'Diferencia clave con Gauss-Seidel:',
+        'options': ['Uso de valores anteriores', 'No iterativo'],
+        'correct': 'Uso de valores anteriores'
+    },
+    'jacobi_intermedio_1': {
+        'title': 'En Jacobi, para calcular x(k+1) se usan valores:',
+        'options': ['Todos de la iteración k', 'Mezclados de k y k+1', 'Solo de la iteración inicial', 'Aleatorios'],
+        'time_minutes': 25,
+        'correct': 'Todos de la iteración k'
+    },
+    'jacobi_avanzado_1': {
+        'title': 'Calcula el error $\\epsilon_a$ entre la iteración 3 y 4...',
+        'options': ['0.00056', '0.001'],
+        'time_minutes': 30,
+        'correct': '0.00056'
+    },
+    'montante_facil_1': {
+        'title': 'El método Montante utiliza principalmente aritmética de:',
+        'options': ['Enteros', 'Fracciones'],
+        'correct': 'Enteros'
+    },
+    'montante_intermedio_1': {
+        'title': 'Montante: Sistema 2x2: 2x+y=5, x+3y=8. Paso 1: Calcula nueva posición [2,2]',
+        'options': ['5', '4', '6', '3'],
+        'time_minutes': 25,
+        'correct': '5'
+    },
+    'montante_avanzado_1': {
+        'title': 'Montante: Resuelve el sistema 2x+y=5, x+3y=8',
+        'x_value': None,
+        'table': [('Sistema de ecuaciones:',), ('2x + y = 5',), ('x + 3y = 8',)],
+        'options': ['x=1, y=3', 'x=2, y=1', 'x=3, y=2', 'x=2, y=2'],
+        'correct': 'x=1, y=3',
+        'time_minutes': 30
+    },
+    'gauss_jordan_facil_1': {
+        'title': 'La matriz final en Gauss-Jordan debe ser:',
+        'options': ['Identidad', 'Triangular'],
+        'correct': 'Identidad'
+    },
+    'gauss_jordan_intermedio_1': {
+        'title': 'Gauss-Jordan: Sistema 2x2: 3x+2y=12, x+4y=14. Primera fila normalizada por pivote',
+        'options': ['1, 2/3, 4', '3, 2, 12', '1, 1, 1', '2, 3, 4'],
+        'time_minutes': 25,
+        'correct': '1, 2/3, 4'
+    },
+    'gauss_jordan_avanzado_1': {
+        'title': 'Gauss-Jordan: Resuelve el sistema 3x+2y=12, x+4y=14',
+        'x_value': None,
+        'table': [('Sistema de ecuaciones:',), ('3x + 2y = 12',), ('x + 4y = 14',)],
+        'options': ['x=2, y=3', 'x=3, y=2', 'x=1, y=4', 'x=4, y=1'],
+        'correct': 'x=2, y=3',
+        'time_minutes': 30
+    },
+    'gaussian_elim_facil_1': {
+        'title': 'A diferencia de Gauss-Jordan, aquí solo buscamos una matriz:',
+        'options': ['Triangular Superior', 'Identidad'],
+        'correct': 'Triangular Superior'
+    },
+    'gaussian_elim_intermedio_1': {
+        'title': 'Eliminación Gaussiana: Matriz 3x3. Después de fila 1, elemento [2,1] es 0: ?',
+        'options': ['15.5', '-7.5', '10.5', '5.5'],
+        'time_minutes': 25,
+        'correct': '-7.5'
+    },
+    'gaussian_elim_avanzado_1': {
+        'title': 'Eliminación Gaussiana: Resuelve el sistema 2x+3y=13, x+2y=8',
+        'x_value': None,
+        'table': [('Sistema de ecuaciones:',), ('2x + 3y = 13',), ('x + 2y = 8',)],
+        'options': ['x=2, y=3', 'x=3, y=2', 'x=1, y=4', 'x=4, y=1'],
+        'correct': 'x=2, y=3',
+        'time_minutes': 30
+    },
+    'trapezoidal_facil_1': {
+        'title': '¿A qué grado de polinomio corresponde el trapecio?',
+        'options': ['1er Grado', '2do Grado'],
+        'correct': '1er Grado'
+    },
+    'trapezoidal_intermedio_1': {
+        'title': 'Para $\\int_0^1 (1-x^2)dx$ con n=4, calcula h...',
+        'options': ['0.25', '1'],
+        'time_minutes': 25,
+        'correct': '0.25'
+    },
+    'trapezoidal_avanzado_1': {
+        'title': 'El error en la regla del trapecio es proporcional a:',
+        'options': ['h²f"(ξ)', 'h³f""(ξ)', 'hf\'(ξ)', 'h⁴f""(ξ)'],
+        'time_minutes': 30,
+        'correct': 'h²f"(ξ)'
+    },
+    'simpson_1_3_facil_1': {
+        'title': 'Requisito indispensable de "n" para 1/3 Simpson:',
+        'options': ['Debe ser Par', 'Debe ser Impar'],
+        'correct': 'Debe ser Par'
+    },
+    'simpson_1_3_intermedio_1': {
+        'title': 'Simpson 1/3: Para integrar con n=4 subintervalos, calcula h si b-a=1',
+        'options': ['0.25', '0.5', '0.125', '0.1'],
+        'time_minutes': 25,
+        'correct': '0.25'
+    },
+    'simpson_1_3_avanzado_1': {
+        'title': 'Simpson 1/3: Integra (1-x²) de 0 a 2 con n=4 datos: (0,1), (1,2), (2,5)',
+        'x_value': None,
+        'table': [('Integrar: ∫ f(x) dx desde 0 hasta 2',), ('Datos de la función:',), (0, 1), (1, 2), (2, 5)],
+        'options': ['5.333', '6.333', '4.333', '7.333'],
+        'correct': '5.333',
+        'time_minutes': 30
+    },
+    'simpson_3_8_facil_1': {
+        'title': 'Simpson 3/8 requiere que "n" sea:',
+        'options': ['Múltiplo de 3', 'Par'],
+        'correct': 'Múltiplo de 3'
+    },
+    'simpson_3_8_intermedio_1': {
+        'title': 'Simpson 3/8: Con 4 puntos (n=3), calcula el área bajo la curva',
+        'options': ['A usar fórmula 3/8', 'Error - n debe ser par', 'Usar Simpson 1/3', 'Usar Trapecio'],
+        'time_minutes': 25,
+        'correct': 'A usar fórmula 3/8'
+    },
+    'simpson_3_8_avanzado_1': {
+        'title': 'Simpson 3/8: Integra de 0 a 3 con datos (0,1), (1,2), (2,5), (3,10)',
+        'x_value': None,
+        'table': [('Integrar: ∫ f(x) dx',), ('Datos de la función:',), (0, 1), (1, 2), (2, 5), (3, 10)],
+        'options': ['11.25', '12.25', '10.25', '13.25'],
+        'correct': '11.25',
+        'time_minutes': 30
+    },
+    'cotes_closed_facil_1': {
+        'title': 'En fórmulas cerradas, ¿se incluyen los límites a y b?',
+        'options': ['Si', 'No'],
+        'correct': 'Si'
+    },
+    'cotes_closed_intermedio_1': {
+        'title': 'Newton-Cotes Cerrado: Selecciona n=2 (3 puntos). Qué fórmula usar',
+        'options': ['Simpson 1/3 (Trapecio mejorado)', 'Trapecio', 'Simpson 3/8', 'Punto Medio'],
+        'time_minutes': 25,
+        'correct': 'Simpson 1/3 (Trapecio mejorado)'
+    },
+    'cotes_closed_avanzado_1': {
+        'title': 'Newton-Cotes Cerrado: Integra con 5 datos: (0,1), (0.5,1.5), (1,2.5), (1.5,4), (2,6)',
+        'x_value': None,
+        'table': [('Integrar: ∫ f(x) dx desde 0 hasta 2',), ('Datos de la función:',), (0, 1), (0.5, 1.5), (1, 2.5), (1.5, 4), (2, 6)],
+        'options': ['5.208', '6.208', '4.208', '7.208'],
+        'correct': '5.208',
+        'time_minutes': 30
+    },
+    'cotes_open_facil_1': {
+        'title': 'Fórmula para calcular h en Cotes Abiertas:',
+        'options': ['(b-a)/(n+2)', '(b-a)/n'],
+        'correct': '(b-a)/(n+2)'
+    },
+    'cotes_open_intermedio_1': {
+        'title': 'Newton-Cotes Abierto: Con intervalo [0,2], n=4, calcula h = (b-a)/(n+2)',
+        'options': ['1/3', '0.5', '1/4', '2/3'],
+        'time_minutes': 25,
+        'correct': '1/3'
+    },
+    'cotes_open_avanzado_1': {
+        'title': 'Newton-Cotes Abierto: Integra entre puntos internos (0.5,1.5,1,1.5,4)',
+        'x_value': None,
+        'table': [('Integrar: ∫ f(x) dx',), ('Datos de la función (sin extremos):',), (0.5, 1.5), (1, 2.5), (1.5, 4)],
+        'options': ['4.5', '5.5', '3.5', '6.5'],
+        'correct': '4.5',
+        'time_minutes': 30
+    },
+    'least_sq_linear_facil_1': {
+        'title': 'El objetivo es minimizar:',
+        'options': ['La dispersión (error)', 'El valor de x'],
+        'correct': 'La dispersión (error)'
+    },
+    'least_sq_linear_intermedio_1': {
+        'title': 'Calcula $\\sum x^2$ para los datos: 1, 2, 3...',
+        'options': ['14', '6'],
+        'time_minutes': 25,
+        'correct': '14'
+    },
+    'least_sq_linear_avanzado_1': {
+        'title': 'El método de mínimos cuadrados minimiza:',
+        'options': ['∑[yi - (a0 + a1xi)]²', '∑(yi - xi)', 'max|yi - ŷi|', '∑|yi - ŷi|'],
+        'time_minutes': 30,
+        'correct': '∑[yi - (a0 + a1xi)]²'
+    },
+    'least_sq_quadratic_facil_1': {
+        'title': '¿Cuántas incógnitas (coeficientes) se buscan?',
+        'options': ['3 (a0, a1, a2)', '2'],
+        'correct': '3 (a0, a1, a2)'
+    },
+    'least_sq_quadratic_intermedio_1': {
+        'title': 'Mínimos Cuadrados Cuadrático: Datos (1,1), (2,3), (3,7). Calcula ∑x²',
+        'options': ['14', '6', '12', '10'],
+        'time_minutes': 25,
+        'correct': '14'
+    },
+    'least_sq_quadratic_avanzado_1': {
+        'title': 'Mínimos Cuadrados Cuadrático: Ajusta y=a+bx+cx² con (1,1), (2,3), (3,7), (4,13)',
+        'x_value': 5,
+        'table': [('Ajustar: y = a + bx + cx²',), ('Datos:',), (1, 1), (2, 3), (3, 7), (4, 13)],
+        'options': ['21', '22', '20', '23'],
+        'correct': '21',
+        'time_minutes': 30
+    },
+    'least_sq_cubic_facil_1': {
+        'title': 'El sistema de ecuaciones resultante es de tamaño:',
+        'options': ['4x4', '3x3'],
+        'correct': '4x4'
+    },
+    'least_sq_cubic_intermedio_1': {
+        'title': 'Mínimos Cuadrados Cúbico: Datos (0,1), (1,2), (2,5), (3,10). Calcula ∑x³',
+        'options': ['36', '20', '14', '30'],
+        'time_minutes': 25,
+        'correct': '36'
+    },
+    'least_sq_cubic_avanzado_1': {
+        'title': 'Mínimos Cuadrados Cúbico: Ajusta y=a+bx+cx²+dx³ con (0,1), (1,2), (2,5), (3,10), (4,20)',
+        'x_value': 3,
+        'table': [('Ajustar: y = a + bx + cx² + dx³',), ('Datos:',), (0, 1), (1, 2), (2, 5), (3, 10), (4, 20)],
+        'options': ['10.2', '11.2', '9.2', '12.2'],
+        'correct': '10.2',
+        'time_minutes': 30
+    },
+    'least_sq_linear_func_facil_1': {
+        'title': 'En lugar de $x^2$, el tercer término depende de:',
+        'options': ['f(x)', 'x^3'],
+        'correct': 'f(x)'
+    },
+    'least_sq_linear_func_intermedio_1': {
+        'title': 'Mínimos Cuadrados Lineal con f(x): y=a+b*ln(x) con datos (1,2), (2,3), (3,4). Σln(x)',
+        'options': ['1.791', '1.691', '1.891', '1.591'],
+        'time_minutes': 25,
+        'correct': '1.791'
+    },
+    'least_sq_linear_func_avanzado_1': {
+        'title': 'Mínimos Cuadrados Lineal con f(x): Ajusta y=a+b*ln(x) con (1,2.5), (2,5.2), (3,8.8), (4,13.1)',
+        'x_value': 4,
+        'table': [('Ajustar: y = a + b*ln(x)',), ('Datos:',), (1, 2.5), (2, 5.2), (3, 8.8), (4, 13.1)],
+        'options': ['13.5', '14.5', '12.5', '15.5'],
+        'correct': '13.5',
+        'time_minutes': 30
+    },
+    'least_sq_quadratic_func_facil_1': {
+        'title': 'Este modelo tiene 4 coeficientes, incluyendo:',
+        'options': ['El término f(x)', 'Término cúbico'],
+        'correct': 'El término f(x)'
+    },
+    'least_sq_quadratic_func_intermedio_1': {
+        'title': 'Mínimos Cuadrados Cuadrático con f(x): y=a+bx+c*e^x. Σe^x es el nuevo término',
+        'options': ['Si', 'No'],
+        'time_minutes': 25,
+        'correct': 'Si'
+    },
+    'least_sq_quadratic_func_avanzado_1': {
+        'title': 'Mínimos Cuadrados Cuadrático con f(x): Ajusta y=a+bx+c*e^x con (0,1), (1,1.5), (2,3.8), (3,8.2)',
+        'x_value': 3,
+        'table': [('Ajustar: y = a + bx + c*e^x',), ('Datos:',), (0, 1), (1, 1.5), (2, 3.8), (3, 8.2)],
+        'options': ['8.5', '9.5', '7.5', '10.5'],
+        'correct': '8.5',
+        'time_minutes': 30
+    },
+    'euler_modified_facil_1': {
+        'title': '¿Qué regla de integración usa Euler Modificado?',
+        'options': ['Trapezoidal', 'Simpson'],
+        'correct': 'Trapezoidal'
+    },
+    'euler_modified_intermedio_1': {
+        'title': 'Euler Modificado: dy/dx = x + y, y(0) = 1, h = 0.2. Calcula y(0.2)',
+        'options': ['1.221', '1.121', '1.321', '1.021'],
+        'time_minutes': 25,
+        'correct': '1.221'
+    },
+    'euler_modified_avanzado_1': {
+        'title': 'Euler Modificado: Resuelve dy/dx = x + y, y(0) = 1 en [0, 0.2]',
+        'x_value': 0.2,
+        'table': [("Ecuación: dy/dx = x + y",), ("Condición inicial: y(0) = 1",), ("Paso: h = 0.1",)],
+        'options': ['1.221', '1.321', '1.121', '1.421'],
+        'correct': '1.221',
+        'time_minutes': 30
+    },
+    'rk2_facil_1': {
+        'title': '¿Cuántas evaluaciones de la función (k) se hacen?',
+        'options': ['2', '4'],
+        'correct': '2'
+    },
+    'rk2_intermedio_1': {
+        'title': 'RK2: dy/dx = x + y, y(0) = 1, h = 0.2. Calcula y1',
+        'options': ['1.242', '1.142', '1.342', '1.042'],
+        'time_minutes': 25,
+        'correct': '1.242'
+    },
+    'rk2_avanzado_1': {
+        'title': 'RK2: Resuelve dy/dx = x + y, y(0) = 1 en [0, 0.2]',
+        'x_value': 0.2,
+        'table': [('Ecuación: dy/dx = x + y',), ('Condición inicial: y(0) = 1',), ('Paso: h = 0.1',)],
+        'options': ['1.242', '1.342', '1.142', '1.442'],
+        'correct': '1.242',
+        'time_minutes': 30
+    },
+    'rk3_facil_1': {
+        'title': 'El peso mayor se le da a la pendiente intermedia:',
+        'options': ['k2 (x4)', 'k1 (x1)'],
+        'correct': 'k2 (x4)'
+    },
+    'rk3_intermedio_1': {
+        'title': 'RK3: dy/dx = 2x, y(0) = 0, h = 0.1. Calcula y1',
+        'options': ['0.002', '0.001', '0.003', '0.004'],
+        'time_minutes': 25,
+        'correct': '0.002'
+    },
+    'rk3_avanzado_1': {
+        'title': 'RK3: Resuelve dy/dx = 2x, y(0) = 0 en [0, 0.1]',
+        'x_value': 0.1,
+        'table': [('Ecuación: dy/dx = 2x',), ('Condición inicial: y(0) = 0',), ('Paso: h = 0.1',)],
+        'options': ['0.002', '0.003', '0.001', '0.004'],
+        'correct': '0.002',
+        'time_minutes': 30
+    },
+    'rk4_simpson13_facil_1': {
+        'title': '¿Cuáles pendientes se multiplican por 2?',
+        'options': ['k2 y k3', 'k1 y k4'],
+        'correct': 'k2 y k3'
+    },
+    'rk4_simpson13_intermedio_1': {
+        'title': 'RK4 Simpson 1/3: dy/dx = -2y, y(0) = 1, h = 0.1. Calcula y1',
+        'options': ['0.818', '0.918', '0.718', '0.618'],
+        'time_minutes': 25,
+        'correct': '0.818'
+    },
+    'rk4_simpson13_avanzado_1': {
+        'title': 'RK4 Simpson 1/3: Resuelve dy/dx = -2y, y(0) = 1 en [0, 0.1]',
+        'x_value': 0.1,
+        'table': [('Ecuación: dy/dx = -2y',), ('Condición inicial: y(0) = 1',), ('Paso: h = 0.05',)],
+        'options': ['0.818', '0.918', '0.718', '0.618'],
+        'correct': '0.818',
+        'time_minutes': 30
+    },
+    'rk4_simpson38_facil_1': {
+        'title': 'En esta variante, el divisor de la fórmula es:',
+        'options': ['8', '6'],
+        'correct': '8'
+    },
+    'rk4_simpson38_intermedio_1': {
+        'title': 'RK4 Simpson 3/8: dy/dx = y, y(0) = 1, h = 0.1. Calcula y1',
+        'options': ['1.105', '1.205', '1.005', '1.305'],
+        'time_minutes': 25,
+        'correct': '1.105'
+    },
+    'rk4_simpson38_avanzado_1': {
+        'title': 'RK4 Simpson 3/8: Resuelve dy/dx = y, y(0) = 1 en [0, 0.1]',
+        'x_value': 0.1,
+        'table': [('Ecuación: dy/dx = y',), ('Condición inicial: y(0) = 1',), ('Paso: h = 0.05',)],
+        'options': ['1.105', '1.205', '1.005', '1.305'],
+        'correct': '1.105',
+        'time_minutes': 30
+    },
+    'rk_higher_order_facil_1': {
+        'title': 'Para una EDO de 2do orden, necesitamos calcular:',
+        'options': ['k y m', 'Solo k'],
+        'correct': 'k y m'
+    },
+    'rk_higher_order_intermedio_1': {
+        'title': 'RK4 Orden Superior: y" = x - y\', y(0) = 1, y\'(0) = 0, h = 0.1. Sistema equivalente: dy/dx = z, dz/dx = x - z',
+        'options': ['y(0.1) ≈ 1.005', 'y(0.1) ≈ 1.105', 'y(0.1) ≈ 0.905', 'y(0.1) ≈ 1.205'],
+        'time_minutes': 25,
+        'correct': 'y(0.1) ≈ 1.005'
+    },
+    'rk_higher_order_avanzado_1': {
+        'title': 'RK4 Orden Superior: Resuelve y" = x - y\' en [0, 0.1] con y(0) = 1, y\'(0) = 0',
+        'x_value': 0.1,
+        'table': [('Sistema: dy/dx = z, dz/dx = x - z',), ('y(0) = 1, z(0) = 0',), ('Paso: h = 0.05',)],
+        'options': ['y(0.1) ≈ 1.005', 'y(0.1) ≈ 1.105', 'y(0.1) ≈ 0.905', 'y(0.1) ≈ 1.205'],
+        'correct': 'y(0.1) ≈ 1.005',
+        'time_minutes': 30
     },
 }

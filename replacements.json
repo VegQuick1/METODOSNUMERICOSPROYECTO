@@ -1,0 +1,494 @@
+[
+  {
+    "old_string": "    'lagrange_intermedio': {\n        'title': 'Lagrange: Interpola f(2.5) con puntos (2, 4) y (3, 7)',\n        'options': ['5.5', '6.5', '5', '6'],\n        'correct': '5.5'\n    },",
+    "new_string": "    'lagrange_intermedio': {\n        'title': 'Lagrange: Interpola f(2.5) con puntos (2, 4) y (3, 7)',\n        'options': ['5.5', '6.5', '5', '6'],\n        'time_minutes': 25,\n        'correct': '5.5'\n    },",
+    "prob_id": "lagrange_intermedio",
+    "action": "ADD"
+  },
+  {
+    "old_string": "    'lagrange_avanzado': {\n        'title': 'Lagrange: Interpola f(2.4) con puntos (2, 2.54), (2.5, 2.82), (3, 3.21)',\n        'x_value': 2.4,\n        'table': [(2, 2.54), (2.5, 2.82), (3, 3.21)],\n        'options': ['2.672', '2.772', '2.572', '2.872'],\n        'correct': '2.672',\n        'time_minutes': 20\n    },",
+    "new_string": "    'lagrange_avanzado': {\n        'title': 'Lagrange: Interpola f(2.4) con puntos (2, 2.54), (2.5, 2.82), (3, 3.21)',\n        'x_value': 2.4,\n        'table': [(2, 2.54), (2.5, 2.82), (3, 3.21)],\n        'options': ['2.672', '2.772', '2.572', '2.872'],\n        'correct': '2.672',\n        'time_minutes': 30\n    },",
+    "prob_id": "lagrange_avanzado",
+    "action": "CHANGE"
+  },
+  {
+    "old_string": "    'linear_interp_1': {\n        'title': 'Prueba Final: Interpolación Lineal',\n        'x_value': 3,\n        'table': [(2, 0.693), (5, 1.609)],\n        'options': ['0.998', '1.098', '1.198', '0.898', '1.298'],\n        'correct': '0.998',\n        'time_minutes': 20\n    },",
+    "new_string": "    'linear_interp_1': {\n        'title': 'Prueba Final: Interpolación Lineal',\n        'x_value': 3,\n        'table': [(2, 0.693), (5, 1.609)],\n        'options': ['0.998', '1.098', '1.198', '0.898', '1.298'],\n        'correct': '0.998',\n        'time_minutes': 25\n    },",
+    "prob_id": "linear_interp_1",
+    "action": "CHANGE"
+  },
+  {
+    "old_string": "    'bisection_1': {\n        'title': 'Prueba Final: Método de Bisección',\n        'x_value': None,\n        'table': [('Función: f(x) = x² - 2',), ('Intervalo: [1, 2]',), ('Encuentra la raíz con 5 iteraciones',)],\n        'options': ['1.5', '1.6', '1.4', '1.7', '1.3'],\n        'correct': '1.5',\n        'time_minutes': 30\n    },",
+    "new_string": "    'bisection_1': {\n        'title': 'Prueba Final: Método de Bisección',\n        'x_value': None,\n        'table': [('Función: f(x) = x² - 2',), ('Intervalo: [1, 2]',), ('Encuentra la raíz con 5 iteraciones',)],\n        'options': ['1.5', '1.6', '1.4', '1.7', '1.3'],\n        'correct': '1.5',\n        'time_minutes': 25\n    },",
+    "prob_id": "bisection_1",
+    "action": "CHANGE"
+  },
+  {
+    "old_string": "    'false_position_1': {\n        'title': 'Prueba Final: Método de Falsa Posición',\n        'x_value': None,\n        'table': [('Función: f(x) = x² - 2',), ('Intervalo: [1, 2]',), ('Encuentra la raíz',)],\n        'options': ['1.52', '1.62', '1.42', '1.72', '1.32'],\n        'correct': '1.52',\n        'time_minutes': 30\n    },",
+    "new_string": "    'false_position_1': {\n        'title': 'Prueba Final: Método de Falsa Posición',\n        'x_value': None,\n        'table': [('Función: f(x) = x² - 2',), ('Intervalo: [1, 2]',), ('Encuentra la raíz',)],\n        'options': ['1.52', '1.62', '1.42', '1.72', '1.32'],\n        'correct': '1.52',\n        'time_minutes': 25\n    },",
+    "prob_id": "false_position_1",
+    "action": "CHANGE"
+  },
+  {
+    "old_string": "    'graphical_1': {\n        'title': 'Prueba Final: Método Gráfico',\n        'x_value': None,\n        'table': [('Función: f(x) = x² - 2',), ('Intervalo: [0, 3]',), ('Identifica la raíz visualmente',)],\n        'options': ['1.5', '1.6', '1.4', '1.7', '1.3'],\n        'correct': '1.5',\n        'time_minutes': 20\n    },",
+    "new_string": "    'graphical_1': {\n        'title': 'Prueba Final: Método Gráfico',\n        'x_value': None,\n        'table': [('Función: f(x) = x² - 2',), ('Intervalo: [0, 3]',), ('Identifica la raíz visualmente',)],\n        'options': ['1.5', '1.6', '1.4', '1.7', '1.3'],\n        'correct': '1.5',\n        'time_minutes': 25\n    },",
+    "prob_id": "graphical_1",
+    "action": "CHANGE"
+  },
+  {
+    "old_string": "    'gauss_seidel_1': {\n        'title': 'Prueba Final: Gauss-Seidel',\n        'x_value': None,\n        'table': [('Sistema de ecuaciones:',), ('4x + y = 9',), ('x + 3y = 10',)],\n        'options': ['x=2, y=1', 'x=1, y=3', 'x=3, y=2', 'x=2, y=2', 'x=1, y=2'],\n        'correct': 'x=2, y=1',\n        'time_minutes': 30\n    },",
+    "new_string": "    'gauss_seidel_1': {\n        'title': 'Prueba Final: Gauss-Seidel',\n        'x_value': None,\n        'table': [('Sistema de ecuaciones:',), ('4x + y = 9',), ('x + 3y = 10',)],\n        'options': ['x=2, y=1', 'x=1, y=3', 'x=3, y=2', 'x=2, y=2', 'x=1, y=2'],\n        'correct': 'x=2, y=1',\n        'time_minutes': 25\n    },",
+    "prob_id": "gauss_seidel_1",
+    "action": "CHANGE"
+  },
+  {
+    "old_string": "    'jacobi_1': {\n        'title': 'Prueba Final: Método de Jacobi',\n        'x_value': None,\n        'table': [('Sistema de ecuaciones:',), ('5x + y = 11',), ('x + 4y = 9',)],\n        'options': ['x=2, y=1', 'x=1, y=2', 'x=3, y=1', 'x=2, y=2', 'x=1, y=3'],\n        'correct': 'x=2, y=1',\n        'time_minutes': 30\n    },",
+    "new_string": "    'jacobi_1': {\n        'title': 'Prueba Final: Método de Jacobi',\n        'x_value': None,\n        'table': [('Sistema de ecuaciones:',), ('5x + y = 11',), ('x + 4y = 9',)],\n        'options': ['x=2, y=1', 'x=1, y=2', 'x=3, y=1', 'x=2, y=2', 'x=1, y=3'],\n        'correct': 'x=2, y=1',\n        'time_minutes': 25\n    },",
+    "prob_id": "jacobi_1",
+    "action": "CHANGE"
+  },
+  {
+    "old_string": "    'montante_1': {\n        'title': 'Prueba Final: Método de Montante',\n        'x_value': None,\n        'table': [('Sistema de ecuaciones:',), ('2x + y = 5',), ('x + 3y = 8',)],\n        'options': ['x=1, y=3', 'x=2, y=1', 'x=3, y=2', 'x=2, y=2', 'x=1, y=2'],\n        'correct': 'x=1, y=3',\n        'time_minutes': 30\n    },",
+    "new_string": "    'montante_1': {\n        'title': 'Prueba Final: Método de Montante',\n        'x_value': None,\n        'table': [('Sistema de ecuaciones:',), ('2x + y = 5',), ('x + 3y = 8',)],\n        'options': ['x=1, y=3', 'x=2, y=1', 'x=3, y=2', 'x=2, y=2', 'x=1, y=2'],\n        'correct': 'x=1, y=3',\n        'time_minutes': 25\n    },",
+    "prob_id": "montante_1",
+    "action": "CHANGE"
+  },
+  {
+    "old_string": "    'gauss_jordan_1': {\n        'title': 'Prueba Final: Gauss-Jordan',\n        'x_value': None,\n        'table': [('Sistema de ecuaciones:',), ('3x + 2y = 12',), ('x + 4y = 14',)],\n        'options': ['x=2, y=3', 'x=3, y=2', 'x=1, y=4', 'x=4, y=1', 'x=2, y=2'],\n        'correct': 'x=2, y=3',\n        'time_minutes': 30\n    },",
+    "new_string": "    'gauss_jordan_1': {\n        'title': 'Prueba Final: Gauss-Jordan',\n        'x_value': None,\n        'table': [('Sistema de ecuaciones:',), ('3x + 2y = 12',), ('x + 4y = 14',)],\n        'options': ['x=2, y=3', 'x=3, y=2', 'x=1, y=4', 'x=4, y=1', 'x=2, y=2'],\n        'correct': 'x=2, y=3',\n        'time_minutes': 25\n    },",
+    "prob_id": "gauss_jordan_1",
+    "action": "CHANGE"
+  },
+  {
+    "old_string": "    'gaussian_elim_1': {\n        'title': 'Prueba Final: Eliminación Gaussiana',\n        'x_value': None,\n        'table': [('Sistema de ecuaciones:',), ('2x + 3y = 13',), ('x + 2y = 8',)],\n        'options': ['x=2, y=3', 'x=3, y=2', 'x=1, y=4', 'x=4, y=1', 'x=2, y=2'],\n        'correct': 'x=2, y=3',\n        'time_minutes': 30\n    },",
+    "new_string": "    'gaussian_elim_1': {\n        'title': 'Prueba Final: Eliminación Gaussiana',\n        'x_value': None,\n        'table': [('Sistema de ecuaciones:',), ('2x + 3y = 13',), ('x + 2y = 8',)],\n        'options': ['x=2, y=3', 'x=3, y=2', 'x=1, y=4', 'x=4, y=1', 'x=2, y=2'],\n        'correct': 'x=2, y=3',\n        'time_minutes': 25\n    },",
+    "prob_id": "gaussian_elim_1",
+    "action": "CHANGE"
+  },
+  {
+    "old_string": "    'cotes_closed_1': {\n        'title': 'Prueba Final: Newton-Cotes Cerrado',\n        'x_value': None,\n        'table': [('Integrar: ∫ f(x) dx desde 0 hasta 2',), ('Datos de la función:',), (0, 1), (0.5, 1.5), (1, 2.5), (1.5, 4), (2, 6)],\n        'options': ['5.208', '6.208', '4.208', '7.208', '3.208'],\n        'correct': '5.208',\n        'time_minutes': 30\n    },",
+    "new_string": "    'cotes_closed_1': {\n        'title': 'Prueba Final: Newton-Cotes Cerrado',\n        'x_value': None,\n        'table': [('Integrar: ∫ f(x) dx desde 0 hasta 2',), ('Datos de la función:',), (0, 1), (0.5, 1.5), (1, 2.5), (1.5, 4), (2, 6)],\n        'options': ['5.208', '6.208', '4.208', '7.208', '3.208'],\n        'correct': '5.208',\n        'time_minutes': 25\n    },",
+    "prob_id": "cotes_closed_1",
+    "action": "CHANGE"
+  },
+  {
+    "old_string": "    'cotes_open_1': {\n        'title': 'Prueba Final: Newton-Cotes Abierto',\n        'x_value': None,\n        'table': [('Integrar: ∫ f(x) dx',), ('Datos de la función:',), (0.5, 1.5), (1, 2.5), (1.5, 4)],\n        'options': ['4.5', '5.5', '3.5', '6.5', '2.5'],\n        'correct': '4.5',\n        'time_minutes': 30\n    },",
+    "new_string": "    'cotes_open_1': {\n        'title': 'Prueba Final: Newton-Cotes Abierto',\n        'x_value': None,\n        'table': [('Integrar: ∫ f(x) dx',), ('Datos de la función:',), (0.5, 1.5), (1, 2.5), (1.5, 4)],\n        'options': ['4.5', '5.5', '3.5', '6.5', '2.5'],\n        'correct': '4.5',\n        'time_minutes': 25\n    },",
+    "prob_id": "cotes_open_1",
+    "action": "CHANGE"
+  },
+  {
+    "old_string": "    'least_sq_quadratic_1': {\n        'title': 'Prueba Final: Mínimos Cuadrados Cuadrático',\n        'x_value': 5,\n        'table': [('Ajustar: y = a + bx + cx²',), ('Datos:',), (1, 1), (2, 3), (3, 7), (4, 13)],\n        'options': ['21', '22', '20', '23', '19'],\n        'correct': '21',\n        'time_minutes': 30\n    },",
+    "new_string": "    'least_sq_quadratic_1': {\n        'title': 'Prueba Final: Mínimos Cuadrados Cuadrático',\n        'x_value': 5,\n        'table': [('Ajustar: y = a + bx + cx²',), ('Datos:',), (1, 1), (2, 3), (3, 7), (4, 13)],\n        'options': ['21', '22', '20', '23', '19'],\n        'correct': '21',\n        'time_minutes': 25\n    },",
+    "prob_id": "least_sq_quadratic_1",
+    "action": "CHANGE"
+  },
+  {
+    "old_string": "    'least_sq_cubic_1': {\n        'title': 'Prueba Final: Mínimos Cuadrados Cúbico',\n        'x_value': 3,\n        'table': [('Ajustar: y = a + bx + cx² + dx³',), ('Datos:',), (0, 1), (1, 2), (2, 5), (3, 10), (4, 20)],\n        'options': ['10.2', '11.2', '9.2', '12.2', '8.2'],\n        'correct': '10.2',\n        'time_minutes': 30\n    },",
+    "new_string": "    'least_sq_cubic_1': {\n        'title': 'Prueba Final: Mínimos Cuadrados Cúbico',\n        'x_value': 3,\n        'table': [('Ajustar: y = a + bx + cx² + dx³',), ('Datos:',), (0, 1), (1, 2), (2, 5), (3, 10), (4, 20)],\n        'options': ['10.2', '11.2', '9.2', '12.2', '8.2'],\n        'correct': '10.2',\n        'time_minutes': 25\n    },",
+    "prob_id": "least_sq_cubic_1",
+    "action": "CHANGE"
+  },
+  {
+    "old_string": "    'least_sq_quadratic_func_1': {\n        'title': 'Prueba Final: Mínimos Cuadrados Func. Cuadrática',\n        'x_value': 3,\n        'table': [('Ajustar función cuadrática',), ('Datos:',), (0, 1), (1, 1.5), (2, 3.8), (3, 8.2)],\n        'options': ['8.5', '9.5', '7.5', '10.5', '6.5'],\n        'correct': '8.5',\n        'time_minutes': 30\n    },",
+    "new_string": "    'least_sq_quadratic_func_1': {\n        'title': 'Prueba Final: Mínimos Cuadrados Func. Cuadrática',\n        'x_value': 3,\n        'table': [('Ajustar función cuadrática',), ('Datos:',), (0, 1), (1, 1.5), (2, 3.8), (3, 8.2)],\n        'options': ['8.5', '9.5', '7.5', '10.5', '6.5'],\n        'correct': '8.5',\n        'time_minutes': 25\n    },",
+    "prob_id": "least_sq_quadratic_func_1",
+    "action": "CHANGE"
+  },
+  {
+    "old_string": "    'rk3_1': {\n        'title': 'Prueba Final: Runge-Kutta Orden 3',\n        'x_value': 0.2,\n        'table': [(\"Ecuación: dy/dx = x + y\",), (\"Condición inicial: y(0) = 1\",), (\"Paso: h = 0.1\",)],\n        'options': ['1.246', '1.346', '1.146', '1.446', '1.046'],\n        'correct': '1.246',\n        'time_minutes': 30\n    },",
+    "new_string": "    'rk3_1': {\n        'title': 'Prueba Final: Runge-Kutta Orden 3',\n        'x_value': 0.2,\n        'table': [(\"Ecuación: dy/dx = x + y\",), (\"Condición inicial: y(0) = 1\",), (\"Paso: h = 0.1\",)],\n        'options': ['1.246', '1.346', '1.146', '1.446', '1.046'],\n        'correct': '1.246',\n        'time_minutes': 25\n    },",
+    "prob_id": "rk3_1",
+    "action": "CHANGE"
+  },
+  {
+    "old_string": "    'rk4_simpson13_1': {\n        'title': 'Prueba Final: RK4 Simpson 1/3',\n        'x_value': 0.2,\n        'table': [(\"Ecuación: dy/dx = x + y\",), (\"Condición inicial: y(0) = 1\",), (\"Paso: h = 0.1\",)],\n        'options': ['1.2428', '1.3428', '1.1428', '1.4428', '1.0428'],\n        'correct': '1.2428',\n        'time_minutes': 30\n    },",
+    "new_string": "    'rk4_simpson13_1': {\n        'title': 'Prueba Final: RK4 Simpson 1/3',\n        'x_value': 0.2,\n        'table': [(\"Ecuación: dy/dx = x + y\",), (\"Condición inicial: y(0) = 1\",), (\"Paso: h = 0.1\",)],\n        'options': ['1.2428', '1.3428', '1.1428', '1.4428', '1.0428'],\n        'correct': '1.2428',\n        'time_minutes': 25\n    },",
+    "prob_id": "rk4_simpson13_1",
+    "action": "CHANGE"
+  },
+  {
+    "old_string": "    'rk4_simpson38_1': {\n        'title': 'Prueba Final: RK4 Simpson 3/8',\n        'x_value': 0.2,\n        'table': [(\"Ecuación: dy/dx = x + y\",), (\"Condición inicial: y(0) = 1\",), (\"Paso: h = 0.1\",)],\n        'options': ['1.2431', '1.3431', '1.1431', '1.4431', '1.0431'],\n        'correct': '1.2431',\n        'time_minutes': 30\n    },",
+    "new_string": "    'rk4_simpson38_1': {\n        'title': 'Prueba Final: RK4 Simpson 3/8',\n        'x_value': 0.2,\n        'table': [(\"Ecuación: dy/dx = x + y\",), (\"Condición inicial: y(0) = 1\",), (\"Paso: h = 0.1\",)],\n        'options': ['1.2431', '1.3431', '1.1431', '1.4431', '1.0431'],\n        'correct': '1.2431',\n        'time_minutes': 25\n    },",
+    "prob_id": "rk4_simpson38_1",
+    "action": "CHANGE"
+  },
+  {
+    "old_string": "    'rk_higher_order_1': {\n        'title': 'Prueba Final: RK Orden Superior',\n        'x_value': 0.2,\n        'table': [(\"Ecuación: dy/dx = x + y\",), (\"Condición inicial: y(0) = 1\",), (\"Paso: h = 0.05\",)],\n        'options': ['1.2435', '1.3435', '1.1435', '1.4435', '1.0435'],\n        'correct': '1.2435',\n        'time_minutes': 35\n    },",
+    "new_string": "    'rk_higher_order_1': {\n        'title': 'Prueba Final: RK Orden Superior',\n        'x_value': 0.2,\n        'table': [(\"Ecuación: dy/dx = x + y\",), (\"Condición inicial: y(0) = 1\",), (\"Paso: h = 0.05\",)],\n        'options': ['1.2435', '1.3435', '1.1435', '1.4435', '1.0435'],\n        'correct': '1.2435',\n        'time_minutes': 25\n    },",
+    "prob_id": "rk_higher_order_1",
+    "action": "CHANGE"
+  },
+  {
+    "old_string": "    'linear_intermedio_1': {\n        'title': 'Interpola f(3) usando los puntos (2, 0.693) y (5, 1.609)',\n        'x_value': 3,\n        'table': [(2, 0.693), (5, 1.609)],\n        'options': ['0.998', '1.098', '0.898', '1.198'],\n        'correct': '0.998'\n    },",
+    "new_string": "    'linear_intermedio_1': {\n        'title': 'Interpola f(3) usando los puntos (2, 0.693) y (5, 1.609)',\n        'x_value': 3,\n        'table': [(2, 0.693), (5, 1.609)],\n        'options': ['0.998', '1.098', '0.898', '1.198'],\n        'time_minutes': 25,\n        'correct': '0.998'\n    },",
+    "prob_id": "linear_intermedio_1",
+    "action": "ADD"
+  },
+  {
+    "old_string": "    'linear_avanzado_1': {\n        'title': 'Interpolación Lineal: Estima Ln(3) con (2, 0.693) y (5, 1.609)',\n        'x_value': 3,\n        'table': [(2, 0.693), (5, 1.609)],\n        'options': ['0.998', '1.098', '0.898', '1.198'],\n        'correct': '0.998',\n        'time_minutes': 20\n    },",
+    "new_string": "    'linear_avanzado_1': {\n        'title': 'Interpolación Lineal: Estima Ln(3) con (2, 0.693) y (5, 1.609)',\n        'x_value': 3,\n        'table': [(2, 0.693), (5, 1.609)],\n        'options': ['0.998', '1.098', '0.898', '1.198'],\n        'correct': '0.998',\n        'time_minutes': 30\n    },",
+    "prob_id": "linear_avanzado_1",
+    "action": "CHANGE"
+  },
+  {
+    "old_string": "    'newton_div_diff_intermedio_1': {\n        'title': 'Calcula la 1ra diferencia dividida entre (6.5, -1.35) y (7.3, -0.28)',\n        'options': ['1.3375', '0.8375', '1.0375', '1.2375'],\n        'correct': '1.3375'\n    },",
+    "new_string": "    'newton_div_diff_intermedio_1': {\n        'title': 'Calcula la 1ra diferencia dividida entre (6.5, -1.35) y (7.3, -0.28)',\n        'options': ['1.3375', '0.8375', '1.0375', '1.2375'],\n        'time_minutes': 25,\n        'correct': '1.3375'\n    },",
+    "prob_id": "newton_div_diff_intermedio_1",
+    "action": "ADD"
+  },
+  {
+    "old_string": "    'newton_div_diff_avanzado_1': {\n        'title': 'Newton Diferencias Divididas: Interpola x=7 con (6.5, -1.35), (7.3, -0.28), (8.1, 0.98)',\n        'x_value': 7,\n        'table': [(6.5, -1.35), (7.3, -0.28), (8.1, 0.98)],\n        'options': ['-0.657', '-0.557', '-0.757', '-0.457'],\n        'correct': '-0.657',\n        'time_minutes': 20\n    },",
+    "new_string": "    'newton_div_diff_avanzado_1': {\n        'title': 'Newton Diferencias Divididas: Interpola x=7 con (6.5, -1.35), (7.3, -0.28), (8.1, 0.98)',\n        'x_value': 7,\n        'table': [(6.5, -1.35), (7.3, -0.28), (8.1, 0.98)],\n        'options': ['-0.657', '-0.557', '-0.757', '-0.457'],\n        'correct': '-0.657',\n        'time_minutes': 30\n    },",
+    "prob_id": "newton_div_diff_avanzado_1",
+    "action": "CHANGE"
+  },
+  {
+    "old_string": "    'newton_forward_intermedio_1': {\n        'title': 'Con h=0.7 y x=3, x0=1.7, calcula s = (x - x0)/h',\n        'options': ['1.857', '1.657', '2.057', '1.457'],\n        'correct': '1.857'\n    },",
+    "new_string": "    'newton_forward_intermedio_1': {\n        'title': 'Con h=0.7 y x=3, x0=1.7, calcula s = (x - x0)/h',\n        'options': ['1.857', '1.657', '2.057', '1.457'],\n        'time_minutes': 25,\n        'correct': '1.857'\n    },",
+    "prob_id": "newton_forward_intermedio_1",
+    "action": "ADD"
+  },
+  {
+    "old_string": "    'newton_forward_avanzado_1': {\n        'title': 'Newton Adelante: Interpola g(3) con (1.7, 0.53), (2.4, 0.88), (3.1, 1.09)',\n        'x_value': 3,\n        'table': [(1.7, 0.53), (2.4, 0.88), (3.1, 1.09)],\n        'options': ['1.029', '1.129', '0.929', '1.229'],\n        'correct': '1.029',\n        'time_minutes': 20\n    },",
+    "new_string": "    'newton_forward_avanzado_1': {\n        'title': 'Newton Adelante: Interpola g(3) con (1.7, 0.53), (2.4, 0.88), (3.1, 1.09)',\n        'x_value': 3,\n        'table': [(1.7, 0.53), (2.4, 0.88), (3.1, 1.09)],\n        'options': ['1.029', '1.129', '0.929', '1.229'],\n        'correct': '1.029',\n        'time_minutes': 30\n    },",
+    "prob_id": "newton_forward_avanzado_1",
+    "action": "CHANGE"
+  },
+  {
+    "old_string": "    'newton_backward_intermedio_1': {\n        'title': 'Con x=3, xn=3.1, h=0.7, calcula s = (x - xn)/h',\n        'options': ['-0.1428', '0.1428', '-0.2428', '0.2428'],\n        'correct': '-0.1428'\n    },",
+    "new_string": "    'newton_backward_intermedio_1': {\n        'title': 'Con x=3, xn=3.1, h=0.7, calcula s = (x - xn)/h',\n        'options': ['-0.1428', '0.1428', '-0.2428', '0.2428'],\n        'time_minutes': 25,\n        'correct': '-0.1428'\n    },",
+    "prob_id": "newton_backward_intermedio_1",
+    "action": "ADD"
+  },
+  {
+    "old_string": "    'newton_backward_avanzado_1': {\n        'title': 'Newton Atrás: Interpola g(3) con (1.7, 0.53), (2.4, 0.88), (3.1, 1.09)',\n        'x_value': 3,\n        'table': [(1.7, 0.53), (2.4, 0.88), (3.1, 1.09)],\n        'options': ['1.029', '1.129', '0.929', '1.229'],\n        'correct': '1.029',\n        'time_minutes': 20\n    },",
+    "new_string": "    'newton_backward_avanzado_1': {\n        'title': 'Newton Atrás: Interpola g(3) con (1.7, 0.53), (2.4, 0.88), (3.1, 1.09)',\n        'x_value': 3,\n        'table': [(1.7, 0.53), (2.4, 0.88), (3.1, 1.09)],\n        'options': ['1.029', '1.129', '0.929', '1.229'],\n        'correct': '1.029',\n        'time_minutes': 30\n    },",
+    "prob_id": "newton_backward_avanzado_1",
+    "action": "CHANGE"
+  },
+  {
+    "old_string": "    'bisection_intermedio_1': {\n        'title': 'Bisección: Primera iteración entre a=1, f(a)=-1 y b=2, f(b)=5. Calcula c',\n        'options': ['1.5', '1.25', '1.75', '1.0'],\n        'correct': '1.5'\n    },",
+    "new_string": "    'bisection_intermedio_1': {\n        'title': 'Bisección: Primera iteración entre a=1, f(a)=-1 y b=2, f(b)=5. Calcula c',\n        'options': ['1.5', '1.25', '1.75', '1.0'],\n        'time_minutes': 25,\n        'correct': '1.5'\n    },",
+    "prob_id": "bisection_intermedio_1",
+    "action": "ADD"
+  },
+  {
+    "old_string": "    'bisection_avanzado_1': {\n        'title': 'Bisección: Encuentra raíz de f(x)=x³-6.5x+2 en [0,1] tras 3 iteraciones',\n        'x_value': None,\n        'table': [('Función: f(x) = x³ - 6.5x + 2',), ('Intervalo: [0, 1]',), ('Realiza 3 iteraciones',)],\n        'options': ['0.3125', '0.5', '0.25', '0.375'],\n        'correct': '0.3125',\n        'time_minutes': 20\n    },",
+    "new_string": "    'bisection_avanzado_1': {\n        'title': 'Bisección: Encuentra raíz de f(x)=x³-6.5x+2 en [0,1] tras 3 iteraciones',\n        'x_value': None,\n        'table': [('Función: f(x) = x³ - 6.5x + 2',), ('Intervalo: [0, 1]',), ('Realiza 3 iteraciones',)],\n        'options': ['0.3125', '0.5', '0.25', '0.375'],\n        'correct': '0.3125',\n        'time_minutes': 30\n    },",
+    "prob_id": "bisection_avanzado_1",
+    "action": "CHANGE"
+  },
+  {
+    "old_string": "    'false_position_intermedio_1': {\n        'title': 'Falsa Posición: Con a=1, f(a)=-2, b=2, f(b)=17, calcula c',\n        'options': ['1.105', '1.205', '1.005', '1.305'],\n        'correct': '1.105'\n    },",
+    "new_string": "    'false_position_intermedio_1': {\n        'title': 'Falsa Posición: Con a=1, f(a)=-2, b=2, f(b)=17, calcula c',\n        'options': ['1.105', '1.205', '1.005', '1.305'],\n        'time_minutes': 25,\n        'correct': '1.105'\n    },",
+    "prob_id": "false_position_intermedio_1",
+    "action": "ADD"
+  },
+  {
+    "old_string": "    'false_position_avanzado_1': {\n        'title': 'Falsa Posición: Encuentra raíz de f(x)=3x³-2x-3 tras 2 iteraciones',\n        'x_value': None,\n        'table': [('Función: f(x) = 3x³ - 2x - 3',), ('f(1) = -2, f(2) = 17',)],\n        'options': ['1.162', '1.105', '1.232', '1.042'],\n        'correct': '1.162',\n        'time_minutes': 20\n    },",
+    "new_string": "    'false_position_avanzado_1': {\n        'title': 'Falsa Posición: Encuentra raíz de f(x)=3x³-2x-3 tras 2 iteraciones',\n        'x_value': None,\n        'table': [('Función: f(x) = 3x³ - 2x - 3',), ('f(1) = -2, f(2) = 17',)],\n        'options': ['1.162', '1.105', '1.232', '1.042'],\n        'correct': '1.162',\n        'time_minutes': 30\n    },",
+    "prob_id": "false_position_avanzado_1",
+    "action": "CHANGE"
+  },
+  {
+    "old_string": "    'newton_raphson_intermedio_1': {\n        'title': 'Newton-Raphson: f(x)=x³+2x²+10x-20, f\\'(x)=3x²+4x+10. Con x0=1, calcula x1',\n        'options': ['1.411', '1.311', '1.511', '1.211'],\n        'correct': '1.411'\n    },",
+    "new_string": "    'newton_raphson_intermedio_1': {\n        'title': 'Newton-Raphson: f(x)=x³+2x²+10x-20, f\\'(x)=3x²+4x+10. Con x0=1, calcula x1',\n        'options': ['1.411', '1.311', '1.511', '1.211'],\n        'time_minutes': 25,\n        'correct': '1.411'\n    },",
+    "prob_id": "newton_raphson_intermedio_1",
+    "action": "ADD"
+  },
+  {
+    "old_string": "    'newton_raphson_avanzado_1': {\n        'title': 'Newton-Raphson: Encuentra raíz de f(x)=x²-2 con x0=2',\n        'x_value': None,\n        'table': [('Función: f(x) = x² - 2',), (\"f'(x) = 2x\",), ('Valor inicial: x₀ = 2',)],\n        'options': ['1.414', '1.514', '1.314', '1.614'],\n        'correct': '1.414',\n        'time_minutes': 20\n    },",
+    "new_string": "    'newton_raphson_avanzado_1': {\n        'title': 'Newton-Raphson: Encuentra raíz de f(x)=x²-2 con x0=2',\n        'x_value': None,\n        'table': [('Función: f(x) = x² - 2',), (\"f'(x) = 2x\",), ('Valor inicial: x₀ = 2',)],\n        'options': ['1.414', '1.514', '1.314', '1.614'],\n        'correct': '1.414',\n        'time_minutes': 30\n    },",
+    "prob_id": "newton_raphson_avanzado_1",
+    "action": "CHANGE"
+  },
+  {
+    "old_string": "    'fixed_point_intermedio_1': {\n        'title': 'Punto Fijo: Para e^(-x) = x, usa g(x)=e^(-x). Con x0=1, calcula x1',\n        'options': ['0.367', '0.467', '0.267', '0.567'],\n        'correct': '0.367'\n    },",
+    "new_string": "    'fixed_point_intermedio_1': {\n        'title': 'Punto Fijo: Para e^(-x) = x, usa g(x)=e^(-x). Con x0=1, calcula x1',\n        'options': ['0.367', '0.467', '0.267', '0.567'],\n        'time_minutes': 25,\n        'correct': '0.367'\n    },",
+    "prob_id": "fixed_point_intermedio_1",
+    "action": "ADD"
+  },
+  {
+    "old_string": "    'fixed_point_avanzado_1': {\n        'title': 'Punto Fijo: Encuentra raíz de f(x) = e^(-x) - x con g(x) = e^(-x)',\n        'x_value': None,\n        'table': [('Función: g(x) = √(x + 1)',), ('Valor inicial: x₀ = 1',), ('Encuentra el punto fijo',)],\n        'options': ['1.732', '1.832', '1.632', '1.932'],\n        'correct': '1.732',\n        'time_minutes': 20\n    },",
+    "new_string": "    'fixed_point_avanzado_1': {\n        'title': 'Punto Fijo: Encuentra raíz de f(x) = e^(-x) - x con g(x) = e^(-x)',\n        'x_value': None,\n        'table': [('Función: g(x) = √(x + 1)',), ('Valor inicial: x₀ = 1',), ('Encuentra el punto fijo',)],\n        'options': ['1.732', '1.832', '1.632', '1.932'],\n        'correct': '1.732',\n        'time_minutes': 30\n    },",
+    "prob_id": "fixed_point_avanzado_1",
+    "action": "CHANGE"
+  },
+  {
+    "old_string": "    'secant_intermedio_1': {\n        'title': 'Secante: Con x0=0, f(x0)=0, x1=1, f(x1)=-0.63. Calcula x2 para e^(-x)-x=0',\n        'options': ['0.6127', '0.7127', '0.5127', '0.8127'],\n        'correct': '0.6127'\n    },",
+    "new_string": "    'secant_intermedio_1': {\n        'title': 'Secante: Con x0=0, f(x0)=0, x1=1, f(x1)=-0.63. Calcula x2 para e^(-x)-x=0',\n        'options': ['0.6127', '0.7127', '0.5127', '0.8127'],\n        'time_minutes': 25,\n        'correct': '0.6127'\n    },",
+    "prob_id": "secant_intermedio_1",
+    "action": "ADD"
+  },
+  {
+    "old_string": "    'secant_avanzado_1': {\n        'title': 'Secante: Encuentra raíz de f(x)=x³-5 con x0=1, x1=2',\n        'x_value': None,\n        'table': [('Función: f(x) = x³ - 5',), ('Valores iniciales: x₀ = 1, x₁ = 2',), ('Encuentra la raíz',)],\n        'options': ['2.094', '2.194', '1.994', '2.294'],\n        'correct': '2.094',\n        'time_minutes': 20\n    },",
+    "new_string": "    'secant_avanzado_1': {\n        'title': 'Secante: Encuentra raíz de f(x)=x³-5 con x0=1, x1=2',\n        'x_value': None,\n        'table': [('Función: f(x) = x³ - 5',), ('Valores iniciales: x₀ = 1, x₁ = 2',), ('Encuentra la raíz',)],\n        'options': ['2.094', '2.194', '1.994', '2.294'],\n        'correct': '2.094',\n        'time_minutes': 30\n    },",
+    "prob_id": "secant_avanzado_1",
+    "action": "CHANGE"
+  },
+  {
+    "old_string": "    'graphical_intermedio_1': {\n        'title': 'Gráfico: Evalúa f(x)=x³-6.5x+2 en x=0: f(0)=? ¿Hay raíz entre 0 y 1?',\n        'options': ['f(0)=2, sí hay raíz', 'f(0)=0, no hay raíz', 'f(0)=-1, sí hay raíz', 'f(0)=1, no hay raíz'],\n        'correct': 'f(0)=2, sí hay raíz'\n    },",
+    "new_string": "    'graphical_intermedio_1': {\n        'title': 'Gráfico: Evalúa f(x)=x³-6.5x+2 en x=0: f(0)=? ¿Hay raíz entre 0 y 1?',\n        'options': ['f(0)=2, sí hay raíz', 'f(0)=0, no hay raíz', 'f(0)=-1, sí hay raíz', 'f(0)=1, no hay raíz'],\n        'time_minutes': 25,\n        'correct': 'f(0)=2, sí hay raíz'\n    },",
+    "prob_id": "graphical_intermedio_1",
+    "action": "ADD"
+  },
+  {
+    "old_string": "    'graphical_avanzado_1': {\n        'title': 'Gráfico: Localiza raíz de f(x)=x³-6.5x+2 usando cambios de signo',\n        'x_value': None,\n        'table': [('Función: f(x) = x³ - 6.5x + 2',), ('Intervalo: [0, 3]',), ('Identifica la raíz visualmente',)],\n        'options': ['1.5', '1.6', '1.4', '1.7'],\n        'correct': '1.5',\n        'time_minutes': 20\n    },",
+    "new_string": "    'graphical_avanzado_1': {\n        'title': 'Gráfico: Localiza raíz de f(x)=x³-6.5x+2 usando cambios de signo',\n        'x_value': None,\n        'table': [('Función: f(x) = x³ - 6.5x + 2',), ('Intervalo: [0, 3]',), ('Identifica la raíz visualmente',)],\n        'options': ['1.5', '1.6', '1.4', '1.7'],\n        'correct': '1.5',\n        'time_minutes': 30\n    },",
+    "prob_id": "graphical_avanzado_1",
+    "action": "CHANGE"
+  },
+  {
+    "old_string": "    'gauss_seidel_intermedio_1': {\n        'title': 'Gauss-Seidel: Sistema 2x2: 4x+y=9, x+3y=10. Con x0=y0=0, calcula x1',\n        'options': ['2.25', '2.0', '2.5', '2.75'],\n        'correct': '2.25'\n    },",
+    "new_string": "    'gauss_seidel_intermedio_1': {\n        'title': 'Gauss-Seidel: Sistema 2x2: 4x+y=9, x+3y=10. Con x0=y0=0, calcula x1',\n        'options': ['2.25', '2.0', '2.5', '2.75'],\n        'time_minutes': 25,\n        'correct': '2.25'\n    },",
+    "prob_id": "gauss_seidel_intermedio_1",
+    "action": "ADD"
+  },
+  {
+    "old_string": "    'gauss_seidel_avanzado_1': {\n        'title': 'Gauss-Seidel: Resuelve el sistema 4x+y=9, x+3y=10',\n        'x_value': None,\n        'table': [('Sistema de ecuaciones:',), ('4x + y = 9',), ('x + 3y = 10',)],\n        'options': ['x=2, y=1', 'x=1, y=3', 'x=3, y=2', 'x=2, y=2'],\n        'correct': 'x=2, y=1',\n        'time_minutes': 20\n    },",
+    "new_string": "    'gauss_seidel_avanzado_1': {\n        'title': 'Gauss-Seidel: Resuelve el sistema 4x+y=9, x+3y=10',\n        'x_value': None,\n        'table': [('Sistema de ecuaciones:',), ('4x + y = 9',), ('x + 3y = 10',)],\n        'options': ['x=2, y=1', 'x=1, y=3', 'x=3, y=2', 'x=2, y=2'],\n        'correct': 'x=2, y=1',\n        'time_minutes': 30\n    },",
+    "prob_id": "gauss_seidel_avanzado_1",
+    "action": "CHANGE"
+  },
+  {
+    "old_string": "    'jacobi_intermedio_1': {\n        'title': 'En Jacobi, para calcular x(k+1) se usan valores:',\n        'options': ['Todos de la iteración k', 'Mezclados de k y k+1', 'Solo de la iteración inicial', 'Aleatorios'],\n        'correct': 'Todos de la iteración k'\n    },",
+    "new_string": "    'jacobi_intermedio_1': {\n        'title': 'En Jacobi, para calcular x(k+1) se usan valores:',\n        'options': ['Todos de la iteración k', 'Mezclados de k y k+1', 'Solo de la iteración inicial', 'Aleatorios'],\n        'time_minutes': 25,\n        'correct': 'Todos de la iteración k'\n    },",
+    "prob_id": "jacobi_intermedio_1",
+    "action": "ADD"
+  },
+  {
+    "old_string": "    'jacobi_avanzado_1': {\n        'title': 'Calcula el error $\\\\epsilon_a$ entre la iteración 3 y 4...',\n        'options': ['0.00056', '0.001'],\n        'correct': '0.00056'\n    },",
+    "new_string": "    'jacobi_avanzado_1': {\n        'title': 'Calcula el error $\\\\epsilon_a$ entre la iteración 3 y 4...',\n        'options': ['0.00056', '0.001'],\n        'time_minutes': 30,\n        'correct': '0.00056'\n    },",
+    "prob_id": "jacobi_avanzado_1",
+    "action": "ADD"
+  },
+  {
+    "old_string": "    'montante_intermedio_1': {\n        'title': 'Montante: Sistema 2x2: 2x+y=5, x+3y=8. Paso 1: Calcula nueva posición [2,2]',\n        'options': ['5', '4', '6', '3'],\n        'correct': '5'\n    },",
+    "new_string": "    'montante_intermedio_1': {\n        'title': 'Montante: Sistema 2x2: 2x+y=5, x+3y=8. Paso 1: Calcula nueva posición [2,2]',\n        'options': ['5', '4', '6', '3'],\n        'time_minutes': 25,\n        'correct': '5'\n    },",
+    "prob_id": "montante_intermedio_1",
+    "action": "ADD"
+  },
+  {
+    "old_string": "    'montante_avanzado_1': {\n        'title': 'Montante: Resuelve el sistema 2x+y=5, x+3y=8',\n        'x_value': None,\n        'table': [('Sistema de ecuaciones:',), ('2x + y = 5',), ('x + 3y = 8',)],\n        'options': ['x=1, y=3', 'x=2, y=1', 'x=3, y=2', 'x=2, y=2'],\n        'correct': 'x=1, y=3',\n        'time_minutes': 20\n    },",
+    "new_string": "    'montante_avanzado_1': {\n        'title': 'Montante: Resuelve el sistema 2x+y=5, x+3y=8',\n        'x_value': None,\n        'table': [('Sistema de ecuaciones:',), ('2x + y = 5',), ('x + 3y = 8',)],\n        'options': ['x=1, y=3', 'x=2, y=1', 'x=3, y=2', 'x=2, y=2'],\n        'correct': 'x=1, y=3',\n        'time_minutes': 30\n    },",
+    "prob_id": "montante_avanzado_1",
+    "action": "CHANGE"
+  },
+  {
+    "old_string": "    'gauss_jordan_intermedio_1': {\n        'title': 'Gauss-Jordan: Sistema 2x2: 3x+2y=12, x+4y=14. Primera fila normalizada por pivote',\n        'options': ['1, 2/3, 4', '3, 2, 12', '1, 1, 1', '2, 3, 4'],\n        'correct': '1, 2/3, 4'\n    },",
+    "new_string": "    'gauss_jordan_intermedio_1': {\n        'title': 'Gauss-Jordan: Sistema 2x2: 3x+2y=12, x+4y=14. Primera fila normalizada por pivote',\n        'options': ['1, 2/3, 4', '3, 2, 12', '1, 1, 1', '2, 3, 4'],\n        'time_minutes': 25,\n        'correct': '1, 2/3, 4'\n    },",
+    "prob_id": "gauss_jordan_intermedio_1",
+    "action": "ADD"
+  },
+  {
+    "old_string": "    'gauss_jordan_avanzado_1': {\n        'title': 'Gauss-Jordan: Resuelve el sistema 3x+2y=12, x+4y=14',\n        'x_value': None,\n        'table': [('Sistema de ecuaciones:',), ('3x + 2y = 12',), ('x + 4y = 14',)],\n        'options': ['x=2, y=3', 'x=3, y=2', 'x=1, y=4', 'x=4, y=1'],\n        'correct': 'x=2, y=3',\n        'time_minutes': 20\n    },",
+    "new_string": "    'gauss_jordan_avanzado_1': {\n        'title': 'Gauss-Jordan: Resuelve el sistema 3x+2y=12, x+4y=14',\n        'x_value': None,\n        'table': [('Sistema de ecuaciones:',), ('3x + 2y = 12',), ('x + 4y = 14',)],\n        'options': ['x=2, y=3', 'x=3, y=2', 'x=1, y=4', 'x=4, y=1'],\n        'correct': 'x=2, y=3',\n        'time_minutes': 30\n    },",
+    "prob_id": "gauss_jordan_avanzado_1",
+    "action": "CHANGE"
+  },
+  {
+    "old_string": "    'gaussian_elim_intermedio_1': {\n        'title': 'Eliminación Gaussiana: Matriz 3x3. Después de fila 1, elemento [2,1] es 0: ?',\n        'options': ['15.5', '-7.5', '10.5', '5.5'],\n        'correct': '-7.5'\n    },",
+    "new_string": "    'gaussian_elim_intermedio_1': {\n        'title': 'Eliminación Gaussiana: Matriz 3x3. Después de fila 1, elemento [2,1] es 0: ?',\n        'options': ['15.5', '-7.5', '10.5', '5.5'],\n        'time_minutes': 25,\n        'correct': '-7.5'\n    },",
+    "prob_id": "gaussian_elim_intermedio_1",
+    "action": "ADD"
+  },
+  {
+    "old_string": "    'gaussian_elim_avanzado_1': {\n        'title': 'Eliminación Gaussiana: Resuelve el sistema 2x+3y=13, x+2y=8',\n        'x_value': None,\n        'table': [('Sistema de ecuaciones:',), ('2x + 3y = 13',), ('x + 2y = 8',)],\n        'options': ['x=2, y=3', 'x=3, y=2', 'x=1, y=4', 'x=4, y=1'],\n        'correct': 'x=2, y=3',\n        'time_minutes': 20\n    },",
+    "new_string": "    'gaussian_elim_avanzado_1': {\n        'title': 'Eliminación Gaussiana: Resuelve el sistema 2x+3y=13, x+2y=8',\n        'x_value': None,\n        'table': [('Sistema de ecuaciones:',), ('2x + 3y = 13',), ('x + 2y = 8',)],\n        'options': ['x=2, y=3', 'x=3, y=2', 'x=1, y=4', 'x=4, y=1'],\n        'correct': 'x=2, y=3',\n        'time_minutes': 30\n    },",
+    "prob_id": "gaussian_elim_avanzado_1",
+    "action": "CHANGE"
+  },
+  {
+    "old_string": "    'trapezoidal_intermedio_1': {\n        'title': 'Para $\\\\int_0^1 (1-x^2)dx$ con n=4, calcula h...',\n        'options': ['0.25', '1'],\n        'correct': '0.25'\n    },",
+    "new_string": "    'trapezoidal_intermedio_1': {\n        'title': 'Para $\\\\int_0^1 (1-x^2)dx$ con n=4, calcula h...',\n        'options': ['0.25', '1'],\n        'time_minutes': 25,\n        'correct': '0.25'\n    },",
+    "prob_id": "trapezoidal_intermedio_1",
+    "action": "ADD"
+  },
+  {
+    "old_string": "    'trapezoidal_avanzado_1': {\n        'title': 'El error en la regla del trapecio es proporcional a:',\n        'options': ['h²f\"(ξ)', 'h³f\"\"(ξ)', 'hf\\'(ξ)', 'h⁴f\"\"(ξ)'],\n        'correct': 'h²f\"(ξ)'\n    },",
+    "new_string": "    'trapezoidal_avanzado_1': {\n        'title': 'El error en la regla del trapecio es proporcional a:',\n        'options': ['h²f\"(ξ)', 'h³f\"\"(ξ)', 'hf\\'(ξ)', 'h⁴f\"\"(ξ)'],\n        'time_minutes': 30,\n        'correct': 'h²f\"(ξ)'\n    },",
+    "prob_id": "trapezoidal_avanzado_1",
+    "action": "ADD"
+  },
+  {
+    "old_string": "    'simpson_1_3_intermedio_1': {\n        'title': 'Simpson 1/3: Para integrar con n=4 subintervalos, calcula h si b-a=1',\n        'options': ['0.25', '0.5', '0.125', '0.1'],\n        'correct': '0.25'\n    },",
+    "new_string": "    'simpson_1_3_intermedio_1': {\n        'title': 'Simpson 1/3: Para integrar con n=4 subintervalos, calcula h si b-a=1',\n        'options': ['0.25', '0.5', '0.125', '0.1'],\n        'time_minutes': 25,\n        'correct': '0.25'\n    },",
+    "prob_id": "simpson_1_3_intermedio_1",
+    "action": "ADD"
+  },
+  {
+    "old_string": "    'simpson_1_3_avanzado_1': {\n        'title': 'Simpson 1/3: Integra (1-x²) de 0 a 2 con n=4 datos: (0,1), (1,2), (2,5)',\n        'x_value': None,\n        'table': [('Integrar: ∫ f(x) dx desde 0 hasta 2',), ('Datos de la función:',), (0, 1), (1, 2), (2, 5)],\n        'options': ['5.333', '6.333', '4.333', '7.333'],\n        'correct': '5.333',\n        'time_minutes': 20\n    },",
+    "new_string": "    'simpson_1_3_avanzado_1': {\n        'title': 'Simpson 1/3: Integra (1-x²) de 0 a 2 con n=4 datos: (0,1), (1,2), (2,5)',\n        'x_value': None,\n        'table': [('Integrar: ∫ f(x) dx desde 0 hasta 2',), ('Datos de la función:',), (0, 1), (1, 2), (2, 5)],\n        'options': ['5.333', '6.333', '4.333', '7.333'],\n        'correct': '5.333',\n        'time_minutes': 30\n    },",
+    "prob_id": "simpson_1_3_avanzado_1",
+    "action": "CHANGE"
+  },
+  {
+    "old_string": "    'simpson_3_8_intermedio_1': {\n        'title': 'Simpson 3/8: Con 4 puntos (n=3), calcula el área bajo la curva',\n        'options': ['A usar fórmula 3/8', 'Error - n debe ser par', 'Usar Simpson 1/3', 'Usar Trapecio'],\n        'correct': 'A usar fórmula 3/8'\n    },",
+    "new_string": "    'simpson_3_8_intermedio_1': {\n        'title': 'Simpson 3/8: Con 4 puntos (n=3), calcula el área bajo la curva',\n        'options': ['A usar fórmula 3/8', 'Error - n debe ser par', 'Usar Simpson 1/3', 'Usar Trapecio'],\n        'time_minutes': 25,\n        'correct': 'A usar fórmula 3/8'\n    },",
+    "prob_id": "simpson_3_8_intermedio_1",
+    "action": "ADD"
+  },
+  {
+    "old_string": "    'simpson_3_8_avanzado_1': {\n        'title': 'Simpson 3/8: Integra de 0 a 3 con datos (0,1), (1,2), (2,5), (3,10)',\n        'x_value': None,\n        'table': [('Integrar: ∫ f(x) dx',), ('Datos de la función:',), (0, 1), (1, 2), (2, 5), (3, 10)],\n        'options': ['11.25', '12.25', '10.25', '13.25'],\n        'correct': '11.25',\n        'time_minutes': 20\n    },",
+    "new_string": "    'simpson_3_8_avanzado_1': {\n        'title': 'Simpson 3/8: Integra de 0 a 3 con datos (0,1), (1,2), (2,5), (3,10)',\n        'x_value': None,\n        'table': [('Integrar: ∫ f(x) dx',), ('Datos de la función:',), (0, 1), (1, 2), (2, 5), (3, 10)],\n        'options': ['11.25', '12.25', '10.25', '13.25'],\n        'correct': '11.25',\n        'time_minutes': 30\n    },",
+    "prob_id": "simpson_3_8_avanzado_1",
+    "action": "CHANGE"
+  },
+  {
+    "old_string": "    'cotes_closed_intermedio_1': {\n        'title': 'Newton-Cotes Cerrado: Selecciona n=2 (3 puntos). Qué fórmula usar',\n        'options': ['Simpson 1/3 (Trapecio mejorado)', 'Trapecio', 'Simpson 3/8', 'Punto Medio'],\n        'correct': 'Simpson 1/3 (Trapecio mejorado)'\n    },",
+    "new_string": "    'cotes_closed_intermedio_1': {\n        'title': 'Newton-Cotes Cerrado: Selecciona n=2 (3 puntos). Qué fórmula usar',\n        'options': ['Simpson 1/3 (Trapecio mejorado)', 'Trapecio', 'Simpson 3/8', 'Punto Medio'],\n        'time_minutes': 25,\n        'correct': 'Simpson 1/3 (Trapecio mejorado)'\n    },",
+    "prob_id": "cotes_closed_intermedio_1",
+    "action": "ADD"
+  },
+  {
+    "old_string": "    'cotes_closed_avanzado_1': {\n        'title': 'Newton-Cotes Cerrado: Integra con 5 datos: (0,1), (0.5,1.5), (1,2.5), (1.5,4), (2,6)',\n        'x_value': None,\n        'table': [('Integrar: ∫ f(x) dx desde 0 hasta 2',), ('Datos de la función:',), (0, 1), (0.5, 1.5), (1, 2.5), (1.5, 4), (2, 6)],\n        'options': ['5.208', '6.208', '4.208', '7.208'],\n        'correct': '5.208',\n        'time_minutes': 20\n    },",
+    "new_string": "    'cotes_closed_avanzado_1': {\n        'title': 'Newton-Cotes Cerrado: Integra con 5 datos: (0,1), (0.5,1.5), (1,2.5), (1.5,4), (2,6)',\n        'x_value': None,\n        'table': [('Integrar: ∫ f(x) dx desde 0 hasta 2',), ('Datos de la función:',), (0, 1), (0.5, 1.5), (1, 2.5), (1.5, 4), (2, 6)],\n        'options': ['5.208', '6.208', '4.208', '7.208'],\n        'correct': '5.208',\n        'time_minutes': 30\n    },",
+    "prob_id": "cotes_closed_avanzado_1",
+    "action": "CHANGE"
+  },
+  {
+    "old_string": "    'cotes_open_intermedio_1': {\n        'title': 'Newton-Cotes Abierto: Con intervalo [0,2], n=4, calcula h = (b-a)/(n+2)',\n        'options': ['1/3', '0.5', '1/4', '2/3'],\n        'correct': '1/3'\n    },",
+    "new_string": "    'cotes_open_intermedio_1': {\n        'title': 'Newton-Cotes Abierto: Con intervalo [0,2], n=4, calcula h = (b-a)/(n+2)',\n        'options': ['1/3', '0.5', '1/4', '2/3'],\n        'time_minutes': 25,\n        'correct': '1/3'\n    },",
+    "prob_id": "cotes_open_intermedio_1",
+    "action": "ADD"
+  },
+  {
+    "old_string": "    'cotes_open_avanzado_1': {\n        'title': 'Newton-Cotes Abierto: Integra entre puntos internos (0.5,1.5,1,1.5,4)',\n        'x_value': None,\n        'table': [('Integrar: ∫ f(x) dx',), ('Datos de la función (sin extremos):',), (0.5, 1.5), (1, 2.5), (1.5, 4)],\n        'options': ['4.5', '5.5', '3.5', '6.5'],\n        'correct': '4.5',\n        'time_minutes': 20\n    },",
+    "new_string": "    'cotes_open_avanzado_1': {\n        'title': 'Newton-Cotes Abierto: Integra entre puntos internos (0.5,1.5,1,1.5,4)',\n        'x_value': None,\n        'table': [('Integrar: ∫ f(x) dx',), ('Datos de la función (sin extremos):',), (0.5, 1.5), (1, 2.5), (1.5, 4)],\n        'options': ['4.5', '5.5', '3.5', '6.5'],\n        'correct': '4.5',\n        'time_minutes': 30\n    },",
+    "prob_id": "cotes_open_avanzado_1",
+    "action": "CHANGE"
+  },
+  {
+    "old_string": "    'least_sq_linear_intermedio_1': {\n        'title': 'Calcula $\\\\sum x^2$ para los datos: 1, 2, 3...',\n        'options': ['14', '6'],\n        'correct': '14'\n    },",
+    "new_string": "    'least_sq_linear_intermedio_1': {\n        'title': 'Calcula $\\\\sum x^2$ para los datos: 1, 2, 3...',\n        'options': ['14', '6'],\n        'time_minutes': 25,\n        'correct': '14'\n    },",
+    "prob_id": "least_sq_linear_intermedio_1",
+    "action": "ADD"
+  },
+  {
+    "old_string": "    'least_sq_linear_avanzado_1': {\n        'title': 'El método de mínimos cuadrados minimiza:',\n        'options': ['∑[yi - (a0 + a1xi)]²', '∑(yi - xi)', 'max|yi - ŷi|', '∑|yi - ŷi|'],\n        'correct': '∑[yi - (a0 + a1xi)]²'\n    },",
+    "new_string": "    'least_sq_linear_avanzado_1': {\n        'title': 'El método de mínimos cuadrados minimiza:',\n        'options': ['∑[yi - (a0 + a1xi)]²', '∑(yi - xi)', 'max|yi - ŷi|', '∑|yi - ŷi|'],\n        'time_minutes': 30,\n        'correct': '∑[yi - (a0 + a1xi)]²'\n    },",
+    "prob_id": "least_sq_linear_avanzado_1",
+    "action": "ADD"
+  },
+  {
+    "old_string": "    'least_sq_quadratic_intermedio_1': {\n        'title': 'Mínimos Cuadrados Cuadrático: Datos (1,1), (2,3), (3,7). Calcula ∑x²',\n        'options': ['14', '6', '12', '10'],\n        'correct': '14'\n    },",
+    "new_string": "    'least_sq_quadratic_intermedio_1': {\n        'title': 'Mínimos Cuadrados Cuadrático: Datos (1,1), (2,3), (3,7). Calcula ∑x²',\n        'options': ['14', '6', '12', '10'],\n        'time_minutes': 25,\n        'correct': '14'\n    },",
+    "prob_id": "least_sq_quadratic_intermedio_1",
+    "action": "ADD"
+  },
+  {
+    "old_string": "    'least_sq_quadratic_avanzado_1': {\n        'title': 'Mínimos Cuadrados Cuadrático: Ajusta y=a+bx+cx² con (1,1), (2,3), (3,7), (4,13)',\n        'x_value': 5,\n        'table': [('Ajustar: y = a + bx + cx²',), ('Datos:',), (1, 1), (2, 3), (3, 7), (4, 13)],\n        'options': ['21', '22', '20', '23'],\n        'correct': '21',\n        'time_minutes': 20\n    },",
+    "new_string": "    'least_sq_quadratic_avanzado_1': {\n        'title': 'Mínimos Cuadrados Cuadrático: Ajusta y=a+bx+cx² con (1,1), (2,3), (3,7), (4,13)',\n        'x_value': 5,\n        'table': [('Ajustar: y = a + bx + cx²',), ('Datos:',), (1, 1), (2, 3), (3, 7), (4, 13)],\n        'options': ['21', '22', '20', '23'],\n        'correct': '21',\n        'time_minutes': 30\n    },",
+    "prob_id": "least_sq_quadratic_avanzado_1",
+    "action": "CHANGE"
+  },
+  {
+    "old_string": "    'least_sq_cubic_intermedio_1': {\n        'title': 'Mínimos Cuadrados Cúbico: Datos (0,1), (1,2), (2,5), (3,10). Calcula ∑x³',\n        'options': ['36', '20', '14', '30'],\n        'correct': '36'\n    },",
+    "new_string": "    'least_sq_cubic_intermedio_1': {\n        'title': 'Mínimos Cuadrados Cúbico: Datos (0,1), (1,2), (2,5), (3,10). Calcula ∑x³',\n        'options': ['36', '20', '14', '30'],\n        'time_minutes': 25,\n        'correct': '36'\n    },",
+    "prob_id": "least_sq_cubic_intermedio_1",
+    "action": "ADD"
+  },
+  {
+    "old_string": "    'least_sq_cubic_avanzado_1': {\n        'title': 'Mínimos Cuadrados Cúbico: Ajusta y=a+bx+cx²+dx³ con (0,1), (1,2), (2,5), (3,10), (4,20)',\n        'x_value': 3,\n        'table': [('Ajustar: y = a + bx + cx² + dx³',), ('Datos:',), (0, 1), (1, 2), (2, 5), (3, 10), (4, 20)],\n        'options': ['10.2', '11.2', '9.2', '12.2'],\n        'correct': '10.2',\n        'time_minutes': 20\n    },",
+    "new_string": "    'least_sq_cubic_avanzado_1': {\n        'title': 'Mínimos Cuadrados Cúbico: Ajusta y=a+bx+cx²+dx³ con (0,1), (1,2), (2,5), (3,10), (4,20)',\n        'x_value': 3,\n        'table': [('Ajustar: y = a + bx + cx² + dx³',), ('Datos:',), (0, 1), (1, 2), (2, 5), (3, 10), (4, 20)],\n        'options': ['10.2', '11.2', '9.2', '12.2'],\n        'correct': '10.2',\n        'time_minutes': 30\n    },",
+    "prob_id": "least_sq_cubic_avanzado_1",
+    "action": "CHANGE"
+  },
+  {
+    "old_string": "    'least_sq_linear_func_intermedio_1': {\n        'title': 'Mínimos Cuadrados Lineal con f(x): y=a+b*ln(x) con datos (1,2), (2,3), (3,4). Σln(x)',\n        'options': ['1.791', '1.691', '1.891', '1.591'],\n        'correct': '1.791'\n    },",
+    "new_string": "    'least_sq_linear_func_intermedio_1': {\n        'title': 'Mínimos Cuadrados Lineal con f(x): y=a+b*ln(x) con datos (1,2), (2,3), (3,4). Σln(x)',\n        'options': ['1.791', '1.691', '1.891', '1.591'],\n        'time_minutes': 25,\n        'correct': '1.791'\n    },",
+    "prob_id": "least_sq_linear_func_intermedio_1",
+    "action": "ADD"
+  },
+  {
+    "old_string": "    'least_sq_linear_func_avanzado_1': {\n        'title': 'Mínimos Cuadrados Lineal con f(x): Ajusta y=a+b*ln(x) con (1,2.5), (2,5.2), (3,8.8), (4,13.1)',\n        'x_value': 4,\n        'table': [('Ajustar: y = a + b*ln(x)',), ('Datos:',), (1, 2.5), (2, 5.2), (3, 8.8), (4, 13.1)],\n        'options': ['13.5', '14.5', '12.5', '15.5'],\n        'correct': '13.5',\n        'time_minutes': 20\n    },",
+    "new_string": "    'least_sq_linear_func_avanzado_1': {\n        'title': 'Mínimos Cuadrados Lineal con f(x): Ajusta y=a+b*ln(x) con (1,2.5), (2,5.2), (3,8.8), (4,13.1)',\n        'x_value': 4,\n        'table': [('Ajustar: y = a + b*ln(x)',), ('Datos:',), (1, 2.5), (2, 5.2), (3, 8.8), (4, 13.1)],\n        'options': ['13.5', '14.5', '12.5', '15.5'],\n        'correct': '13.5',\n        'time_minutes': 30\n    },",
+    "prob_id": "least_sq_linear_func_avanzado_1",
+    "action": "CHANGE"
+  },
+  {
+    "old_string": "    'least_sq_quadratic_func_intermedio_1': {\n        'title': 'Mínimos Cuadrados Cuadrático con f(x): y=a+bx+c*e^x. Σe^x es el nuevo término',\n        'options': ['Si', 'No'],\n        'correct': 'Si'\n    },",
+    "new_string": "    'least_sq_quadratic_func_intermedio_1': {\n        'title': 'Mínimos Cuadrados Cuadrático con f(x): y=a+bx+c*e^x. Σe^x es el nuevo término',\n        'options': ['Si', 'No'],\n        'time_minutes': 25,\n        'correct': 'Si'\n    },",
+    "prob_id": "least_sq_quadratic_func_intermedio_1",
+    "action": "ADD"
+  },
+  {
+    "old_string": "    'least_sq_quadratic_func_avanzado_1': {\n        'title': 'Mínimos Cuadrados Cuadrático con f(x): Ajusta y=a+bx+c*e^x con (0,1), (1,1.5), (2,3.8), (3,8.2)',\n        'x_value': 3,\n        'table': [('Ajustar: y = a + bx + c*e^x',), ('Datos:',), (0, 1), (1, 1.5), (2, 3.8), (3, 8.2)],\n        'options': ['8.5', '9.5', '7.5', '10.5'],\n        'correct': '8.5',\n        'time_minutes': 20\n    },",
+    "new_string": "    'least_sq_quadratic_func_avanzado_1': {\n        'title': 'Mínimos Cuadrados Cuadrático con f(x): Ajusta y=a+bx+c*e^x con (0,1), (1,1.5), (2,3.8), (3,8.2)',\n        'x_value': 3,\n        'table': [('Ajustar: y = a + bx + c*e^x',), ('Datos:',), (0, 1), (1, 1.5), (2, 3.8), (3, 8.2)],\n        'options': ['8.5', '9.5', '7.5', '10.5'],\n        'correct': '8.5',\n        'time_minutes': 30\n    },",
+    "prob_id": "least_sq_quadratic_func_avanzado_1",
+    "action": "CHANGE"
+  },
+  {
+    "old_string": "    'euler_modified_intermedio_1': {\n        'title': 'Euler Modificado: dy/dx = x + y, y(0) = 1, h = 0.2. Calcula y(0.2)',\n        'options': ['1.221', '1.121', '1.321', '1.021'],\n        'correct': '1.221'\n    },",
+    "new_string": "    'euler_modified_intermedio_1': {\n        'title': 'Euler Modificado: dy/dx = x + y, y(0) = 1, h = 0.2. Calcula y(0.2)',\n        'options': ['1.221', '1.121', '1.321', '1.021'],\n        'time_minutes': 25,\n        'correct': '1.221'\n    },",
+    "prob_id": "euler_modified_intermedio_1",
+    "action": "ADD"
+  },
+  {
+    "old_string": "    'euler_modified_avanzado_1': {\n        'title': 'Euler Modificado: Resuelve dy/dx = x + y, y(0) = 1 en [0, 0.2]',\n        'x_value': 0.2,\n        'table': [(\"Ecuación: dy/dx = x + y\",), (\"Condición inicial: y(0) = 1\",), (\"Paso: h = 0.1\",)],\n        'options': ['1.221', '1.321', '1.121', '1.421'],\n        'correct': '1.221',\n        'time_minutes': 20\n    },",
+    "new_string": "    'euler_modified_avanzado_1': {\n        'title': 'Euler Modificado: Resuelve dy/dx = x + y, y(0) = 1 en [0, 0.2]',\n        'x_value': 0.2,\n        'table': [(\"Ecuación: dy/dx = x + y\",), (\"Condición inicial: y(0) = 1\",), (\"Paso: h = 0.1\",)],\n        'options': ['1.221', '1.321', '1.121', '1.421'],\n        'correct': '1.221',\n        'time_minutes': 30\n    },",
+    "prob_id": "euler_modified_avanzado_1",
+    "action": "CHANGE"
+  },
+  {
+    "old_string": "    'rk2_intermedio_1': {\n        'title': 'RK2: dy/dx = x + y, y(0) = 1, h = 0.2. Calcula y1',\n        'options': ['1.242', '1.142', '1.342', '1.042'],\n        'correct': '1.242'\n    },",
+    "new_string": "    'rk2_intermedio_1': {\n        'title': 'RK2: dy/dx = x + y, y(0) = 1, h = 0.2. Calcula y1',\n        'options': ['1.242', '1.142', '1.342', '1.042'],\n        'time_minutes': 25,\n        'correct': '1.242'\n    },",
+    "prob_id": "rk2_intermedio_1",
+    "action": "ADD"
+  },
+  {
+    "old_string": "    'rk2_avanzado_1': {\n        'title': 'RK2: Resuelve dy/dx = x + y, y(0) = 1 en [0, 0.2]',\n        'x_value': 0.2,\n        'table': [('Ecuación: dy/dx = x + y',), ('Condición inicial: y(0) = 1',), ('Paso: h = 0.1',)],\n        'options': ['1.242', '1.342', '1.142', '1.442'],\n        'correct': '1.242',\n        'time_minutes': 20\n    },",
+    "new_string": "    'rk2_avanzado_1': {\n        'title': 'RK2: Resuelve dy/dx = x + y, y(0) = 1 en [0, 0.2]',\n        'x_value': 0.2,\n        'table': [('Ecuación: dy/dx = x + y',), ('Condición inicial: y(0) = 1',), ('Paso: h = 0.1',)],\n        'options': ['1.242', '1.342', '1.142', '1.442'],\n        'correct': '1.242',\n        'time_minutes': 30\n    },",
+    "prob_id": "rk2_avanzado_1",
+    "action": "CHANGE"
+  },
+  {
+    "old_string": "    'rk3_intermedio_1': {\n        'title': 'RK3: dy/dx = 2x, y(0) = 0, h = 0.1. Calcula y1',\n        'options': ['0.002', '0.001', '0.003', '0.004'],\n        'correct': '0.002'\n    },",
+    "new_string": "    'rk3_intermedio_1': {\n        'title': 'RK3: dy/dx = 2x, y(0) = 0, h = 0.1. Calcula y1',\n        'options': ['0.002', '0.001', '0.003', '0.004'],\n        'time_minutes': 25,\n        'correct': '0.002'\n    },",
+    "prob_id": "rk3_intermedio_1",
+    "action": "ADD"
+  },
+  {
+    "old_string": "    'rk3_avanzado_1': {\n        'title': 'RK3: Resuelve dy/dx = 2x, y(0) = 0 en [0, 0.1]',\n        'x_value': 0.1,\n        'table': [('Ecuación: dy/dx = 2x',), ('Condición inicial: y(0) = 0',), ('Paso: h = 0.1',)],\n        'options': ['0.002', '0.003', '0.001', '0.004'],\n        'correct': '0.002',\n        'time_minutes': 20\n    },",
+    "new_string": "    'rk3_avanzado_1': {\n        'title': 'RK3: Resuelve dy/dx = 2x, y(0) = 0 en [0, 0.1]',\n        'x_value': 0.1,\n        'table': [('Ecuación: dy/dx = 2x',), ('Condición inicial: y(0) = 0',), ('Paso: h = 0.1',)],\n        'options': ['0.002', '0.003', '0.001', '0.004'],\n        'correct': '0.002',\n        'time_minutes': 30\n    },",
+    "prob_id": "rk3_avanzado_1",
+    "action": "CHANGE"
+  },
+  {
+    "old_string": "    'rk4_simpson13_intermedio_1': {\n        'title': 'RK4 Simpson 1/3: dy/dx = -2y, y(0) = 1, h = 0.1. Calcula y1',\n        'options': ['0.818', '0.918', '0.718', '0.618'],\n        'correct': '0.818'\n    },",
+    "new_string": "    'rk4_simpson13_intermedio_1': {\n        'title': 'RK4 Simpson 1/3: dy/dx = -2y, y(0) = 1, h = 0.1. Calcula y1',\n        'options': ['0.818', '0.918', '0.718', '0.618'],\n        'time_minutes': 25,\n        'correct': '0.818'\n    },",
+    "prob_id": "rk4_simpson13_intermedio_1",
+    "action": "ADD"
+  },
+  {
+    "old_string": "    'rk4_simpson13_avanzado_1': {\n        'title': 'RK4 Simpson 1/3: Resuelve dy/dx = -2y, y(0) = 1 en [0, 0.1]',\n        'x_value': 0.1,\n        'table': [('Ecuación: dy/dx = -2y',), ('Condición inicial: y(0) = 1',), ('Paso: h = 0.05',)],\n        'options': ['0.818', '0.918', '0.718', '0.618'],\n        'correct': '0.818',\n        'time_minutes': 20\n    },",
+    "new_string": "    'rk4_simpson13_avanzado_1': {\n        'title': 'RK4 Simpson 1/3: Resuelve dy/dx = -2y, y(0) = 1 en [0, 0.1]',\n        'x_value': 0.1,\n        'table': [('Ecuación: dy/dx = -2y',), ('Condición inicial: y(0) = 1',), ('Paso: h = 0.05',)],\n        'options': ['0.818', '0.918', '0.718', '0.618'],\n        'correct': '0.818',\n        'time_minutes': 30\n    },",
+    "prob_id": "rk4_simpson13_avanzado_1",
+    "action": "CHANGE"
+  },
+  {
+    "old_string": "    'rk4_simpson38_intermedio_1': {\n        'title': 'RK4 Simpson 3/8: dy/dx = y, y(0) = 1, h = 0.1. Calcula y1',\n        'options': ['1.105', '1.205', '1.005', '1.305'],\n        'correct': '1.105'\n    },",
+    "new_string": "    'rk4_simpson38_intermedio_1': {\n        'title': 'RK4 Simpson 3/8: dy/dx = y, y(0) = 1, h = 0.1. Calcula y1',\n        'options': ['1.105', '1.205', '1.005', '1.305'],\n        'time_minutes': 25,\n        'correct': '1.105'\n    },",
+    "prob_id": "rk4_simpson38_intermedio_1",
+    "action": "ADD"
+  },
+  {
+    "old_string": "    'rk4_simpson38_avanzado_1': {\n        'title': 'RK4 Simpson 3/8: Resuelve dy/dx = y, y(0) = 1 en [0, 0.1]',\n        'x_value': 0.1,\n        'table': [('Ecuación: dy/dx = y',), ('Condición inicial: y(0) = 1',), ('Paso: h = 0.05',)],\n        'options': ['1.105', '1.205', '1.005', '1.305'],\n        'correct': '1.105',\n        'time_minutes': 20\n    },",
+    "new_string": "    'rk4_simpson38_avanzado_1': {\n        'title': 'RK4 Simpson 3/8: Resuelve dy/dx = y, y(0) = 1 en [0, 0.1]',\n        'x_value': 0.1,\n        'table': [('Ecuación: dy/dx = y',), ('Condición inicial: y(0) = 1',), ('Paso: h = 0.05',)],\n        'options': ['1.105', '1.205', '1.005', '1.305'],\n        'correct': '1.105',\n        'time_minutes': 30\n    },",
+    "prob_id": "rk4_simpson38_avanzado_1",
+    "action": "CHANGE"
+  },
+  {
+    "old_string": "    'rk_higher_order_intermedio_1': {\n        'title': 'RK4 Orden Superior: y\" = x - y\\', y(0) = 1, y\\'(0) = 0, h = 0.1. Sistema equivalente: dy/dx = z, dz/dx = x - z',\n        'options': ['y(0.1) ≈ 1.005', 'y(0.1) ≈ 1.105', 'y(0.1) ≈ 0.905', 'y(0.1) ≈ 1.205'],\n        'correct': 'y(0.1) ≈ 1.005'\n    },",
+    "new_string": "    'rk_higher_order_intermedio_1': {\n        'title': 'RK4 Orden Superior: y\" = x - y\\', y(0) = 1, y\\'(0) = 0, h = 0.1. Sistema equivalente: dy/dx = z, dz/dx = x - z',\n        'options': ['y(0.1) ≈ 1.005', 'y(0.1) ≈ 1.105', 'y(0.1) ≈ 0.905', 'y(0.1) ≈ 1.205'],\n        'time_minutes': 25,\n        'correct': 'y(0.1) ≈ 1.005'\n    },",
+    "prob_id": "rk_higher_order_intermedio_1",
+    "action": "ADD"
+  },
+  {
+    "old_string": "    'rk_higher_order_avanzado_1': {\n        'title': 'RK4 Orden Superior: Resuelve y\" = x - y\\' en [0, 0.1] con y(0) = 1, y\\'(0) = 0',\n        'x_value': 0.1,\n        'table': [('Sistema: dy/dx = z, dz/dx = x - z',), ('y(0) = 1, z(0) = 0',), ('Paso: h = 0.05',)],\n        'options': ['y(0.1) ≈ 1.005', 'y(0.1) ≈ 1.105', 'y(0.1) ≈ 0.905', 'y(0.1) ≈ 1.205'],\n        'correct': 'y(0.1) ≈ 1.005',\n        'time_minutes': 20\n    },",
+    "new_string": "    'rk_higher_order_avanzado_1': {\n        'title': 'RK4 Orden Superior: Resuelve y\" = x - y\\' en [0, 0.1] con y(0) = 1, y\\'(0) = 0',\n        'x_value': 0.1,\n        'table': [('Sistema: dy/dx = z, dz/dx = x - z',), ('y(0) = 1, z(0) = 0',), ('Paso: h = 0.05',)],\n        'options': ['y(0.1) ≈ 1.005', 'y(0.1) ≈ 1.105', 'y(0.1) ≈ 0.905', 'y(0.1) ≈ 1.205'],\n        'correct': 'y(0.1) ≈ 1.005',\n        'time_minutes': 30\n    },",
+    "prob_id": "rk_higher_order_avanzado_1",
+    "action": "CHANGE"
+  }
+]
