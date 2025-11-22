@@ -839,16 +839,16 @@ PROBLEM_DATA = {
     },
     'bisection_intermedio_1': {
         'title': 'Bisección: Primera iteración entre a=1, f(a)=-1 y b=2, f(b)=5. Calcula c',
-        'options': ['1.5', '1.25', '1.75', '1.0'],
+        'options': ['0.3087', '1.25', '1.75', '1.0'],
         'time_minutes': 25,
-        'correct': '1.5'
+        'correct': '0.3087'
     },
     'bisection_avanzado_1': {
         'title': 'Bisección: Encuentra raíz de f(x)=x³-6.5x+2 en [0,1] tras 3 iteraciones',
         'x_value': None,
         'table': [('Función: f(x) = x³ - 6.5x + 2',), ('Intervalo: [0, 1]',), ('Realiza 3 iteraciones',)],
-        'options': ['0.3125', '0.5', '0.25', '0.375'],
-        'correct': '0.3125',
+        'options': ['0.3087', '0.5', '0.25', '0.375'],
+        'correct': '0.3087',
         'time_minutes': 30
     },
     'false_position_facil_1': {
@@ -858,16 +858,16 @@ PROBLEM_DATA = {
     },
     'false_position_intermedio_1': {
         'title': 'Falsa Posición: Con a=1, f(a)=-2, b=2, f(b)=17, calcula c',
-        'options': ['1.105', '1.205', '1.005', '1.305'],
+        'options': ['1.217859143', '1.205', '1.005', '1.305'],
         'time_minutes': 25,
-        'correct': '1.105'
+        'correct': '1.217859143'
     },
     'false_position_avanzado_1': {
         'title': 'Falsa Posición: Encuentra raíz de f(x)=3x³-2x-3 tras 2 iteraciones',
         'x_value': None,
         'table': [('Función: f(x) = 3x³ - 2x - 3',), ('f(1) = -2, f(2) = 17',)],
-        'options': ['1.162', '1.105', '1.232', '1.042'],
-        'correct': '1.162',
+        'options': ['1.217859143', '1.105', '1.232', '1.042'],
+        'correct': '1.217859143',
         'time_minutes': 30
     },
     'newton_raphson_facil_1': {
@@ -877,16 +877,16 @@ PROBLEM_DATA = {
     },
     'newton_raphson_intermedio_1': {
         'title': 'Newton-Raphson: f(x)=x³+2x²+10x-20, f\'(x)=3x²+4x+10. Con x0=1, calcula x1',
-        'options': ['1.411', '1.311', '1.511', '1.211'],
+        'options': ['1.368808108', '1.311', '1.511', '1.211'],
         'time_minutes': 25,
-        'correct': '1.411'
+        'correct': '1.368808108'
     },
     'newton_raphson_avanzado_1': {
         'title': 'Newton-Raphson: Encuentra raíz de f(x)=x²-2 con x0=2',
         'x_value': None,
         'table': [('Función: f(x) = x² - 2',), ("f'(x) = 2x",), ('Valor inicial: x₀ = 2',)],
-        'options': ['1.414', '1.514', '1.314', '1.614'],
-        'correct': '1.414',
+        'options': ['1.368808108', '1.514', '1.314', '1.614'],
+        'correct': '1.368808108',
         'time_minutes': 30
     },
     'fixed_point_facil_1': {
@@ -896,16 +896,16 @@ PROBLEM_DATA = {
     },
     'fixed_point_intermedio_1': {
         'title': 'Punto Fijo: Para e^(-x) = x, usa g(x)=e^(-x). Con x0=1, calcula x1',
-        'options': ['0.367', '0.467', '0.267', '0.567'],
+        'options': ['0.5671433', '0.467', '0.267', '0.567'],
         'time_minutes': 25,
-        'correct': '0.367'
+        'correct': '0.5671433'
     },
     'fixed_point_avanzado_1': {
         'title': 'Punto Fijo: Encuentra raíz de f(x) = e^(-x) - x con g(x) = e^(-x)',
         'x_value': None,
         'table': [('Función: g(x) = √(x + 1)',), ('Valor inicial: x₀ = 1',), ('Encuentra el punto fijo',)],
-        'options': ['1.732', '1.832', '1.632', '1.932'],
-        'correct': '1.732',
+        'options': ['0.5671433', '1.832', '1.632', '1.932'],
+        'correct': '0.5671433',
         'time_minutes': 30
     },
     'secant_facil_1': {
@@ -915,16 +915,16 @@ PROBLEM_DATA = {
     },
     'secant_intermedio_1': {
         'title': 'Secante: Con x0=0, f(x0)=0, x1=1, f(x1)=-0.63. Calcula x2 para e^(-x)-x=0',
-        'options': ['0.6127', '0.7127', '0.5127', '0.8127'],
+        'options': ['0.5671433', '0.7127', '0.5127', '0.8127'],
         'time_minutes': 25,
-        'correct': '0.6127'
+        'correct': '0.5671433'
     },
     'secant_avanzado_1': {
         'title': 'Secante: Encuentra raíz de f(x)=x³-5 con x0=1, x1=2',
         'x_value': None,
         'table': [('Función: f(x) = x³ - 5',), ('Valores iniciales: x₀ = 1, x₁ = 2',), ('Encuentra la raíz',)],
-        'options': ['2.094', '2.194', '1.994', '2.294'],
-        'correct': '2.094',
+        'options': ['0.5671433', '2.194', '1.994', '2.294'],
+        'correct': '0.5671433',
         'time_minutes': 30
     },
     'graphical_facil_1': {
@@ -1045,16 +1045,18 @@ PROBLEM_DATA = {
         'correct': '1er Grado'
     },
     'trapezoidal_intermedio_1': {
-        'title': 'Para $\\int_0^1 (1-x^2)dx$ con n=4, calcula h...',
-        'options': ['0.25', '1'],
+        'title': 'Trapezoidal: ∫[0,1](1-x²)dx con n=4. Calcula I',
+        'options': ['0.65625', '0.5', '0.75', '0.666'],
         'time_minutes': 25,
-        'correct': '0.25'
+        'correct': '0.65625'
     },
     'trapezoidal_avanzado_1': {
-        'title': 'El error en la regla del trapecio es proporcional a:',
-        'options': ['h²f"(ξ)', 'h³f""(ξ)', 'hf\'(ξ)', 'h⁴f""(ξ)'],
-        'time_minutes': 30,
-        'correct': 'h²f"(ξ)'
+        'title': 'Trapezoidal: Resuelve ∫[0,1](1-x²)dx con n=4',
+        'x_value': 1,
+        'table': [('Integral de 1-x² de 0 a 1',), ('h=0.25',)],
+        'options': ['0.65625', '0.5', '0.75', '0.666'],
+        'correct': '0.65625',
+        'time_minutes': 30
     },
     'simpson_1_3_facil_1': {
         'title': 'Requisito indispensable de "n" para 1/3 Simpson:',
@@ -1062,17 +1064,17 @@ PROBLEM_DATA = {
         'correct': 'Debe ser Par'
     },
     'simpson_1_3_intermedio_1': {
-        'title': 'Simpson 1/3: Para integrar con n=4 subintervalos, calcula h si b-a=1',
-        'options': ['0.25', '0.5', '0.125', '0.1'],
+        'title': 'Simpson 1/3: ∫[0,1](1-x²)dx con n=4. Calcula I',
+        'options': ['0.666666667', '0.5', '0.75', '0.55'],
         'time_minutes': 25,
-        'correct': '0.25'
+        'correct': '0.666666667'
     },
     'simpson_1_3_avanzado_1': {
-        'title': 'Simpson 1/3: Integra (1-x²) de 0 a 2 con n=4 datos: (0,1), (1,2), (2,5)',
-        'x_value': None,
-        'table': [('Integrar: ∫ f(x) dx desde 0 hasta 2',), ('Datos de la función:',), (0, 1), (1, 2), (2, 5)],
-        'options': ['5.333', '6.333', '4.333', '7.333'],
-        'correct': '5.333',
+        'title': 'Simpson 1/3: Resuelve ∫[0,1](1-x²)dx con n=4',
+        'x_value': 1,
+        'table': [('Integral de 1-x² de 0 a 1',), ('h=0.25',)],
+        'options': ['0.666666667', '0.5', '0.75', '0.55'],
+        'correct': '0.666666667',
         'time_minutes': 30
     },
     'simpson_3_8_facil_1': {
@@ -1231,10 +1233,10 @@ PROBLEM_DATA = {
         'correct': 'Trapezoidal'
     },
     'euler_modified_intermedio_1': {
-        'title': 'Euler Modificado: dy/dx = x + y, y(0) = 1, h = 0.2. Calcula y(0.2)',
-        'options': ['1.221', '1.121', '1.321', '1.021'],
+        'title': 'Euler Modificado: 3y\' - 5yt + 1 = 0, y(0) = 1.2, h = 0.2',
+        'options': ['1.2', '1.3', '1.1', '1.4'],
         'time_minutes': 25,
-        'correct': '1.221'
+        'correct': '1.2'
     },
     'euler_modified_avanzado_1': {
         'title': 'Euler Modificado: Resuelve dy/dx = x + y, y(0) = 1 en [0, 0.2]',
