@@ -4,6 +4,7 @@ import tkinter.font as tkfont
 import os
 import sys
 import json
+import random
 from game_data import GAME_STRUCTURE, PROBLEM_DATA, LAGRANGE_FAKE_ANSWERS
 def get_base_path():
     if getattr(sys, 'frozen', False):
@@ -114,6 +115,32 @@ def scale_value(value):
     return int(value * SCALE_FACTOR)
 def scale_font(size):
     return max(8, int(size * SCALE_FACTOR))
+
+# Métodos donde se deben MOSTRAR los paréntesis (según la respuesta del usuario)
+SHOW_PARENTHESES = {
+    'Falsa_Posicion', 'Lineal', 'Minimos_Cuadrados_Cuadratica_Funcion',
+    'Minimos_Cuadrados_Cubica', 'Minimos_Cuadrados_Lineal_Funcion',
+    'Newton_Raphson', 'Secante', 'Simpson_1_3', 'Simpson_3_8', 'Trapezoidal'
+}
+
+def extract_answer_text(filename, folder_name):
+    """
+    Extrae el nombre de la imagen para mostrarlo.
+    Si la carpeta está en SHOW_PARENTHESES, mantiene todo el nombre.
+    Si no, elimina el contenido en paréntesis.
+    """
+    answer = os.path.splitext(filename)[0]  # Elimina extensión .png
+    
+    # Si la carpeta permite mostrar paréntesis, devuelve todo
+    if folder_name in SHOW_PARENTHESES:
+        return answer
+    
+    # Si no, elimina lo que está en paréntesis
+    if '(' in answer and ')' in answer:
+        return answer.split('(')[0].strip()
+    
+    return answer
+
 class RoundedButton(tk.Canvas):
     def __init__(self, parent, text, command, width=None, height=60, corner_radius=20,
                  color=COLOR_BOTON, text_color=COLOR_TEXTO_BTN, bg_color=COLOR_FONDO,
@@ -1159,11 +1186,7 @@ class NumericalMethodsGame:
             # Imagen actual
             current_image_file = state['questions_list'][state['current_question_index']]
             current_image_path = os.path.join(img_dir, current_image_file)
-            current_answer = os.path.splitext(current_image_file)[0]
-            
-            # Extraer solo la parte antes del paréntesis si existe
-            if '(' in current_answer and ')' in current_answer:
-                current_answer = current_answer.split('(')[0].strip()
+            current_answer = extract_answer_text(current_image_file, img_folder_name)
             
             img_frame = tk.Frame(self.current_screen, bg=COLOR_FONDO)
             img_frame.pack(pady=30)
@@ -1189,9 +1212,7 @@ class NumericalMethodsGame:
             # Crear opciones incorrectas realistas
             all_other_answers = []
             for img_file in state['questions_list']:
-                other_answer = os.path.splitext(img_file)[0]
-                if '(' in other_answer and ')' in other_answer:
-                    other_answer = other_answer.split('(')[0].strip()
+                other_answer = extract_answer_text(img_file, img_folder_name)
                 if other_answer != correct_option and other_answer not in all_other_answers:
                     all_other_answers.append(other_answer)
             
@@ -1301,11 +1322,7 @@ class NumericalMethodsGame:
             # Imagen actual
             current_image_file = state['questions_list'][state['current_question_index']]
             current_image_path = os.path.join(img_dir, current_image_file)
-            current_answer = os.path.splitext(current_image_file)[0]
-            
-            # Extraer solo la parte antes del paréntesis si existe
-            if '(' in current_answer and ')' in current_answer:
-                current_answer = current_answer.split('(')[0].strip()
+            current_answer = extract_answer_text(current_image_file, folder_name)
             
             img_frame = tk.Frame(self.current_screen, bg=COLOR_FONDO)
             img_frame.pack(pady=30)
@@ -1331,9 +1348,7 @@ class NumericalMethodsGame:
             # Crear opciones incorrectas realistas
             all_other_answers = []
             for img_file in state['questions_list']:
-                other_answer = os.path.splitext(img_file)[0]
-                if '(' in other_answer and ')' in other_answer:
-                    other_answer = other_answer.split('(')[0].strip()
+                other_answer = extract_answer_text(img_file, folder_name)
                 if other_answer != correct_option and other_answer not in all_other_answers:
                     all_other_answers.append(other_answer)
             
@@ -1442,11 +1457,7 @@ class NumericalMethodsGame:
             # Imagen actual (fórmula en preguntas)
             current_image_file = state['questions_list'][state['current_question_index']]
             current_image_path = os.path.join(img_dir, current_image_file)
-            current_answer = os.path.splitext(current_image_file)[0]
-            
-            # Extraer solo la parte antes del paréntesis si existe
-            if '(' in current_answer and ')' in current_answer:
-                current_answer = current_answer.split('(')[0].strip()
+            current_answer = extract_answer_text(current_image_file, folder_name)
             
             img_frame = tk.Frame(self.current_screen, bg=COLOR_FONDO)
             img_frame.pack(pady=30)
@@ -1473,9 +1484,7 @@ class NumericalMethodsGame:
             # Crear opciones incorrectas realistas
             all_other_answers = []
             for img_file in state['questions_list']:
-                other_answer = os.path.splitext(img_file)[0]
-                if '(' in other_answer and ')' in other_answer:
-                    other_answer = other_answer.split('(')[0].strip()
+                other_answer = extract_answer_text(img_file, folder_name)
                 if other_answer != correct_option and other_answer not in all_other_answers:
                     all_other_answers.append(other_answer)
             
