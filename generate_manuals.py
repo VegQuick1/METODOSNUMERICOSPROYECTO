@@ -64,26 +64,22 @@ def add_bullet_points(doc, points):
 
 def add_bibliography():
     """Retorna la bibliografía del proyecto"""
-    return """1. Método de Oralia - Métodos Numéricos
-   - Referencia Principal: "Métodos Numéricos Aplicados con Software"
-   - Autor/es: Oralia y colaboradores
-   - Contenido: Base teórica para los 6 capítulos del proyecto
-   - Temas cubiertos:
-     • Interpolación (Lagrange, Lineal, Newton)
-     • Ecuaciones Lineales (Montante, Gauss-Jordán, etc.)
-     • Ecuaciones No Lineales (Bisección, Newton-Raphson, etc.)
-     • Integración Numérica (Trapezoidal, Simpson)
-     • Mínimos Cuadrados
-     • Ecuaciones Diferenciales Ordinarias (EDO)
+    return """1. Libro de Texto
+   Zamora Pequeño, O., Zamora Pequeño, R. S., & Del Ángel Ramírez, A. 
+   (2020). Métodos numéricos aplicados con software (2.ª ed.). Universidad 
+   Autónoma de Nuevo León.
 
-2. Documentación de Python
-   - tkinter: Framework gráfico para interfaz de usuario
-   - numpy: Cálculos numéricos y operaciones matriciales
-   - json: Manejo de persistencia de datos
-
-3. Recursos Digitales
-   - Teoría matemática aplicada en clase
-   - Ejemplos prácticos y problemas propuestos
+2. Documentación de Software (Python)
+   Python Software Foundation. (s.f.). tkinter — Python interface to Tcl/Tk. 
+   Python 3.12 Documentation. Recuperado el 21 de noviembre de 2025, de 
+   https://docs.python.org/3/library/tkinter.html
+   
+   Python Software Foundation. (s.f.). json — JSON encoder and decoder. 
+   Python 3.12 Documentation. Recuperado el 21 de noviembre de 2025, de 
+   https://docs.python.org/3/library/json.html
+   
+   The NumPy Developers. (s.f.). NumPy documentation. NumPy. Recuperado 
+   el 21 de noviembre de 2025, de https://numpy.org/doc/
 """
 
 def add_conclusions():

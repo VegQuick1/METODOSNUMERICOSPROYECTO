@@ -609,11 +609,11 @@ class NumericalMethodsGame:
         RoundedButton(buttons_container, text="🌐  IDIOMA", width=570, height=105,
                   color="#20D0C0", text_color="#ffffff",
                   command=lambda: messagebox.showinfo("Idioma", "Funcionalidad próximamente")).pack(pady=22)
-        credits_text = "Desarrollado por: Equipo de Métodos Numéricos\nVersión 1.0"
+        credits_text = "EQUIPO 1 - MÉTODOS NUMÉRICOS\n\nEstudiantes:\nJorge Aaron Cuellar Fuentes\n2007916\n\nGerardo Ulloa Loredo\n2001913\n\nCatedrático: ORALIA ZAMORA PEQUEÑO\nPeríodo: A2025\nGrupo: 005\nHorario: LMV, V6"
         RoundedButton(buttons_container, text="ℹ️  CRÉDITOS", width=570, height=105,
                   color="#20D0C0", text_color="#ffffff",
                   command=lambda: messagebox.showinfo("Créditos", credits_text)).pack(pady=22)
-        bibliography_text = "Referencias bibliográficas del proyecto"
+        bibliography_text = "1. Zamora Pequeño, O., Zamora Pequeño, R. S., & Del Ángel Ramírez, A. (2020). Métodos numéricos aplicados con software (2.ª ed.). Universidad Autónoma de Nuevo León.\n\n2. Python Software Foundation. (s.f.). tkinter — Python interface to Tcl/Tk. Python 3.12 Documentation.\n\n3. Python Software Foundation. (s.f.). json — JSON encoder and decoder. Python 3.12 Documentation.\n\n4. The NumPy Developers. (s.f.). NumPy documentation. NumPy."
         RoundedButton(buttons_container, text="📚  BIBLIOGRAFÍA", width=570, height=105,
                   color="#20D0C0", text_color="#ffffff",
                   command=lambda: messagebox.showinfo("Bibliografía", bibliography_text)).pack(pady=22)
