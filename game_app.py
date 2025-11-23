@@ -1084,14 +1084,23 @@ class NumericalMethodsGame:
             'questions_list': []
         }
         
-        # Cargar imágenes (excluir FormulaBase)
+        # Cargar imágenes
+        # Caso especial: Newton-Cotes tiene dos fórmulas base distintas (Abiertas y Cerradas)
+        special_two_bases = (img_folder_name == 'Newton_Cotes_Abiertas_y_Cerradas')
+        base_images = []
         question_images = []
         for f in os.listdir(img_dir):
             name, ext = os.path.splitext(f)
-            if name.lower() == 'formulabase':
-                continue
             if ext.lower() not in ('.png', '.jpg', '.gif', '.bmp'):
                 continue
+            if special_two_bases:
+                if name in ('FormulaBaseAbiertas', 'FormulaBaseCerradas'):
+                    base_images.append(f)
+                    continue
+            else:
+                if name.lower() == 'formulabase':
+                    base_images.append(f)
+                    continue
             question_images.append(f)
         
         random.shuffle(question_images)
@@ -1102,14 +1111,26 @@ class NumericalMethodsGame:
                 w.destroy()
             top_frame = tk.Frame(self.current_screen, bg=COLOR_FONDO)
             top_frame.pack(fill=tk.BOTH, expand=False, pady=10)
-            
-            formula_path = os.path.join(img_dir, 'FormulaBase.png')
-            if not os.path.exists(formula_path):
-                # Buscar la imagen base con cualquier extensión
-                for f in os.listdir(img_dir):
-                    if f.lower() == 'formulabase.png' or f.lower() == 'formulabase.jpg':
+            # Determinar ruta de fórmula base
+            formula_path = None
+            if special_two_bases:
+                # Fase 0: abiertas, fase 1: cerradas
+                phase = state.get('formula_phase', 0)
+                target_prefix = 'FormulaBaseAbiertas' if phase == 0 else 'FormulaBaseCerradas'
+                for f in base_images:
+                    if f.startswith(target_prefix):
                         formula_path = os.path.join(img_dir, f)
                         break
+            else:
+                # Fórmula base única
+                candidate = os.path.join(img_dir, 'FormulaBase.png')
+                if os.path.exists(candidate):
+                    formula_path = candidate
+                else:
+                    for f in base_images:
+                        if f.lower().startswith('formulabase'):
+                            formula_path = os.path.join(img_dir, f)
+                            break
             
             if formula_path and os.path.exists(formula_path):
                 try:
@@ -1123,9 +1144,21 @@ class NumericalMethodsGame:
                 except Exception:
                     pass
             
-            tk.Label(top_frame, text=formula_text, font=("Arial", scale_font(16), "bold"), bg=COLOR_FONDO, fg="white").pack(pady=(6,12))
+            if special_two_bases:
+                phase = state.get('formula_phase', 0)
+                if phase == 0:
+                    custom_text = "¡Memoriza esta fórmula de Newton Cotes Abiertas! Observa n+2"
+                else:
+                    custom_text = "¡Memoriza esta fórmula de Newton Cotes Cerradas! Observa a+ih y wi"
+                tk.Label(top_frame, text=custom_text, font=("Arial", scale_font(16), "bold"), bg=COLOR_FONDO, fg="white").pack(pady=(6,12))
+            else:
+                tk.Label(top_frame, text=formula_text, font=("Arial", scale_font(16), "bold"), bg=COLOR_FONDO, fg="white").pack(pady=(6,12))
             
             def _continue_to_questions():
+                if special_two_bases and state.get('formula_phase', 0) == 0:
+                    state['formula_phase'] = 1
+                    _show_formula()
+                    return
                 state['formula_seen'] = True
                 _show_next_question()
             
@@ -1186,7 +1219,16 @@ class NumericalMethodsGame:
             # Imagen actual
             current_image_file = state['questions_list'][state['current_question_index']]
             current_image_path = os.path.join(img_dir, current_image_file)
-            current_answer = extract_answer_text(current_image_file, img_folder_name)
+            # Respuesta especial para clasificación de imágenes H
+            if img_folder_name == 'Newton_Cotes_Abiertas_y_Cerradas' and current_image_file.startswith('FormulaBaseHAbiertas'):
+                current_answer = 'Newton Cotes Abiertas'
+                local_question_text = '¿A que método (cerradas o abiertas) pertenece esta fórmula?'
+            elif img_folder_name == 'Newton_Cotes_Abiertas_y_Cerradas' and current_image_file.startswith('FormulaBaseHCerradas'):
+                current_answer = 'Newton Cotes Cerradas'
+                local_question_text = '¿A que método (cerradas o abiertas) pertenece esta fórmula?'
+            else:
+                current_answer = extract_answer_text(current_image_file, img_folder_name)
+                local_question_text = question_text
             
             img_frame = tk.Frame(self.current_screen, bg=COLOR_FONDO)
             img_frame.pack(pady=30)
@@ -1203,7 +1245,7 @@ class NumericalMethodsGame:
                 except Exception:
                     tk.Label(img_frame, text=f"No se pudo cargar: {current_image_file}", bg=COLOR_FONDO, fg="white").pack()
             
-            tk.Label(self.current_screen, text=question_text, font=("Arial", scale_font(14), "bold"),
+                tk.Label(self.current_screen, text=local_question_text, font=("Arial", scale_font(14), "bold"),
                     bg=COLOR_FONDO, fg="white").pack(pady=15)
             
             # Generar opciones de respuesta (4 botones no obvios)

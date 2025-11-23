@@ -1,6 +1,6 @@
 {
-    "time_elapsed_seconds": 2540,
-    "errors_committed": 62,
+    "time_elapsed_seconds": 3810,
+    "errors_committed": 67,
     "medals": [
         "Lineal (F\u00e1cil)",
         "FAILED_Lagrange (Prueba Final)",
@@ -18,7 +18,10 @@
         "Runge-Kutta Orden Superior (F\u00e1cil)",
         "Gauss-Seidel (F\u00e1cil)",
         "Eliminaci\u00f3n Gaussiana (F\u00e1cil)",
-        "Regla de 3/8 Simpson (F\u00e1cil)"
+        "Regla de 3/8 Simpson (F\u00e1cil)",
+        "FAILED_Newton Hacia Adelante (Prueba Final)",
+        "Newton Hacia Atr\u00e1s (F\u00e1cil)",
+        "Newton-Cotes Abiertas y Cerradas (F\u00e1cil)"
     ],
     "username": "Jugador 1",
     "music_enabled": false,
