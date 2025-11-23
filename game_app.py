@@ -407,7 +407,32 @@ class NumericalMethodsGame:
         self.main_frame.pack(fill=tk.BOTH, expand=True)
         self.current_screen = None
         self.root.protocol("WM_DELETE_WINDOW", self._on_closing)
+        
+        # Bind backspace para volver a la pantalla anterior
+        self.root.bind('<BackSpace>', self._on_backspace)
+        self.current_chapter = None
+        self.current_level = None
+        self.current_difficulty = None
+        
         self.show_main_menu()
+    
+    def _on_backspace(self, event=None):
+        """Maneja el botón Backspace para volver a la pantalla anterior"""
+        # Ir retrocediendo según el contexto actual
+        if self.current_difficulty:
+            # Estamos en una lección, volver al menú de dificultad
+            self.show_difficulty_menu(self.current_chapter, self.current_level)
+        elif self.current_level:
+            # Estamos en el menú de dificultad, volver al menú de métodos
+            self.show_level_menu(self.current_chapter)
+        elif self.current_chapter:
+            # Estamos en el menú de métodos, volver al menú de capítulos
+            self.show_chapter_menu()
+        else:
+            # Estamos en el menú principal, no hacer nada
+            pass
+        return "break"  # Prevenir que el evento se propague
+    
     def _on_closing(self):
         self._save_progress()
         self.root.destroy()
@@ -627,6 +652,9 @@ class NumericalMethodsGame:
                   command=_on_reset_click).pack(pady=22)
     def show_chapter_menu(self):
         self.clear_screen()
+        self.current_chapter = None
+        self.current_level = None
+        self.current_difficulty = None
         self.add_header_with_back("LECCIONES", self.show_main_menu)
         scroll_container = ScrollableFrame(self.current_screen, bg_color=COLOR_FONDO)
         scroll_container.pack(fill="both", expand=True, pady=20, padx=15)
@@ -703,6 +731,9 @@ class NumericalMethodsGame:
             print(f"Error al restaurar posición del scroll: {e}")
     def show_difficulty_menu(self, chapter, level):
         self.clear_screen()
+        self.current_chapter = chapter
+        self.current_level = level
+        self.current_difficulty = None
         try:
             if self.music_enabled:
                 self.music_manager.fade_in(duration=3.0, target_volume=self.music_volume)
@@ -730,6 +761,9 @@ class NumericalMethodsGame:
         except Exception as e:
             print(f"Error en fade out de música: {e}")
         self.clear_screen()
+        self.current_chapter = chapter
+        self.current_level = level
+        self.current_difficulty = difficulty
         method_info = get_method_info(chapter, level, difficulty)
         if method_info and 'function' in method_info:
             func_name = method_info['function']
@@ -752,7 +786,6 @@ class NumericalMethodsGame:
             self.show_difficulty_menu(chapter, level)
             return
         if lesson_index >= len(lessons):
-            messagebox.showinfo("¡Felicidades!", f"¡Has completado '{level}' en modo {difficulty}!")
             medal_name = f"{level} ({difficulty})"
             if medal_name not in self.medals:
                 self.medals.append(medal_name)
@@ -943,7 +976,7 @@ class NumericalMethodsGame:
                         self.show_difficulty_menu(chapter, level)
             return _handler
         for opt_text in options_values:
-            btn = RoundedButton(btn_frame, text=opt_text, width=180, height=90,
+            btn = RoundedButton(btn_frame, text=opt_text, width=max(180, len(opt_text) * 12), height=90,
                               color=style['button_color'], text_color=style['button_text_color'],
                               command=_make_handler(opt_text))
             btn.pack(side=tk.LEFT, padx=12)
@@ -996,10 +1029,600 @@ class NumericalMethodsGame:
             btns_frame = tk.Frame(content_frame, bg=COLOR_FONDO)
             btns_frame.pack(pady=20)
             for option in lesson['options']:
-                btn = RoundedButton(btns_frame, text=option, width=200, height=70,
+                btn = RoundedButton(btns_frame, text=option, width=max(200, len(option) * 12), height=70,
                                   color=style['button_color'], text_color=style['button_text_color'],
                                   command=lambda o=option: self.check_answer(o, lesson, chapter, level, difficulty, lesson_index))
                 btn.pack(side=tk.LEFT, padx=10)
+    
+    def _show_easy_level_with_images(self, img_folder_name, chapter, level, difficulty, lesson_index, question_text="¿Qué falta en esta fórmula?", formula_text="¡Memoriza esta fórmula!"):
+        """Muestra un nivel Fácil basado en imágenes de fórmulas
+        
+        Args:
+            img_folder_name: Nombre de la carpeta en imgs/ con las fórmulas
+            chapter, level, difficulty, lesson_index: Contexto de la lección
+            question_text: Texto de la pregunta
+            formula_text: Texto de la instrucción de memorización
+        """
+        import random
+        img_dir = os.path.join(BASE_PATH, 'imgs', img_folder_name)
+        if not os.path.exists(img_dir):
+            tk.Label(self.current_screen, text=f"Carpeta de imágenes '{img_folder_name}' no encontrada.", bg=COLOR_FONDO, fg='white').pack(pady=20)
+            return
+        
+        is_final = False
+        state = {
+            'current_question_index': 0,
+            'total_correct': 0,
+            'formula_seen': False,
+            'questions_list': []
+        }
+        
+        # Cargar imágenes (excluir FormulaBase)
+        question_images = []
+        for f in os.listdir(img_dir):
+            name, ext = os.path.splitext(f)
+            if name.lower() == 'formulabase':
+                continue
+            if ext.lower() not in ('.png', '.jpg', '.gif', '.bmp'):
+                continue
+            question_images.append(f)
+        
+        random.shuffle(question_images)
+        state['questions_list'] = question_images
+        
+        def _show_formula():
+            for w in self.current_screen.winfo_children():
+                w.destroy()
+            top_frame = tk.Frame(self.current_screen, bg=COLOR_FONDO)
+            top_frame.pack(fill=tk.BOTH, expand=False, pady=10)
+            
+            formula_path = os.path.join(img_dir, 'FormulaBase.png')
+            if not os.path.exists(formula_path):
+                # Buscar la imagen base con cualquier extensión
+                for f in os.listdir(img_dir):
+                    if f.lower() == 'formulabase.png' or f.lower() == 'formulabase.jpg':
+                        formula_path = os.path.join(img_dir, f)
+                        break
+            
+            if formula_path and os.path.exists(formula_path):
+                try:
+                    pimg = tk.PhotoImage(file=formula_path)
+                    if pimg.width() > 1200:
+                        factor = max(1, int(pimg.width() / 1200))
+                        pimg = pimg.subsample(factor)
+                    lbl_img = tk.Label(top_frame, image=pimg, bg=COLOR_FONDO)
+                    lbl_img.image = pimg
+                    lbl_img.pack(pady=10)
+                except Exception:
+                    pass
+            
+            tk.Label(top_frame, text=formula_text, font=("Arial", scale_font(16), "bold"), bg=COLOR_FONDO, fg="white").pack(pady=(6,12))
+            
+            def _continue_to_questions():
+                state['formula_seen'] = True
+                _show_next_question()
+            
+            RoundedButton(self.current_screen, text="OK", width=120, height=48, color="#20D0C0", text_color="#00303a", command=_continue_to_questions).pack(pady=12)
+        
+        def _show_next_question():
+            for w in self.current_screen.winfo_children():
+                w.destroy()
+            
+            if state['current_question_index'] >= len(state['questions_list']):
+                messagebox.showinfo("¡Completado!", f"¡Felicidades! Has completado {level} en nivel Fácil.\nAcertaste: {state['total_correct']}/{len(state['questions_list'])}")
+                medal_str = f"{level} ({difficulty})"
+                if medal_str not in self.medals:
+                    self.medals.append(medal_str)
+                self._save_progress()
+                self.start_lesson(chapter, level, difficulty, lesson_index + 1)
+                return
+            
+            # Banner
+            style = DIFFICULTY_STYLES.get(difficulty.lower(), DIFFICULTY_STYLES['fácil'])
+            banner_frame = tk.Frame(self.current_screen, bg=style['banner_color'], height=60)
+            banner_frame.pack(fill=tk.X, side=tk.TOP)
+            banner_frame.pack_propagate(False)
+            
+            chapter_num = chapter.split(':')[0].replace('Capítulo', '').strip()
+            banner_text = f"Capítulo {chapter_num} - {level} - {difficulty}"
+            tk.Label(banner_frame, text=banner_text, font=("Arial", scale_font(16), "bold"),
+                    bg=style['banner_color'], fg=style['banner_text_color']).pack(side=tk.LEFT, padx=20, pady=10)
+            
+            # Botón atrás
+            try:
+                if PIL_AVAILABLE:
+                    from PIL import Image as PILImage, ImageTk as PILImageTk
+                    pil_img = PILImage.open(os.path.join(BASE_PATH, 'imgs', 'red-go-back-arrow.png'))
+                    pil_img.thumbnail((40, 40), PILImage.Resampling.LANCZOS)
+                    back_arrow_img = PILImageTk.PhotoImage(pil_img)
+                else:
+                    back_arrow_img = tk.PhotoImage(file=os.path.join(BASE_PATH, 'imgs', 'red-go-back-arrow.png'))
+                    if back_arrow_img.width() > 40:
+                        factor = max(1, int(back_arrow_img.width() / 40))
+                        back_arrow_img = back_arrow_img.subsample(factor)
+                back_btn = tk.Label(banner_frame, image=back_arrow_img, bg=style['banner_color'], cursor="hand2")
+                back_btn.image = back_arrow_img
+                back_btn.pack(side=tk.RIGHT, padx=15, pady=10)
+                if is_final:
+                    back_btn.bind("<Button-1>", lambda e: self._confirm_exit_final(chapter, level))
+                else:
+                    back_btn.bind("<Button-1>", lambda e: self.show_difficulty_menu(chapter, level))
+            except Exception:
+                back_btn = tk.Label(banner_frame, text="◀", font=("Arial", scale_font(20), "bold"),
+                                   bg=style['banner_color'], fg="#FF5733", cursor="hand2")
+                back_btn.pack(side=tk.RIGHT, padx=20, pady=10)
+                if is_final:
+                    back_btn.bind("<Button-1>", lambda e: self._confirm_exit_final(chapter, level))
+                else:
+                    back_btn.bind("<Button-1>", lambda e: self.show_difficulty_menu(chapter, level))
+            
+            # Imagen actual
+            current_image_file = state['questions_list'][state['current_question_index']]
+            current_image_path = os.path.join(img_dir, current_image_file)
+            current_answer = os.path.splitext(current_image_file)[0]
+            
+            # Extraer solo la parte antes del paréntesis si existe
+            if '(' in current_answer and ')' in current_answer:
+                current_answer = current_answer.split('(')[0].strip()
+            
+            img_frame = tk.Frame(self.current_screen, bg=COLOR_FONDO)
+            img_frame.pack(pady=30)
+            
+            if os.path.exists(current_image_path):
+                try:
+                    display_img = tk.PhotoImage(file=current_image_path)
+                    if display_img.height() > 250:
+                        factor = max(1, int(display_img.height() / 250))
+                        display_img = display_img.subsample(factor)
+                    img_lbl = tk.Label(img_frame, image=display_img, bg=COLOR_FONDO)
+                    img_lbl.image = display_img
+                    img_lbl.pack()
+                except Exception:
+                    tk.Label(img_frame, text=f"No se pudo cargar: {current_image_file}", bg=COLOR_FONDO, fg="white").pack()
+            
+            tk.Label(self.current_screen, text=question_text, font=("Arial", scale_font(14), "bold"),
+                    bg=COLOR_FONDO, fg="white").pack(pady=15)
+            
+            # Generar opciones de respuesta (4 botones no obvios)
+            correct_option = current_answer
+            
+            # Crear opciones incorrectas realistas
+            all_other_answers = []
+            for img_file in state['questions_list']:
+                other_answer = os.path.splitext(img_file)[0]
+                if '(' in other_answer and ')' in other_answer:
+                    other_answer = other_answer.split('(')[0].strip()
+                if other_answer != correct_option and other_answer not in all_other_answers:
+                    all_other_answers.append(other_answer)
+            
+            # Seleccionar 3 opciones incorrectas diferentes
+            wrong_options = random.sample(all_other_answers, min(3, len(all_other_answers)))
+            all_options = [correct_option] + wrong_options
+            random.shuffle(all_options)
+            
+            btns_frame = tk.Frame(self.current_screen, bg=COLOR_FONDO)
+            btns_frame.pack(pady=20)
+            
+            def _make_answer_handler(selected_option):
+                def _handler():
+                    if selected_option.lower() == correct_option.lower():
+                        state['total_correct'] += 1
+                    else:
+                        self.errors_committed += 1
+                    state['current_question_index'] += 1
+                    self._save_progress()
+                    _show_next_question()
+                return _handler
+            
+            for option_text in all_options:
+                btn = RoundedButton(btns_frame, text=option_text, width=max(120, len(option_text) * 12), height=50,
+                                  color=BTN_EASY_COLOR, text_color="#000000",
+                                  command=_make_answer_handler(option_text))
+                btn.pack(side=tk.LEFT, padx=8)
+        
+        _show_formula()
+    
+    def _show_easy_level_without_formula(self, folder_name, chapter, level, difficulty, lesson_index, question_text, show_formula_section=False):
+        """Muestra nivel Fácil sin fórmula base (para métodos sin fórmula inherente)"""
+        BASE_PATH = os.path.dirname(os.path.abspath(__file__))
+        img_dir = os.path.join(BASE_PATH, 'imgs', folder_name)
+        
+        if not os.path.exists(img_dir):
+            messagebox.showerror("Error", f"Carpeta de imágenes no encontrada: {img_dir}")
+            self.show_difficulty_menu(chapter, level)
+            return
+        
+        style = DIFFICULTY_STYLES.get(difficulty.lower(), DIFFICULTY_STYLES['fácil'])
+        is_final = difficulty == "Prueba Final"
+        
+        # Obtener lista de preguntas (sin FormulaBase)
+        all_files = [f for f in os.listdir(img_dir) if f.lower().endswith(('.png', '.jpg', '.jpeg', '.gif', '.ppm'))]
+        questions_list = [f for f in all_files if not f.startswith('FormulaBase')]
+        random.shuffle(questions_list)
+        
+        state = {
+            'current_question_index': 0,
+            'questions_list': questions_list,
+            'total_correct': 0,
+            'formula_seen': True if not show_formula_section else False
+        }
+        
+        def _show_next_question():
+            for w in self.current_screen.winfo_children():
+                w.destroy()
+            
+            if state['current_question_index'] >= len(state['questions_list']):
+                messagebox.showinfo("¡Completado!", f"¡Felicidades! Has completado {level} en nivel Fácil.\nAcertaste: {state['total_correct']}/{len(state['questions_list'])}")
+                medal_str = f"{level} ({difficulty})"
+                if medal_str not in self.medals:
+                    self.medals.append(medal_str)
+                self._save_progress()
+                self.start_lesson(chapter, level, difficulty, lesson_index + 1)
+                return
+            
+            # Banner
+            banner_frame = tk.Frame(self.current_screen, bg=style['banner_color'], height=60)
+            banner_frame.pack(fill=tk.X, side=tk.TOP)
+            banner_frame.pack_propagate(False)
+            
+            chapter_num = chapter.split(':')[0].replace('Capítulo', '').strip()
+            banner_text = f"Capítulo {chapter_num} - {level} - {difficulty}"
+            tk.Label(banner_frame, text=banner_text, font=("Arial", scale_font(16), "bold"),
+                    bg=style['banner_color'], fg=style['banner_text_color']).pack(side=tk.LEFT, padx=20, pady=10)
+            
+            # Botón atrás
+            try:
+                if PIL_AVAILABLE:
+                    from PIL import Image as PILImage, ImageTk as PILImageTk
+                    pil_img = PILImage.open(os.path.join(BASE_PATH, 'imgs', 'red-go-back-arrow.png'))
+                    pil_img.thumbnail((40, 40), PILImage.Resampling.LANCZOS)
+                    back_arrow_img = PILImageTk.PhotoImage(pil_img)
+                else:
+                    back_arrow_img = tk.PhotoImage(file=os.path.join(BASE_PATH, 'imgs', 'red-go-back-arrow.png'))
+                    if back_arrow_img.width() > 40:
+                        factor = max(1, int(back_arrow_img.width() / 40))
+                        back_arrow_img = back_arrow_img.subsample(factor)
+                back_btn = tk.Label(banner_frame, image=back_arrow_img, bg=style['banner_color'], cursor="hand2")
+                back_btn.image = back_arrow_img
+                back_btn.pack(side=tk.RIGHT, padx=15, pady=10)
+                if is_final:
+                    back_btn.bind("<Button-1>", lambda e: self._confirm_exit_final(chapter, level))
+                else:
+                    back_btn.bind("<Button-1>", lambda e: self.show_difficulty_menu(chapter, level))
+            except Exception:
+                back_btn = tk.Label(banner_frame, text="◀", font=("Arial", scale_font(20), "bold"),
+                                   bg=style['banner_color'], fg="#FF5733", cursor="hand2")
+                back_btn.pack(side=tk.RIGHT, padx=20, pady=10)
+                if is_final:
+                    back_btn.bind("<Button-1>", lambda e: self._confirm_exit_final(chapter, level))
+                else:
+                    back_btn.bind("<Button-1>", lambda e: self.show_difficulty_menu(chapter, level))
+            
+            # Imagen actual
+            current_image_file = state['questions_list'][state['current_question_index']]
+            current_image_path = os.path.join(img_dir, current_image_file)
+            current_answer = os.path.splitext(current_image_file)[0]
+            
+            # Extraer solo la parte antes del paréntesis si existe
+            if '(' in current_answer and ')' in current_answer:
+                current_answer = current_answer.split('(')[0].strip()
+            
+            img_frame = tk.Frame(self.current_screen, bg=COLOR_FONDO)
+            img_frame.pack(pady=30)
+            
+            if os.path.exists(current_image_path):
+                try:
+                    display_img = tk.PhotoImage(file=current_image_path)
+                    if display_img.height() > 250:
+                        factor = max(1, int(display_img.height() / 250))
+                        display_img = display_img.subsample(factor)
+                    img_lbl = tk.Label(img_frame, image=display_img, bg=COLOR_FONDO)
+                    img_lbl.image = display_img
+                    img_lbl.pack()
+                except Exception:
+                    tk.Label(img_frame, text=f"No se pudo cargar: {current_image_file}", bg=COLOR_FONDO, fg="white").pack()
+            
+            tk.Label(self.current_screen, text=question_text, font=("Arial", scale_font(14), "bold"),
+                    bg=COLOR_FONDO, fg="white").pack(pady=15)
+            
+            # Generar opciones de respuesta (4 botones)
+            correct_option = current_answer
+            
+            # Crear opciones incorrectas realistas
+            all_other_answers = []
+            for img_file in state['questions_list']:
+                other_answer = os.path.splitext(img_file)[0]
+                if '(' in other_answer and ')' in other_answer:
+                    other_answer = other_answer.split('(')[0].strip()
+                if other_answer != correct_option and other_answer not in all_other_answers:
+                    all_other_answers.append(other_answer)
+            
+            # Seleccionar 3 opciones incorrectas diferentes
+            wrong_options = random.sample(all_other_answers, min(3, len(all_other_answers)))
+            all_options = [correct_option] + wrong_options
+            random.shuffle(all_options)
+            
+            btns_frame = tk.Frame(self.current_screen, bg=COLOR_FONDO)
+            btns_frame.pack(pady=20)
+            
+            def _make_answer_handler(selected_option):
+                def _handler():
+                    if selected_option.lower() == correct_option.lower():
+                        state['total_correct'] += 1
+                    else:
+                        self.errors_committed += 1
+                    state['current_question_index'] += 1
+                    self._save_progress()
+                    _show_next_question()
+                return _handler
+            
+            for option_text in all_options:
+                btn = RoundedButton(btns_frame, text=option_text, width=max(120, len(option_text) * 12), height=50,
+                                  color=BTN_EASY_COLOR, text_color="#000000",
+                                  command=_make_answer_handler(option_text))
+                btn.pack(side=tk.LEFT, padx=8)
+        
+        _show_next_question()
+    
+    def _show_easy_level_with_formula_in_questions(self, folder_name, chapter, level, difficulty, lesson_index, question_text):
+        """Muestra nivel Fácil donde la fórmula está en las preguntas (imágenes)"""
+        BASE_PATH = os.path.dirname(os.path.abspath(__file__))
+        img_dir = os.path.join(BASE_PATH, 'imgs', folder_name)
+        
+        if not os.path.exists(img_dir):
+            messagebox.showerror("Error", f"Carpeta de imágenes no encontrada: {img_dir}")
+            self.show_difficulty_menu(chapter, level)
+            return
+        
+        style = DIFFICULTY_STYLES.get(difficulty.lower(), DIFFICULTY_STYLES['fácil'])
+        is_final = difficulty == "Prueba Final"
+        
+        # Obtener lista de todas las preguntas/fórmulas
+        all_files = [f for f in os.listdir(img_dir) if f.lower().endswith(('.png', '.jpg', '.jpeg', '.gif', '.ppm'))]
+        questions_list = all_files
+        random.shuffle(questions_list)
+        
+        state = {
+            'current_question_index': 0,
+            'questions_list': questions_list,
+            'total_correct': 0
+        }
+        
+        def _show_next_question():
+            for w in self.current_screen.winfo_children():
+                w.destroy()
+            
+            if state['current_question_index'] >= len(state['questions_list']):
+                messagebox.showinfo("¡Completado!", f"¡Felicidades! Has completado {level} en nivel Fácil.\nAcertaste: {state['total_correct']}/{len(state['questions_list'])}")
+                medal_str = f"{level} ({difficulty})"
+                if medal_str not in self.medals:
+                    self.medals.append(medal_str)
+                self._save_progress()
+                self.start_lesson(chapter, level, difficulty, lesson_index + 1)
+                return
+            
+            # Banner
+            banner_frame = tk.Frame(self.current_screen, bg=style['banner_color'], height=60)
+            banner_frame.pack(fill=tk.X, side=tk.TOP)
+            banner_frame.pack_propagate(False)
+            
+            chapter_num = chapter.split(':')[0].replace('Capítulo', '').strip()
+            banner_text = f"Capítulo {chapter_num} - {level} - {difficulty}"
+            tk.Label(banner_frame, text=banner_text, font=("Arial", scale_font(16), "bold"),
+                    bg=style['banner_color'], fg=style['banner_text_color']).pack(side=tk.LEFT, padx=20, pady=10)
+            
+            # Botón atrás
+            try:
+                if PIL_AVAILABLE:
+                    from PIL import Image as PILImage, ImageTk as PILImageTk
+                    pil_img = PILImage.open(os.path.join(BASE_PATH, 'imgs', 'red-go-back-arrow.png'))
+                    pil_img.thumbnail((40, 40), PILImage.Resampling.LANCZOS)
+                    back_arrow_img = PILImageTk.PhotoImage(pil_img)
+                else:
+                    back_arrow_img = tk.PhotoImage(file=os.path.join(BASE_PATH, 'imgs', 'red-go-back-arrow.png'))
+                    if back_arrow_img.width() > 40:
+                        factor = max(1, int(back_arrow_img.width() / 40))
+                        back_arrow_img = back_arrow_img.subsample(factor)
+                back_btn = tk.Label(banner_frame, image=back_arrow_img, bg=style['banner_color'], cursor="hand2")
+                back_btn.image = back_arrow_img
+                back_btn.pack(side=tk.RIGHT, padx=15, pady=10)
+                if is_final:
+                    back_btn.bind("<Button-1>", lambda e: self._confirm_exit_final(chapter, level))
+                else:
+                    back_btn.bind("<Button-1>", lambda e: self.show_difficulty_menu(chapter, level))
+            except Exception:
+                back_btn = tk.Label(banner_frame, text="◀", font=("Arial", scale_font(20), "bold"),
+                                   bg=style['banner_color'], fg="#FF5733", cursor="hand2")
+                back_btn.pack(side=tk.RIGHT, padx=20, pady=10)
+                if is_final:
+                    back_btn.bind("<Button-1>", lambda e: self._confirm_exit_final(chapter, level))
+                else:
+                    back_btn.bind("<Button-1>", lambda e: self.show_difficulty_menu(chapter, level))
+            
+            # Imagen actual (fórmula en preguntas)
+            current_image_file = state['questions_list'][state['current_question_index']]
+            current_image_path = os.path.join(img_dir, current_image_file)
+            current_answer = os.path.splitext(current_image_file)[0]
+            
+            # Extraer solo la parte antes del paréntesis si existe
+            if '(' in current_answer and ')' in current_answer:
+                current_answer = current_answer.split('(')[0].strip()
+            
+            img_frame = tk.Frame(self.current_screen, bg=COLOR_FONDO)
+            img_frame.pack(pady=30)
+            
+            # Mostrar imagen grande (la fórmula)
+            if os.path.exists(current_image_path):
+                try:
+                    display_img = tk.PhotoImage(file=current_image_path)
+                    if display_img.height() > 300:
+                        factor = max(1, int(display_img.height() / 300))
+                        display_img = display_img.subsample(factor)
+                    img_lbl = tk.Label(img_frame, image=display_img, bg=COLOR_FONDO)
+                    img_lbl.image = display_img
+                    img_lbl.pack()
+                except Exception:
+                    tk.Label(img_frame, text=f"No se pudo cargar: {current_image_file}", bg=COLOR_FONDO, fg="white").pack()
+            
+            tk.Label(self.current_screen, text=question_text, font=("Arial", scale_font(14), "bold"),
+                    bg=COLOR_FONDO, fg="white").pack(pady=15)
+            
+            # Generar opciones (4 botones)
+            correct_option = current_answer
+            
+            # Crear opciones incorrectas realistas
+            all_other_answers = []
+            for img_file in state['questions_list']:
+                other_answer = os.path.splitext(img_file)[0]
+                if '(' in other_answer and ')' in other_answer:
+                    other_answer = other_answer.split('(')[0].strip()
+                if other_answer != correct_option and other_answer not in all_other_answers:
+                    all_other_answers.append(other_answer)
+            
+            # Seleccionar 3 opciones incorrectas diferentes
+            wrong_options = random.sample(all_other_answers, min(3, len(all_other_answers)))
+            all_options = [correct_option] + wrong_options
+            random.shuffle(all_options)
+            
+            btns_frame = tk.Frame(self.current_screen, bg=COLOR_FONDO)
+            btns_frame.pack(pady=20)
+            
+            def _make_answer_handler(selected_option):
+                def _handler():
+                    if selected_option.lower() == correct_option.lower():
+                        state['total_correct'] += 1
+                    else:
+                        self.errors_committed += 1
+                    state['current_question_index'] += 1
+                    self._save_progress()
+                    _show_next_question()
+                return _handler
+            
+            for option_text in all_options:
+                btn = RoundedButton(btns_frame, text=option_text, width=max(120, len(option_text) * 12), height=50,
+                                  color=BTN_EASY_COLOR, text_color="#000000",
+                                  command=_make_answer_handler(option_text))
+                btn.pack(side=tk.LEFT, padx=8)
+        
+        _show_next_question()
+    
+    def _show_easy_level_trivia(self, chapter, level, difficulty, lesson_index, trivia_questions):
+        """Muestra nivel Fácil como TRIVIA PURO (sin imágenes, solo preguntas de conceptos)
+        
+        trivia_questions: lista de dicts con estructura:
+        [
+            {'question': '¿Cuál es el margen de error (ε)?',
+             'options': ['0', '0.001', '0.01', '1'],
+             'answer': '0'},
+            ...
+        ]
+        """
+        style = DIFFICULTY_STYLES.get(difficulty.lower(), DIFFICULTY_STYLES['fácil'])
+        
+        state = {
+            'current_question_index': 0,
+            'total_correct': 0
+        }
+        
+        def _show_next_question():
+            for w in self.current_screen.winfo_children():
+                w.destroy()
+            
+            if state['current_question_index'] >= len(trivia_questions):
+                messagebox.showinfo("¡Completado!", f"¡Felicidades! Has completado {level} en nivel Fácil.\nAcertaste: {state['total_correct']}/{len(trivia_questions)}")
+                medal_str = f"{level} ({difficulty})"
+                if medal_str not in self.medals:
+                    self.medals.append(medal_str)
+                self._save_progress()
+                self.show_difficulty_menu(chapter, level)
+                return
+            
+            # Banner
+            banner_frame = tk.Frame(self.current_screen, bg=style['banner_color'], height=60)
+            banner_frame.pack(fill=tk.X, side=tk.TOP)
+            banner_frame.pack_propagate(False)
+            
+            chapter_num = chapter.split(':')[0].replace('Capítulo', '').strip()
+            banner_text = f"Capítulo {chapter_num} - {level} - {difficulty}"
+            tk.Label(banner_frame, text=banner_text, font=("Arial", scale_font(16), "bold"),
+                    bg=style['banner_color'], fg=style['banner_text_color']).pack(side=tk.LEFT, padx=20, pady=10)
+            
+            # Botón atrás
+            try:
+                if PIL_AVAILABLE:
+                    back_arrow_path = os.path.join(BASE_PATH, 'imgs', 'red-go-back-arrow.png')
+                    if os.path.exists(back_arrow_path):
+                        back_img = Image.open(back_arrow_path).resize((40, 40))
+                        back_photo = ImageTk.PhotoImage(back_img)
+                        back_btn = tk.Button(banner_frame, image=back_photo, bg=style['banner_color'],
+                                           activebackground=style['banner_color'], borderwidth=0,
+                                           command=lambda: [self.show_difficulty_menu(chapter, level)])
+                        back_btn.image = back_photo
+                        back_btn.pack(side=tk.RIGHT, padx=20, pady=10)
+                    else:
+                        back_btn = tk.Button(banner_frame, text="←", font=("Arial", 14),
+                                           bg=style['banner_color'], fg=style['banner_text_color'],
+                                           command=lambda: self.show_difficulty_menu(chapter, level))
+                        back_btn.pack(side=tk.RIGHT, padx=20, pady=10)
+            except Exception:
+                back_btn = tk.Button(banner_frame, text="←", font=("Arial", 14),
+                                   bg=style['banner_color'], fg=style['banner_text_color'],
+                                   command=lambda: self.show_difficulty_menu(chapter, level))
+                back_btn.pack(side=tk.RIGHT, padx=20, pady=10)
+            
+            # Contenido principal
+            current_q = trivia_questions[state['current_question_index']]
+            question_text = current_q['question']
+            options = current_q['options']
+            correct_answer = current_q['answer']
+            
+            # Marco para pregunta - usar color de fondo principal
+            question_frame = tk.Frame(self.current_screen, bg=COLOR_FONDO)
+            question_frame.pack(fill=tk.BOTH, expand=True, padx=20, pady=20)
+            
+            # Número de pregunta
+            q_num_text = f"Pregunta {state['current_question_index'] + 1}/{len(trivia_questions)}"
+            tk.Label(question_frame, text=q_num_text, font=("Arial", scale_font(12)),
+                    bg=COLOR_FONDO, fg="#FFA500").pack(pady=5)
+            
+            # Pregunta
+            question_label = tk.Label(question_frame, text=question_text, 
+                                    font=("Arial", scale_font(18), "bold"),
+                                    bg=COLOR_FONDO, fg="#FFFFFF", wraplength=600, justify=tk.CENTER)
+            question_label.pack(pady=30, expand=True)
+            
+            # Frame centrado para los botones
+            btns_center_frame = tk.Frame(question_frame, bg=COLOR_FONDO)
+            btns_center_frame.pack(fill=tk.BOTH, expand=True, padx=10, pady=20)
+            
+            # Frame para fila 1 (opciones 0 y 1) - centrado
+            btns_frame1 = tk.Frame(btns_center_frame, bg=COLOR_FONDO)
+            btns_frame1.pack(fill=tk.X, pady=10, anchor=tk.CENTER, expand=True)
+            
+            # Frame para fila 2 (opciones 2 y 3) - centrado
+            btns_frame2 = tk.Frame(btns_center_frame, bg=COLOR_FONDO)
+            btns_frame2.pack(fill=tk.X, pady=10, anchor=tk.CENTER, expand=True)
+            
+            def _make_answer_handler(option_text):
+                def _handler():
+                    if option_text == correct_answer:
+                        state['total_correct'] += 1
+                    else:
+                        self.errors_committed += 1
+                    state['current_question_index'] += 1
+                    self._save_progress()
+                    _show_next_question()
+                return _handler
+            
+            # Mostrar opciones como botones - adaptando ancho al texto, centrados
+            for i, option_text in enumerate(options):
+                btn = RoundedButton((btns_frame1 if i < 2 else btns_frame2), text=option_text, 
+                                  width=max(120, len(option_text) * 12), height=60,
+                                  color=BTN_EASY_COLOR, text_color="#000000",
+                                  command=_make_answer_handler(option_text))
+                btn.pack(side=tk.LEFT, padx=20, pady=5, expand=True)
+        
+        _show_next_question()
     
     def show_practica(self, lesson, chapter, level, difficulty, lesson_index):
         import random
@@ -1007,6 +1630,85 @@ class NumericalMethodsGame:
             return self._show_generic_problem(lesson['problem_id'], chapter, level, difficulty, lesson_index)
         if 'options' in lesson and 'answer' in lesson:
             return self._show_standard_question(lesson, chapter, level, difficulty, lesson_index)
+        
+        # Detectar métodos SIN IMÁGENES - TRIVIA PURO (Fácil)
+        trivia_methods = {
+            'Punto Fijo': [
+                {'question': '¿Cuál es el margen de error (ε) para el método Punto Fijo?',
+                 'options': ['0', '0.001', '0.5', '1'],
+                 'answer': '0'},
+                {'question': '¿Cuál es el primer paso en Punto Fijo?',
+                 'options': ['Despejar x', 'Graficar la función', 'Transformar f(x)=0 a x=g(x)', 'Calcular la derivada'],
+                 'answer': 'Transformar f(x)=0 a x=g(x)'},
+                {'question': '¿Cuándo converge el método Punto Fijo?',
+                 'options': ['Siempre', 'Si |g\'(x)| < 1 en el intervalo', 'Si la función es lineal', 'Nunca converge'],
+                 'answer': 'Si |g\'(x)| < 1 en el intervalo'},
+                {'question': '¿Qué es un punto fijo?',
+                 'options': ['Donde f(x)=0', 'Donde g(x)=x', 'Donde la derivada es cero', 'Donde la función es máxima'],
+                 'answer': 'Donde g(x)=x'}
+            ],
+            'Gauss-Seidel': [
+                {'question': '¿Cuál es el margen de error (ε) para Gauss-Seidel?',
+                 'options': ['0', '0.001', '0.01', '1'],
+                 'answer': '0.001'},
+                {'question': '¿Gauss-Seidel es un método:',
+                 'options': ['Directo', 'Iterativo', 'Exacto', 'Aproximado solo'],
+                 'answer': 'Iterativo'},
+                {'question': '¿Cuándo puede garantizarse convergencia en Gauss-Seidel?',
+                 'options': ['Siempre', 'Cuando la matriz es diagonalmente dominante', 'Nunca', 'Solo con números pares'],
+                 'answer': 'Cuando la matriz es diagonalmente dominante'},
+                {'question': '¿Cuál es la ventaja principal de Gauss-Seidel?',
+                 'options': ['Es más rápido que Jacobi', 'Requiere menos memoria', 'Converge siempre', 'Es más simple que Jacobi'],
+                 'answer': 'Es más rápido que Jacobi'}
+            ],
+            'Jacobi': [
+                {'question': '¿Cuál es el margen de error (ε) para el método Jacobi?',
+                 'options': ['0', '0.001', '0.01', '0.1'],
+                 'answer': '0.001'},
+                {'question': '¿Jacobi es un método:',
+                 'options': ['Directo', 'Iterativo', 'Exacto', 'Semiiterativo'],
+                 'answer': 'Iterativo'},
+                {'question': '¿Cuál es la principal diferencia entre Jacobi y Gauss-Seidel?',
+                 'options': ['Jacobi usa valores nuevos inmediatamente', 'Jacobi espera a tener todas las nuevas aproximaciones', 'Jacobi es más exacto', 'No hay diferencia'],
+                 'answer': 'Jacobi espera a tener todas las nuevas aproximaciones'},
+                {'question': '¿Cuándo converge el método Jacobi?',
+                 'options': ['Siempre', 'Cuando la matriz es diagonalmente dominante', 'Nunca', 'Solo para matrices simétricas'],
+                 'answer': 'Cuando la matriz es diagonalmente dominante'}
+            ],
+            'Gauss-Jordan': [
+                {'question': '¿Qué tipo de matriz obtenemos al final en Gauss-Jordan?',
+                 'options': ['Triangular superior', 'Triangular inferior', 'Matriz identidad', 'Matriz nula'],
+                 'answer': 'Matriz identidad'},
+                {'question': '¿Gauss-Jordan es una variación de:',
+                 'options': ['Lagrange', 'Eliminación Gaussiana', 'Jacobi', 'Newton-Raphson'],
+                 'answer': 'Eliminación Gaussiana'},
+                {'question': '¿Cuál es la ventaja de Gauss-Jordan sobre Eliminación Gaussiana?',
+                 'options': ['Es más rápido', 'No necesita sustitución hacia atrás', 'Es más simple', 'Siempre converge'],
+                 'answer': 'No necesita sustitución hacia atrás'},
+                {'question': '¿En Gauss-Jordan, qué se normaliza en cada paso?',
+                 'options': ['La columna', 'La fila pivote', 'Toda la matriz', 'Solo los ceros'],
+                 'answer': 'La fila pivote'}
+            ],
+            'Eliminación Gaussiana': [
+                {'question': '¿Qué tipo de matriz obtenemos al final en Eliminación Gaussiana?',
+                 'options': ['Matriz identidad', 'Triangular superior', 'Triangular inferior', 'Matriz diagonal'],
+                 'answer': 'Triangular superior'},
+                {'question': '¿Cuál es el último paso en Eliminación Gaussiana?',
+                 'options': ['Hacer ceros la columna', 'Sustitución hacia atrás', 'Normalizar la fila', 'Calcular el determinante'],
+                 'answer': 'Sustitución hacia atrás'},
+                {'question': '¿Cómo se resuelve el sistema después de la eliminación?',
+                 'options': ['Directamente', 'Por sustitución hacia adelante', 'Por sustitución hacia atrás', 'Por iteración'],
+                 'answer': 'Por sustitución hacia atrás'},
+                {'question': '¿En Eliminación Gaussiana, el elemento pivote debe ser:',
+                 'options': ['Cero', 'Negativo', 'Diferente de cero', 'Igual a 1'],
+                 'answer': 'Diferente de cero'}
+            ]
+        }
+        
+        # Si es nivel Fácil y es uno de estos métodos, mostrar trivia
+        if difficulty.lower() == 'fácil' and level in trivia_methods:
+            return self._show_easy_level_trivia(chapter, level, difficulty, lesson_index, trivia_methods[level])
+        
         try:
             is_lagrange_intermedio = 'Lagrange' in level and difficulty.lower() == 'intermedio'
         except Exception:
@@ -1030,150 +1732,61 @@ class NumericalMethodsGame:
         except Exception:
             is_lagrange = False
         if is_lagrange:
-            img_dir = os.path.join(BASE_PATH, 'imgs', 'Lagrange')
-            if not os.path.exists(img_dir):
-                tk.Label(self.current_screen, text="Carpeta de imágenes de Lagrange no encontrada.", bg=COLOR_FONDO, fg='white').pack(pady=20)
-                return
-            is_final = False  # Lagrange Fácil nunca es Final
-            lagrange_state = {
-                'current_question_index': 0,
-                'total_correct': 0,
-                'formula_seen': False,
-                'questions_list': []  # Lista de (imagen_file, answer_text)
+            return self._show_easy_level_with_images('Lagrange', chapter, level, difficulty, lesson_index,
+                                                      question_text="¿Qué falta en esta parte de la fórmula de Lagrange?",
+                                                      formula_text="¡Esta es la formula de lagrange, memorizala!")
+        
+        # Detectar si es nivel Fácil para cualquier otro método con imágenes
+        if difficulty.lower() == 'fácil':
+            # Convertir el nombre del nivel a nombre de carpeta en imgs/
+            # Los nombres en GAME_STRUCTURE pueden incluir descripciones adicionales en paréntesis
+            folder_mapping = {
+                'Lagrange': 'Lagrange',
+                'Lineal': 'Lineal',
+                'Newton con Diferencias Divididas': 'Newton_Diferencias_Divididas',
+                'Newton Hacia Adelante': 'Newton_Adelante',
+                'Newton Hacia Atrás': 'Newton_Atras',
+                'Bisección (Bisectriz)': 'Biseccion',
+                'Falsa Posición (Regula-Falsi)': 'Falsa_Posicion',
+                'Newton-Raphson': 'Newton_Raphson',
+                'Punto Fijo': 'Punto_Fijo',
+                'Secante': 'Secante',
+                'Método Gráfico': 'Metodo_Grafico',
+                'Gauss-Seidel': 'Gauss_Seidel',
+                'Jacobi': 'Jacobi',
+                'Montante': 'Montante',
+                'Gauss-Jordan': 'Gauss_Jordan',
+                'Eliminación Gaussiana': 'Eliminacion_Gaussiana',
+                'Regla Trapezoidal': 'Trapezoidal',
+                'Regla de 1/3 Simpson': 'Simpson_1_3',
+                'Regla de 3/8 Simpson': 'Simpson_3_8',
+                'Newton-Cotes Abiertas y Cerradas': 'Newton_Cotes_Abiertas_y_Cerradas',
+                'Línea Recta': 'Minimos_Cuadrados_Lineal',
+                'Cuadrática': 'Minimos_Cuadrados_Cuadratica',
+                'Cúbica': 'Minimos_Cuadrados_Cubica',
+                'Lineal con Función': 'Minimos_Cuadrados_Lineal_Funcion',
+                'Cuadrática con Función': 'Minimos_Cuadrados_Cuadratica_Funcion',
+                'Euler Modificado': 'Euler_Modificado',
+                'Runge-Kutta 2do Orden': 'RK2',
+                'Runge-Kutta 3er Orden': 'RK3',
+                'Runge-Kutta 4to Orden (1/3 Simpson)': 'RK4_Simpson_1_3',
+                'Runge-Kutta 4to Orden (3/8 Simpson)': 'RK4_Simpson_3_8',
+                'Runge-Kutta Orden Superior': 'RK_Orden_Superior',
             }
-            question_images = []
-            for f in os.listdir(img_dir):
-                name, ext = os.path.splitext(f)
-                if name.lower().startswith('formulaoriginal'):
-                    continue
-                if ext.lower() not in ('.png', '.jpg', '.gif', '.bmp'):
-                    continue
-                question_images.append(f)
-            random.shuffle(question_images)
-            lagrange_state['questions_list'] = question_images
-            fake_answers = LAGRANGE_FAKE_ANSWERS
-            def _show_formula():
-                for w in self.current_screen.winfo_children():
-                    w.destroy()
-                top_frame = tk.Frame(self.current_screen, bg=COLOR_FONDO)
-                top_frame.pack(fill=tk.BOTH, expand=False, pady=10)
-                formula_path = None
-                for f in os.listdir(img_dir):
-                    if f.lower().startswith('formulaoriginal'):
-                        formula_path = os.path.join(img_dir, f)
-                        break
-                if formula_path and os.path.exists(formula_path):
-                    try:
-                        pimg = tk.PhotoImage(file=formula_path)
-                        if pimg.width() > 1200:
-                            factor = max(1, int(pimg.width() / 1200))
-                            pimg = pimg.subsample(factor)
-                        lbl_img = tk.Label(top_frame, image=pimg, bg=COLOR_FONDO)
-                        lbl_img.image = pimg
-                        lbl_img.pack(pady=10)
-                    except Exception:
-                        pass
-                tk.Label(top_frame, text="¡Esta es la formula de lagrange, memorizala!", font=("Arial", scale_font(16), "bold"), bg=COLOR_FONDO, fg="white").pack(pady=(6,12))
-                def _continue_to_questions():
-                    lagrange_state['formula_seen'] = True
-                    _show_next_question()
-                RoundedButton(self.current_screen, text="OK", width=120, height=48, color="#20D0C0", text_color="#00303a", command=_continue_to_questions).pack(pady=12)
-            def _show_next_question():
-                for w in self.current_screen.winfo_children():
-                    w.destroy()
-                if lagrange_state['current_question_index'] >= len(lagrange_state['questions_list']):
-                    messagebox.showinfo("¡Completado!", f"¡Felicidades! Has completado el nivel Lagrange Fácil.")
-                    medal_str = f"{level} ({difficulty})"
-                    if medal_str not in self.medals:
-                        self.medals.append(medal_str)
-                    self._save_progress()
-                    self.start_lesson(chapter, level, difficulty, lesson_index + 1)
-                    return
-                banner_frame = tk.Frame(self.current_screen, bg="#00e676", height=60)
-                banner_frame.pack(fill=tk.X, side=tk.TOP)
-                banner_frame.pack_propagate(False)
-                banner_text = f"Capítulo 1 Nivel 1. Lagrange. {difficulty}"
-                tk.Label(banner_frame, text=banner_text, font=("Arial", scale_font(16), "bold"),
-                        bg="#00e676", fg="#FFFFFF").pack(side=tk.LEFT, padx=20, pady=10)
-                try:
-                    if PIL_AVAILABLE:
-                        from PIL import Image, ImageTk as PILImageTk
-                        pil_img = Image.open(os.path.join(BASE_PATH, 'imgs', 'red-go-back-arrow.png'))
-                        pil_img.thumbnail((40, 40), Image.Resampling.LANCZOS)
-                        back_arrow_img = PILImageTk.PhotoImage(pil_img)
-                    else:
-                        back_arrow_img = tk.PhotoImage(file=os.path.join(BASE_PATH, 'imgs', 'red-go-back-arrow.png'))
-                        if back_arrow_img.width() > 40:
-                            factor = max(1, int(back_arrow_img.width() / 40))
-                            back_arrow_img = back_arrow_img.subsample(factor)
-                    back_btn = tk.Label(banner_frame, image=back_arrow_img, bg="#00e676", cursor="hand2")
-                    back_btn.image = back_arrow_img  # Keep reference
-                    back_btn.pack(side=tk.RIGHT, padx=15, pady=10)
-                    if is_final:
-                        back_btn.bind("<Button-1>", lambda e: self._confirm_exit_final(chapter, level))
-                    else:
-                        back_btn.bind("<Button-1>", lambda e: self.show_difficulty_menu(chapter, level))
-                except Exception:
-                    back_btn = tk.Label(banner_frame, text="◀", font=("Arial", scale_font(20), "bold"),
-                                       bg="#00e676", fg="#FF5733", cursor="hand2")
-                    back_btn.pack(side=tk.RIGHT, padx=20, pady=10)
-                    if is_final:
-                        back_btn.bind("<Button-1>", lambda e: self._confirm_exit_final(chapter, level))
-                    else:
-                        back_btn.bind("<Button-1>", lambda e: self.show_difficulty_menu(chapter, level))
-                current_image_file = lagrange_state['questions_list'][lagrange_state['current_question_index']]
-                current_image_path = os.path.join(img_dir, current_image_file)
-                current_answer = os.path.splitext(current_image_file)[0]
-                img_frame = tk.Frame(self.current_screen, bg=COLOR_FONDO)
-                img_frame.pack(pady=30)
-                if os.path.exists(current_image_path):
-                    try:
-                        display_img = tk.PhotoImage(file=current_image_path)
-                        if display_img.height() > 250:
-                            factor = max(1, int(display_img.height() / 250))
-                            display_img = display_img.subsample(factor)
-                        img_lbl = tk.Label(img_frame, image=display_img, bg=COLOR_FONDO)
-                        img_lbl.image = display_img
-                        img_lbl.pack()
-                    except Exception:
-                        tk.Label(img_frame, text=f"No se pudo cargar: {current_image_file}", bg=COLOR_FONDO, fg="white").pack()
-                tk.Label(self.current_screen, text="¿Qué falta en esta parte de la fórmula de Lagrange?", font=("Arial", scale_font(14), "bold"),
-                        bg=COLOR_FONDO, fg="white").pack(pady=15)
-                correct_option = current_answer
-                if current_answer in fake_answers:
-                    fake_opts = fake_answers[current_answer]
-                    wrong_options = random.sample(fake_opts, min(3, len(fake_opts)))
-                else:
-                    wrong_options = [f"Opción {i}" for i in range(1, 4)]
-                all_options = [correct_option] + wrong_options
-                random.shuffle(all_options)
-                btns_frame = tk.Frame(self.current_screen, bg=COLOR_FONDO)
-                btns_frame.pack(pady=20)
-                def _make_answer_handler(selected_option):
-                    def _handler():
-                        if selected_option.lower() == correct_option.lower():
-                            messagebox.showinfo("¡Correcto!", f"Correcto: {correct_option}")
-                            lagrange_state['total_correct'] += 1
-                        else:
-                            messagebox.showerror("Incorrecto", f"Respuesta incorrecta. La correcta era: {correct_option}")
-                            self.errors_committed += 1
-                        lagrange_state['current_question_index'] += 1
-                        self._save_progress()
-                        _show_next_question()
-                    return _handler
-                for option_text in all_options:
-                    btn = RoundedButton(btns_frame, text=option_text, width=120, height=50,
-                                      color=BTN_EASY_COLOR, text_color="#000000",
-                                      command=_make_answer_handler(option_text))
-                    btn.pack(side=tk.LEFT, padx=8)
-            _show_formula()
-            return
+            
+            folder_name = folder_mapping.get(level)
+            if folder_name:
+                img_path = os.path.join(BASE_PATH, 'imgs', folder_name)
+                if os.path.exists(img_path):
+                    return self._show_easy_level_with_images(folder_name, chapter, level, difficulty, lesson_index,
+                                                              question_text=f"¿Qué falta en esta fórmula de {level}?",
+                                                              formula_text=f"¡Memoriza esta fórmula de {level}!")
+
     
     def check_answer(self, user_answer, lesson, chapter, level, difficulty, lesson_index):
         correct_answer = lesson['answer']
         lesson_type = lesson['type']
         if user_answer == correct_answer:
-            messagebox.showinfo("¡Correcto!", "¡Muy bien!")
             self.start_lesson(chapter, level, difficulty, lesson_index + 1)
         else:
             self.errors_committed += 1

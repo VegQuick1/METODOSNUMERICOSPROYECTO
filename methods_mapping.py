@@ -107,6 +107,11 @@ METHODS_MAPPING = {
             "Avanzado": {"function": "show_rk4", "banner_color": "#FF6347"},
             "Prueba Final": {"function": "show_rk4", "banner_color": "#FF6347"},
         },
+        "Nivel 6: Runge-Kutta Orden Superior": {
+            "Intermedio": {"function": "show_rk_orden_superior", "banner_color": "#DC143C"},
+            "Avanzado": {"function": "show_rk_orden_superior", "banner_color": "#DC143C"},
+            "Prueba Final": {"function": "show_rk_orden_superior", "banner_color": "#DC143C"},
+        },
     },
     "Capítulo 5: Integración Numérica": {
         "Nivel 1: Regla Trapezoidal": {

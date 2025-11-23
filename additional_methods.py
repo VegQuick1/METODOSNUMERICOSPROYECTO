@@ -160,32 +160,132 @@ def _show_generic_interpolation_exercise(chapter, level, difficulty, lesson_inde
                           command=_make_handler(opt_text))
         btn.pack(side=tk.LEFT, padx=10)
 def show_gauss_seidel(chapter, level, difficulty, lesson_index):
+    """Gauss-Seidel: Sin fórmula base, solo trivia con ε=0.001"""
+    if difficulty.lower() == 'fácil':
+        trivia_questions = [
+            {'question': '¿Cuál es el margen de error (ε) para Gauss-Seidel?',
+             'options': ['0', '0.001', '0.01', '1'],
+             'answer': '0.001'},
+            {'question': '¿Gauss-Seidel es un método:',
+             'options': ['Directo', 'Iterativo', 'Exacto', 'Aproximado solo'],
+             'answer': 'Iterativo'},
+            {'question': '¿Cuándo puede garantizarse convergencia en Gauss-Seidel?',
+             'options': ['Siempre', 'Cuando la matriz es diagonalmente dominante', 'Nunca', 'Solo con números pares'],
+             'answer': 'Cuando la matriz es diagonalmente dominante'},
+            {'question': '¿Cuál es la ventaja principal de Gauss-Seidel?',
+             'options': ['Es más rápido que Jacobi', 'Requiere menos memoria', 'Converge siempre', 'Es más simple que Jacobi'],
+             'answer': 'Es más rápido que Jacobi'}
+        ]
+        return app_ref._show_easy_level_trivia(chapter, level, difficulty, lesson_index, trivia_questions)
     messagebox.showinfo("Próximamente", "Gauss-Seidel será implementado próximamente")
     app_ref.show_difficulty_menu(chapter, level)
+
 def show_jacobi(chapter, level, difficulty, lesson_index):
+    """Jacobi: Sin fórmula base, solo trivia con ε=0.001"""
+    if difficulty.lower() == 'fácil':
+        trivia_questions = [
+            {'question': '¿Cuál es el margen de error (ε) para el método Jacobi?',
+             'options': ['0', '0.001', '0.01', '0.1'],
+             'answer': '0.001'},
+            {'question': '¿Jacobi es un método:',
+             'options': ['Directo', 'Iterativo', 'Exacto', 'Semiiterativo'],
+             'answer': 'Iterativo'},
+            {'question': '¿Cuál es la principal diferencia entre Jacobi y Gauss-Seidel?',
+             'options': ['Jacobi usa valores nuevos inmediatamente', 'Jacobi espera a tener todas las nuevas aproximaciones', 'Jacobi es más exacto', 'No hay diferencia'],
+             'answer': 'Jacobi espera a tener todas las nuevas aproximaciones'},
+            {'question': '¿Cuándo converge el método Jacobi?',
+             'options': ['Siempre', 'Cuando la matriz es diagonalmente dominante', 'Nunca', 'Solo para matrices simétricas'],
+             'answer': 'Cuando la matriz es diagonalmente dominante'}
+        ]
+        return app_ref._show_easy_level_trivia(chapter, level, difficulty, lesson_index, trivia_questions)
     messagebox.showinfo("Próximamente", "Jacobi será implementado próximamente")
     app_ref.show_difficulty_menu(chapter, level)
+
 def show_montante(chapter, level, difficulty, lesson_index):
     messagebox.showinfo("Próximamente", "Montante será implementado próximamente")
     app_ref.show_difficulty_menu(chapter, level)
+
 def show_gauss_jordan(chapter, level, difficulty, lesson_index):
+    """Gauss-Jordan: Sin fórmula base, solo trivia del método"""
+    if difficulty.lower() == 'fácil':
+        trivia_questions = [
+            {'question': '¿Qué tipo de matriz obtenemos al final en Gauss-Jordan?',
+             'options': ['Triangular superior', 'Triangular inferior', 'Matriz identidad', 'Matriz nula'],
+             'answer': 'Matriz identidad'},
+            {'question': '¿Gauss-Jordan es una variación de:',
+             'options': ['Lagrange', 'Eliminación Gaussiana', 'Jacobi', 'Newton-Raphson'],
+             'answer': 'Eliminación Gaussiana'},
+            {'question': '¿Cuál es la ventaja de Gauss-Jordan sobre Eliminación Gaussiana?',
+             'options': ['Es más rápido', 'No necesita sustitución hacia atrás', 'Es más simple', 'Siempre converge'],
+             'answer': 'No necesita sustitución hacia atrás'},
+            {'question': '¿En Gauss-Jordan, qué se normaliza en cada paso?',
+             'options': ['La columna', 'La fila pivote', 'Toda la matriz', 'Solo los ceros'],
+             'answer': 'La fila pivote'}
+        ]
+        return app_ref._show_easy_level_trivia(chapter, level, difficulty, lesson_index, trivia_questions)
     messagebox.showinfo("Próximamente", "Gauss-Jordán será implementado próximamente")
     app_ref.show_difficulty_menu(chapter, level)
+
 def show_eliminacion_gaussiana(chapter, level, difficulty, lesson_index):
+    """Eliminación Gaussiana: Sin fórmula base, solo trivia del método"""
+    if difficulty.lower() == 'fácil':
+        trivia_questions = [
+            {'question': '¿Qué tipo de matriz obtenemos al final en Eliminación Gaussiana?',
+             'options': ['Matriz identidad', 'Triangular superior', 'Triangular inferior', 'Matriz diagonal'],
+             'answer': 'Triangular superior'},
+            {'question': '¿Cuál es el último paso en Eliminación Gaussiana?',
+             'options': ['Hacer ceros la columna', 'Sustitución hacia atrás', 'Normalizar la fila', 'Calcular el determinante'],
+             'answer': 'Sustitución hacia atrás'},
+            {'question': '¿Cómo se resuelve el sistema después de la eliminación?',
+             'options': ['Directamente', 'Por sustitución hacia adelante', 'Por sustitución hacia atrás', 'Por iteración'],
+             'answer': 'Por sustitución hacia atrás'},
+            {'question': '¿En Eliminación Gaussiana, el elemento pivote debe ser:',
+             'options': ['Cero', 'Negativo', 'Diferente de cero', 'Igual a 1'],
+             'answer': 'Diferente de cero'}
+        ]
+        return app_ref._show_easy_level_trivia(chapter, level, difficulty, lesson_index, trivia_questions)
     messagebox.showinfo("Próximamente", "Eliminación Gaussiana será implementado próximamente")
     app_ref.show_difficulty_menu(chapter, level)
+
 def show_bisection(chapter, level, difficulty, lesson_index):
+    """Bisección: Fórmula en preguntas, no en FormulaBase"""
+    if difficulty.lower() == 'fácil':
+        return app_ref._show_easy_level_with_formula_in_questions(
+            'Biseccion', chapter, level, difficulty, lesson_index,
+            question_text="¿Cuál es el siguiente punto medio?"
+        )
     messagebox.showinfo("Próximamente", "Bisección será implementado próximamente")
     app_ref.show_difficulty_menu(chapter, level)
+
 def show_falsa_posicion(chapter, level, difficulty, lesson_index):
     messagebox.showinfo("Próximamente", "Falsa Posición será implementado próximamente")
     app_ref.show_difficulty_menu(chapter, level)
+
 def show_newton_raphson(chapter, level, difficulty, lesson_index):
     messagebox.showinfo("Próximamente", "Newton-Raphson será implementado próximamente")
     app_ref.show_difficulty_menu(chapter, level)
+
 def show_punto_fijo(chapter, level, difficulty, lesson_index):
+    """Punto Fijo: Sin fórmula base, solo trivia con ε=0"""
+    if difficulty.lower() == 'fácil':
+        trivia_questions = [
+            {'question': '¿Cuál es el margen de error (ε) para el método Punto Fijo?',
+             'options': ['0', '0.001', '0.5', '1'],
+             'answer': '0'},
+            {'question': '¿Cuál es el primer paso en Punto Fijo?',
+             'options': ['Despejar x', 'Graficar la función', 'Transformar f(x)=0 a x=g(x)', 'Calcular la derivada'],
+             'answer': 'Transformar f(x)=0 a x=g(x)'},
+            {'question': '¿Cuándo converge el método Punto Fijo?',
+             'options': ['Siempre', 'Si |g\'(x)| < 1 en el intervalo', 'Si la función es lineal', 'Nunca converge'],
+             'answer': 'Si |g\'(x)| < 1 en el intervalo'},
+            {'question': '¿Qué es un punto fijo?',
+             'options': ['Donde f(x)=0', 'Donde g(x)=x', 'Donde la derivada es cero', 'Donde la función es máxima'],
+             'answer': 'Donde g(x)=x'}
+        ]
+        return app_ref._show_easy_level_trivia(chapter, level, difficulty, lesson_index, trivia_questions)
     messagebox.showinfo("Próximamente", "Punto Fijo será implementado próximamente")
     app_ref.show_difficulty_menu(chapter, level)
+
 def show_secante(chapter, level, difficulty, lesson_index):
     messagebox.showinfo("Próximamente", "Secante será implementado próximamente")
     app_ref.show_difficulty_menu(chapter, level)
@@ -203,6 +303,14 @@ def show_rk3(chapter, level, difficulty, lesson_index):
     app_ref.show_difficulty_menu(chapter, level)
 def show_rk4(chapter, level, difficulty, lesson_index):
     messagebox.showinfo("Próximamente", "RK4 será implementado próximamente")
+    app_ref.show_difficulty_menu(chapter, level)
+def show_rk_orden_superior(chapter, level, difficulty, lesson_index):
+    if difficulty.lower() == 'fácil':
+        return app_ref._show_easy_level_with_formula_in_questions(
+            'RK_Orden_Superior', chapter, level, difficulty, lesson_index,
+            question_text="¿Cuál es el siguiente paso en el método Runge-Kutta de Orden Superior?"
+        )
+    messagebox.showinfo("Próximamente", "Runge-Kutta Orden Superior será implementado próximamente")
     app_ref.show_difficulty_menu(chapter, level)
 def show_trapezoidal(chapter, level, difficulty, lesson_index):
     messagebox.showinfo("Próximamente", "Trapezoidal será implementado próximamente")

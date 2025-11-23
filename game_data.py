@@ -27,7 +27,7 @@ GAME_STRUCTURE = {
             },
             "Lineal": {
                 "Fácil": [
-                    {'type': 'practica', 'problem_id': 'linear_facil_1'}
+                    {'type': 'practica'}
                 ],
                 "Intermedio": [
                     {'type': 'practica', 'problem_id': 'linear_intermedio_1'}
@@ -41,7 +41,7 @@ GAME_STRUCTURE = {
             },
             "Newton con Diferencias Divididas": {
                 "Fácil": [
-                    {'type': 'practica', 'problem_id': 'newton_div_diff_facil_1'}
+                    {'type': 'practica'}
                 ],
                 "Intermedio": [
                     {'type': 'practica', 'problem_id': 'newton_div_diff_intermedio_1'}
@@ -55,7 +55,7 @@ GAME_STRUCTURE = {
             },
             "Newton Hacia Adelante": {
                 "Fácil": [
-                    {'type': 'practica', 'problem_id': 'newton_forward_facil_1'}
+                    {'type': 'practica'}
                 ],
                 "Intermedio": [
                     {'type': 'practica', 'problem_id': 'newton_forward_intermedio_1'}
@@ -69,7 +69,7 @@ GAME_STRUCTURE = {
             },
             "Newton Hacia Atrás": {
                 "Fácil": [
-                    {'type': 'practica', 'problem_id': 'newton_backward_facil_1'}
+                    {'type': 'practica'}
                 ],
                 "Intermedio": [
                     {'type': 'practica', 'problem_id': 'newton_backward_intermedio_1'}
@@ -87,7 +87,7 @@ GAME_STRUCTURE = {
         "levels": {
             "Bisección (Bisectriz)": {
                 "Fácil": [
-                    {'type': 'practica', 'problem_id': 'bisection_facil_1'}
+                    {'type': 'practica'}
                 ],
                 "Intermedio": [
                     {'type': 'practica', 'problem_id': 'bisection_intermedio_1'}
@@ -101,7 +101,7 @@ GAME_STRUCTURE = {
             },
             "Falsa Posición (Regula-Falsi)": {
                 "Fácil": [
-                    {'type': 'practica', 'problem_id': 'false_position_facil_1'}
+                    {'type': 'practica'}
                 ],
                 "Intermedio": [
                     {'type': 'practica', 'problem_id': 'false_position_intermedio_1'}
@@ -115,7 +115,7 @@ GAME_STRUCTURE = {
             },
             "Newton-Raphson": {
                 "Fácil": [
-                    {'type': 'practica', 'problem_id': 'newton_raphson_facil_1'}
+                    {'type': 'practica'}
                 ],
                 "Intermedio": [
                     {'type': 'practica', 'problem_id': 'newton_raphson_intermedio_1'}
@@ -129,7 +129,7 @@ GAME_STRUCTURE = {
             },
             "Punto Fijo": {
                 "Fácil": [
-                    {'type': 'practica', 'problem_id': 'fixed_point_facil_1'}
+                    {'type': 'practica'}
                 ],
                 "Intermedio": [
                     {'type': 'practica', 'problem_id': 'fixed_point_intermedio_1'}
@@ -143,7 +143,7 @@ GAME_STRUCTURE = {
             },
             "Secante": {
                 "Fácil": [
-                    {'type': 'practica', 'problem_id': 'secant_facil_1'}
+                    {'type': 'practica'}
                 ],
                 "Intermedio": [
                     {'type': 'practica', 'problem_id': 'secant_intermedio_1'}
@@ -157,7 +157,7 @@ GAME_STRUCTURE = {
             },
             "Método Gráfico": {
                 "Fácil": [
-                    {'type': 'practica', 'problem_id': 'graphical_facil_1'}
+                    {'type': 'practica'}
                 ],
                 "Intermedio": [
                     {'type': 'practica', 'problem_id': 'graphical_intermedio_1'}
@@ -175,7 +175,7 @@ GAME_STRUCTURE = {
         "levels": {
             "Gauss-Seidel": {
                 "Fácil": [
-                    {'type': 'practica', 'problem_id': 'gauss_seidel_facil_1'}
+                    {'type': 'practica'}
                 ],
                 "Intermedio": [
                     {'type': 'practica', 'problem_id': 'gauss_seidel_intermedio_1'}
@@ -189,7 +189,7 @@ GAME_STRUCTURE = {
             },
             "Jacobi": {
                 "Fácil": [
-                    {'type': 'practica', 'problem_id': 'jacobi_facil_1'}
+                    {'type': 'practica'}
                 ],
                 "Intermedio": [
                     {'type': 'practica', 'problem_id': 'jacobi_intermedio_1'}
@@ -203,7 +203,7 @@ GAME_STRUCTURE = {
             },
             "Montante": {
                 "Fácil": [
-                    {'type': 'practica', 'problem_id': 'montante_facil_1'}
+                    {'type': 'practica'}
                 ],
                 "Intermedio": [
                     {'type': 'practica', 'problem_id': 'montante_intermedio_1'}
@@ -217,7 +217,7 @@ GAME_STRUCTURE = {
             },
             "Gauss-Jordan": {
                 "Fácil": [
-                    {'type': 'practica', 'problem_id': 'gauss_jordan_facil_1'}
+                    {'type': 'practica'}
                 ],
                 "Intermedio": [
                     {'type': 'practica', 'problem_id': 'gauss_jordan_intermedio_1'}
@@ -231,7 +231,7 @@ GAME_STRUCTURE = {
             },
             "Eliminación Gaussiana": {
                 "Fácil": [
-                    {'type': 'practica', 'problem_id': 'gaussian_elim_facil_1'}
+                    {'type': 'practica'}
                 ],
                 "Intermedio": [
                     {'type': 'practica', 'problem_id': 'gaussian_elim_intermedio_1'}
@@ -249,7 +249,7 @@ GAME_STRUCTURE = {
         "levels": {
             "Línea Recta": {
                 "Fácil": [
-                    {'type': 'practica', 'problem_id': 'least_sq_linear_facil_1'}
+                    {'type': 'practica'}
                 ],
                 "Intermedio": [
                     {'type': 'practica', 'problem_id': 'least_sq_linear_intermedio_1'}
@@ -263,7 +263,7 @@ GAME_STRUCTURE = {
             },
             "Cuadrática": {
                 "Fácil": [
-                    {'type': 'practica', 'problem_id': 'least_sq_quadratic_facil_1'}
+                    {'type': 'practica'}
                 ],
                 "Intermedio": [
                     {'type': 'practica', 'problem_id': 'least_sq_quadratic_intermedio_1'}
@@ -277,7 +277,7 @@ GAME_STRUCTURE = {
             },
             "Cúbica": {
                 "Fácil": [
-                    {'type': 'practica', 'problem_id': 'least_sq_cubic_facil_1'}
+                    {'type': 'practica'}
                 ],
                 "Intermedio": [
                     {'type': 'practica', 'problem_id': 'least_sq_cubic_intermedio_1'}
@@ -291,7 +291,7 @@ GAME_STRUCTURE = {
             },
             "Lineal con Función": {
                 "Fácil": [
-                    {'type': 'practica', 'problem_id': 'least_sq_linear_func_facil_1'}
+                    {'type': 'practica'}
                 ],
                 "Intermedio": [
                     {'type': 'practica', 'problem_id': 'least_sq_linear_func_intermedio_1'}
@@ -305,7 +305,7 @@ GAME_STRUCTURE = {
             },
             "Cuadrática con Función": {
                 "Fácil": [
-                    {'type': 'practica', 'problem_id': 'least_sq_quadratic_func_facil_1'}
+                    {'type': 'practica'}
                 ],
                 "Intermedio": [
                     {'type': 'practica', 'problem_id': 'least_sq_quadratic_func_intermedio_1'}
@@ -323,7 +323,7 @@ GAME_STRUCTURE = {
         "levels": {
             "Regla Trapezoidal": {
                 "Fácil": [
-                    {'type': 'practica', 'problem_id': 'trapezoidal_facil_1'}
+                    {'type': 'practica'}
                 ],
                 "Intermedio": [
                     {'type': 'practica', 'problem_id': 'trapezoidal_intermedio_1'}
@@ -337,7 +337,7 @@ GAME_STRUCTURE = {
             },
             "Regla de 1/3 Simpson": {
                 "Fácil": [
-                    {'type': 'practica', 'problem_id': 'simpson_1_3_facil_1'}
+                    {'type': 'practica'}
                 ],
                 "Intermedio": [
                     {'type': 'practica', 'problem_id': 'simpson_1_3_intermedio_1'}
@@ -351,7 +351,7 @@ GAME_STRUCTURE = {
             },
             "Regla de 3/8 Simpson": {
                 "Fácil": [
-                    {'type': 'practica', 'problem_id': 'simpson_3_8_facil_1'}
+                    {'type': 'practica'}
                 ],
                 "Intermedio": [
                     {'type': 'practica', 'problem_id': 'simpson_3_8_intermedio_1'}
@@ -365,7 +365,7 @@ GAME_STRUCTURE = {
             },
             "Newton-Cotes Abiertas y Cerradas": {
                 "Fácil": [
-                    {'type': 'practica', 'problem_id': 'cotes_facil_1'}
+                    {'type': 'practica'}
                 ],
                 "Intermedio": [
                     {'type': 'practica', 'problem_id': 'cotes_intermedio_1'}
@@ -383,7 +383,7 @@ GAME_STRUCTURE = {
         "levels": {
             "Euler Modificado": {
                 "Fácil": [
-                    {'type': 'practica', 'problem_id': 'euler_modified_facil_1'}
+                    {'type': 'practica'}
                 ],
                 "Intermedio": [
                     {'type': 'practica', 'problem_id': 'euler_modified_intermedio_1'}
@@ -397,7 +397,7 @@ GAME_STRUCTURE = {
             },
             "Runge-Kutta 2do Orden": {
                 "Fácil": [
-                    {'type': 'practica', 'problem_id': 'rk2_facil_1'}
+                    {'type': 'practica'}
                 ],
                 "Intermedio": [
                     {'type': 'practica', 'problem_id': 'rk2_intermedio_1'}
@@ -411,7 +411,7 @@ GAME_STRUCTURE = {
             },
             "Runge-Kutta 3er Orden": {
                 "Fácil": [
-                    {'type': 'practica', 'problem_id': 'rk3_facil_1'}
+                    {'type': 'practica'}
                 ],
                 "Intermedio": [
                     {'type': 'practica', 'problem_id': 'rk3_intermedio_1'}
@@ -425,7 +425,7 @@ GAME_STRUCTURE = {
             },
             "Runge-Kutta 4to Orden (1/3 Simpson)": {
                 "Fácil": [
-                    {'type': 'practica', 'problem_id': 'rk4_simpson13_facil_1'}
+                    {'type': 'practica'}
                 ],
                 "Intermedio": [
                     {'type': 'practica', 'problem_id': 'rk4_simpson13_intermedio_1'}
@@ -439,7 +439,7 @@ GAME_STRUCTURE = {
             },
             "Runge-Kutta 4to Orden (3/8 Simpson)": {
                 "Fácil": [
-                    {'type': 'practica', 'problem_id': 'rk4_simpson38_facil_1'}
+                    {'type': 'practica'}
                 ],
                 "Intermedio": [
                     {'type': 'practica', 'problem_id': 'rk4_simpson38_intermedio_1'}
@@ -453,7 +453,7 @@ GAME_STRUCTURE = {
             },
             "Runge-Kutta Orden Superior": {
                 "Fácil": [
-                    {'type': 'practica', 'problem_id': 'rk_higher_order_facil_1'}
+                    {'type': 'practica'}
                 ],
                 "Intermedio": [
                     {'type': 'practica', 'problem_id': 'rk_higher_order_intermedio_1'}
