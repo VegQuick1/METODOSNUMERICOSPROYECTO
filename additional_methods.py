@@ -71,12 +71,18 @@ def _show_generic_interpolation_exercise(chapter, level, difficulty, lesson_inde
         back_btn = tk.Label(banner_frame, image=back_arrow_img, bg=banner_color, cursor="hand2")
         back_btn.image = back_arrow_img
         back_btn.pack(side=tk.RIGHT, padx=20, pady=15)
-        back_btn.bind("<Button-1>", lambda e: app_ref.show_difficulty_menu(chapter, level))
+        if is_final:
+            back_btn.bind("<Button-1>", lambda e: app_ref._confirm_exit_final(chapter, level))
+        else:
+            back_btn.bind("<Button-1>", lambda e: app_ref.show_difficulty_menu(chapter, level))
     except Exception:
         back_btn = tk.Label(banner_frame, text="◀", font=("Arial", scale_font(20), "bold"),
                            bg=banner_color, fg="#FFFFFF", cursor="hand2")
         back_btn.pack(side=tk.RIGHT, padx=20, pady=15)
-        back_btn.bind("<Button-1>", lambda e: app_ref.show_difficulty_menu(chapter, level))
+        if is_final:
+            back_btn.bind("<Button-1>", lambda e: app_ref._confirm_exit_final(chapter, level))
+        else:
+            back_btn.bind("<Button-1>", lambda e: app_ref.show_difficulty_menu(chapter, level))
     main_frame = tk.Frame(app_ref.current_screen, bg=COLOR_FONDO)
     main_frame.pack(fill=tk.BOTH, expand=True, padx=20, pady=20)
     tk.Label(main_frame, text="Obtener g(x)", font=("Arial", scale_font(18), "bold"),

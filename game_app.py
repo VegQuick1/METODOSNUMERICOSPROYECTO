@@ -819,12 +819,18 @@ class NumericalMethodsGame:
             back_btn = tk.Label(banner_frame, image=back_arrow_img, bg=banner_color, cursor="hand2")
             back_btn.image = back_arrow_img
             back_btn.pack(side=tk.RIGHT, padx=15, pady=10)
-            back_btn.bind("<Button-1>", lambda e: self.show_difficulty_menu(chapter, level))
+            if is_final:
+                back_btn.bind("<Button-1>", lambda e: self._confirm_exit_final(chapter, level))
+            else:
+                back_btn.bind("<Button-1>", lambda e: self.show_difficulty_menu(chapter, level))
         except Exception:
             back_btn = tk.Label(banner_frame, text="◀", font=("Arial", scale_font(20), "bold"),
                                bg=banner_color, fg="#FF5733", cursor="hand2")
             back_btn.pack(side=tk.RIGHT, padx=20, pady=10)
-            back_btn.bind("<Button-1>", lambda e: self.show_difficulty_menu(chapter, level))
+            if is_final:
+                back_btn.bind("<Button-1>", lambda e: self._confirm_exit_final(chapter, level))
+            else:
+                back_btn.bind("<Button-1>", lambda e: self.show_difficulty_menu(chapter, level))
         main_frame = tk.Frame(self.current_screen, bg=COLOR_FONDO)
         main_frame.pack(fill=tk.BOTH, expand=True, padx=20, pady=20)
         tk.Label(main_frame, text=problem_data.get('title', "Problema"), font=("Arial", scale_font(18), "bold"),
@@ -951,119 +957,6 @@ class NumericalMethodsGame:
     def _show_lagrange_final(self, chapter, level, difficulty, lesson_index):
         return self._show_generic_problem('lagrange_final', chapter, level, difficulty, lesson_index)
     
-    def show_practica(self, lesson, chapter, level, difficulty, lesson_index):
-        import random
-        problem_data = PROBLEM_DATA.get('lagrange_intermedio', {})
-        banner_frame = tk.Frame(self.current_screen, bg="#f8cf39", height=70)
-        banner_frame.pack(fill=tk.X, side=tk.TOP)
-        banner_frame.pack_propagate(False)
-        banner_text = f"Capítulo 1 Nivel 1. Lagrange. {difficulty}"
-        tk.Label(banner_frame, text=banner_text, font=("Arial", scale_font(16), "bold"),
-                bg="#f8cf39", fg="#FFFFFF").pack(side=tk.LEFT, padx=20, pady=15)
-        try:
-            if PIL_AVAILABLE:
-                from PIL import Image as PILImage, ImageTk as PILImageTk
-                pil_img = PILImage.open(os.path.join(BASE_PATH, 'imgs', 'red-go-back-arrow.png'))
-                pil_img.thumbnail((40, 40), PILImage.Resampling.LANCZOS)
-                back_arrow_img = PILImageTk.PhotoImage(pil_img)
-            else:
-                back_arrow_img = tk.PhotoImage(file=os.path.join(BASE_PATH, 'imgs', 'red-go-back-arrow.png'))
-                if back_arrow_img.width() > 40:
-                    factor = max(1, int(back_arrow_img.width() / 40))
-                    back_arrow_img = back_arrow_img.subsample(factor)
-            back_btn = tk.Label(banner_frame, image=back_arrow_img, bg="#f8cf39", cursor="hand2")
-            back_btn.image = back_arrow_img
-            back_btn.pack(side=tk.RIGHT, padx=20, pady=15)
-            back_btn.bind("<Button-1>", lambda e: self.show_difficulty_menu(chapter, level))
-        except Exception:
-            back_btn = tk.Label(banner_frame, text="◀", font=("Arial", scale_font(20), "bold"),
-                               bg="#FF8C42", fg="#FFFFFF", cursor="hand2")
-            back_btn.pack(side=tk.RIGHT, padx=20, pady=15)
-            back_btn.bind("<Button-1>", lambda e: self.show_difficulty_menu(chapter, level))
-        main_frame = tk.Frame(self.current_screen, bg=COLOR_FONDO)
-        main_frame.pack(fill=tk.BOTH, expand=True, padx=20, pady=20)
-        tk.Label(main_frame, text=problem_data.get('title', 'Obtener g(x)'), font=("Arial", scale_font(18), "bold"),
-                bg=COLOR_FONDO, fg="#20E0D0").pack(pady=10)
-        top_content_frame = tk.Frame(main_frame, bg=COLOR_FONDO)
-        top_content_frame.pack(pady=15, fill=tk.X)
-        tk.Label(top_content_frame, text=f"x = {problem_data.get('x_value', 2.4)}", font=("Arial", scale_font(16), "bold"),
-                bg=COLOR_FONDO, fg="white").pack(side=tk.LEFT, padx=20)
-        table_frame = tk.Frame(top_content_frame, bg="white", highlightthickness=2, highlightbackground="#20E0D0")
-        table_frame.pack(side=tk.LEFT, padx=20)
-        header_x = tk.Label(table_frame, text="x", font=("Arial", scale_font(14), "bold"),
-                           bg="#20E0D0", fg="white", width=15, height=2)
-        header_x.grid(row=0, column=0, sticky="nsew")
-        header_y = tk.Label(table_frame, text="y", font=("Arial", scale_font(14), "bold"),
-                           bg="#20E0D0", fg="white", width=15, height=2)
-        header_y.grid(row=0, column=1, sticky="nsew")
-        data = problem_data.get('table', [])
-        for i, (x_val, y_val) in enumerate(data, 1):
-            cell_x = tk.Label(table_frame, text=str(x_val), font=("Arial", scale_font(13)),
-                             bg="white", fg="black", width=15, height=2, relief=tk.RIDGE)
-            cell_x.grid(row=i, column=0, sticky="nsew")
-            cell_y = tk.Label(table_frame, text=str(y_val), font=("Arial", scale_font(13)),
-                             bg="white", fg="black", width=15, height=2, relief=tk.RIDGE)
-            cell_y.grid(row=i, column=1, sticky="nsew")
-        timer_container = tk.Frame(top_content_frame, bg=COLOR_FONDO)
-        time_min = problem_data.get('time_minutes')
-        
-        # Los problemas Fácil no tienen temporizador
-        if time_min is None or difficulty.lower() == 'fácil':
-            timer_container.pack_forget()  # No mostrar timer para Fácil
-            timer_state = {'seconds': 0, 'timer_id': None}
-            timer_label = None
-        else:
-            timer_container.pack(side=tk.RIGHT, padx=20)
-            tk.Label(timer_container, text="⏱", font=("Arial", scale_font(24)),
-                    bg=COLOR_FONDO, fg="white").pack(pady=5)
-            tk.Label(timer_container, text="Tiempo restante", font=("Arial", scale_font(12), "bold"),
-                    bg=COLOR_FONDO, fg="white").pack()
-            timer_label = tk.Label(timer_container, text=f"{time_min}:00", font=("Arial", scale_font(20), "bold"),
-                                  bg=COLOR_FONDO, fg="#20E0D0")
-            timer_label.pack(pady=5)
-            timer_state = {'seconds': time_min * 60, 'timer_id': None}
-        def _update_timer():
-            if timer_label is None:  # No hay timer para Fácil
-                return
-            timer_state['seconds'] -= 1
-            minutes = timer_state['seconds'] // 60
-            seconds = timer_state['seconds'] % 60
-            time_str = f"{minutes}:{seconds:02d}"
-            timer_label.config(text=time_str)
-            if timer_state['seconds'] > 0:
-                timer_state['timer_id'] = self.root.after(1000, _update_timer)
-            else:
-                messagebox.showinfo("Tiempo agotado", "Se acabó el tiempo para resolver el problema.")
-                self.show_difficulty_menu(chapter, level)
-        _update_timer()
-        options_frame = tk.Frame(main_frame, bg=COLOR_FONDO)
-        options_frame.pack(pady=30, fill=tk.BOTH, expand=True)
-        tk.Label(options_frame, text="g(x) =", font=("Arial", scale_font(16), "bold"),
-                bg=COLOR_FONDO, fg="white").pack(pady=15)
-        btn_frame = tk.Frame(options_frame, bg=COLOR_FONDO)
-        btn_frame.pack(pady=20)
-        options_values = problem_data.get('options', [])
-        correct_answer = problem_data.get('correct', '')
-        random.shuffle(options_values)
-        def _make_handler(option_text):
-            def _handler():
-                if timer_state['timer_id']:
-                    self.root.after_cancel(timer_state['timer_id'])
-                if option_text == correct_answer:
-                    messagebox.showinfo("¡Correcto!", f"¡Excelente!")
-                    self.start_lesson(chapter, level, difficulty, lesson_index + 1)
-                else:
-                    messagebox.showinfo("Incorrecto", "Lo siento, esa respuesta no es correcta.")
-                    self.errors_committed += 1
-                    self._save_progress()
-                    self.show_difficulty_menu(chapter, level)
-            return _handler
-        for opt_text in options_values:
-            btn = RoundedButton(btn_frame, text=opt_text, width=200, height=90,
-                              color=BTN_EASY_COLOR, text_color="#000000",
-                              command=_make_handler(opt_text))
-            btn.pack(side=tk.LEFT, padx=15)
-    
     def _show_standard_question(self, lesson, chapter, level, difficulty, lesson_index):
         style = DIFFICULTY_STYLES.get(difficulty.lower(), DIFFICULTY_STYLES['intermedio'])
         banner_frame = tk.Frame(self.current_screen, bg=style['banner_color'], height=style['banner_height'])
@@ -1141,6 +1034,7 @@ class NumericalMethodsGame:
             if not os.path.exists(img_dir):
                 tk.Label(self.current_screen, text="Carpeta de imágenes de Lagrange no encontrada.", bg=COLOR_FONDO, fg='white').pack(pady=20)
                 return
+            is_final = False  # Lagrange Fácil nunca es Final
             lagrange_state = {
                 'current_question_index': 0,
                 'total_correct': 0,
@@ -1195,12 +1089,12 @@ class NumericalMethodsGame:
                     self._save_progress()
                     self.start_lesson(chapter, level, difficulty, lesson_index + 1)
                     return
-                banner_frame = tk.Frame(self.current_screen, bg="#20E0D0", height=60)
+                banner_frame = tk.Frame(self.current_screen, bg="#00e676", height=60)
                 banner_frame.pack(fill=tk.X, side=tk.TOP)
                 banner_frame.pack_propagate(False)
                 banner_text = f"Capítulo 1 Nivel 1. Lagrange. {difficulty}"
                 tk.Label(banner_frame, text=banner_text, font=("Arial", scale_font(16), "bold"),
-                        bg="#20E050", fg="#FFFFFF").pack(side=tk.LEFT, padx=20, pady=10)
+                        bg="#00e676", fg="#FFFFFF").pack(side=tk.LEFT, padx=20, pady=10)
                 try:
                     if PIL_AVAILABLE:
                         from PIL import Image, ImageTk as PILImageTk
@@ -1212,15 +1106,21 @@ class NumericalMethodsGame:
                         if back_arrow_img.width() > 40:
                             factor = max(1, int(back_arrow_img.width() / 40))
                             back_arrow_img = back_arrow_img.subsample(factor)
-                    back_btn = tk.Label(banner_frame, image=back_arrow_img, bg="#20E0D0", cursor="hand2")
+                    back_btn = tk.Label(banner_frame, image=back_arrow_img, bg="#00e676", cursor="hand2")
                     back_btn.image = back_arrow_img  # Keep reference
                     back_btn.pack(side=tk.RIGHT, padx=15, pady=10)
-                    back_btn.bind("<Button-1>", lambda e: self.show_difficulty_menu(chapter, level))
+                    if is_final:
+                        back_btn.bind("<Button-1>", lambda e: self._confirm_exit_final(chapter, level))
+                    else:
+                        back_btn.bind("<Button-1>", lambda e: self.show_difficulty_menu(chapter, level))
                 except Exception:
                     back_btn = tk.Label(banner_frame, text="◀", font=("Arial", scale_font(20), "bold"),
-                                       bg="#20E0D0", fg="#FF5733", cursor="hand2")
+                                       bg="#00e676", fg="#FF5733", cursor="hand2")
                     back_btn.pack(side=tk.RIGHT, padx=20, pady=10)
-                    back_btn.bind("<Button-1>", lambda e: self.show_difficulty_menu(chapter, level))
+                    if is_final:
+                        back_btn.bind("<Button-1>", lambda e: self._confirm_exit_final(chapter, level))
+                    else:
+                        back_btn.bind("<Button-1>", lambda e: self.show_difficulty_menu(chapter, level))
                 current_image_file = lagrange_state['questions_list'][lagrange_state['current_question_index']]
                 current_image_path = os.path.join(img_dir, current_image_file)
                 current_answer = os.path.splitext(current_image_file)[0]
@@ -1293,6 +1193,25 @@ class NumericalMethodsGame:
             self.time_elapsed_seconds += 1
             self.root.after(1000, _increment_time)
         self.root.after(1000, _increment_time)
+    def _confirm_exit_final(self, chapter, level):
+        """Confirma si el usuario desea salir de una Prueba Final"""
+        response = messagebox.askyesno(
+            "⚠️  Salir de Prueba Final",
+            "¿Estás seguro de que deseas salir?\n\n"
+            "Si sales ahora:\n"
+            "• La Prueba Final se bloqueará permanentemente\n"
+            "• No obtendrás la medalla\n"
+            "• No podrás intentarla de nuevo\n\n"
+            "¿Confirmas que deseas salir?"
+        )
+        if response:
+            # Marcar como fallida para bloquear la prueba
+            medal_str = f"{level} (Prueba Final)"
+            failed_key = f"FAILED_{medal_str}"
+            if failed_key not in self.medals:
+                self.medals.append(failed_key)
+            self._save_progress()
+            self.show_difficulty_menu(chapter, level)
     def _format_time(self):
         hours = self.time_elapsed_seconds // 3600
         minutes = (self.time_elapsed_seconds % 3600) // 60
