@@ -245,80 +245,6 @@ GAME_STRUCTURE = {
             },
         }
     },
-    "Integración Numérica": {
-        "levels": {
-            "Regla Trapezoidal": {
-                "Fácil": [
-                    {'type': 'practica', 'problem_id': 'trapezoidal_facil_1'}
-                ],
-                "Intermedio": [
-                    {'type': 'practica', 'problem_id': 'trapezoidal_intermedio_1'}
-                ],
-                "Avanzado": [
-                    {'type': 'practica', 'problem_id': 'trapezoidal_avanzado_1'}
-                ],
-                "Prueba Final": [
-                    {'type': 'examen', 'problem_id': 'trapezoidal_1'}
-                ]
-            },
-            "Regla de 1/3 Simpson": {
-                "Fácil": [
-                    {'type': 'practica', 'problem_id': 'simpson_1_3_facil_1'}
-                ],
-                "Intermedio": [
-                    {'type': 'practica', 'problem_id': 'simpson_1_3_intermedio_1'}
-                ],
-                "Avanzado": [
-                    {'type': 'practica', 'problem_id': 'simpson_1_3_avanzado_1'}
-                ],
-                "Prueba Final": [
-                    {'type': 'examen', 'problem_id': 'simpson_1_3_1'}
-                ]
-            },
-            "Regla de 3/8 Simpson": {
-                "Fácil": [
-                    {'type': 'practica', 'problem_id': 'simpson_3_8_facil_1'}
-                ],
-                "Intermedio": [
-                    {'type': 'practica', 'problem_id': 'simpson_3_8_intermedio_1'}
-                ],
-                "Avanzado": [
-                    {'type': 'practica', 'problem_id': 'simpson_3_8_avanzado_1'}
-                ],
-                "Prueba Final": [
-                    {'type': 'examen', 'problem_id': 'simpson_3_8_1'}
-                ]
-            },
-            "Newton-Cotes Cerradas": {
-                "Fácil": [
-                    {'type': 'practica', 'problem_id': 'cotes_closed_facil_1'}
-                ],
-                "Intermedio": [
-                    {'type': 'practica', 'problem_id': 'cotes_closed_intermedio_1'}
-                ],
-                "Avanzado": [
-                    {'type': 'practica', 'problem_id': 'cotes_closed_avanzado_1'}
-                ],
-                "Prueba Final": [
-                    {'type': 'examen', 'problem_id': 'cotes_closed_1'}
-                ]
-            },
-            "Newton-Cotes Abiertas": {
-                "Fácil": [
-                    {'type': 'practica', 'problem_id': 'cotes_open_facil_1'}
-                ],
-                "Intermedio": [
-                    {'type': 'practica', 'problem_id': 'cotes_open_intermedio_1'}
-                ],
-                "Avanzado": [
-                    {'type': 'practica', 'problem_id': 'cotes_open_avanzado_1'}
-                ],
-                "Prueba Final": [
-                    {'type': 'examen', 'problem_id': 'cotes_open_1'}
-                ]
-            },
-        }
-    },
     "Mínimos Cuadrados": {
         "levels": {
             "Línea Recta": {
@@ -389,6 +315,66 @@ GAME_STRUCTURE = {
                 ],
                 "Prueba Final": [
                     {'type': 'examen', 'problem_id': 'least_sq_quadratic_func_1'}
+                ]
+            },
+        }
+    },
+    "Integración Numérica": {
+        "levels": {
+            "Regla Trapezoidal": {
+                "Fácil": [
+                    {'type': 'practica', 'problem_id': 'trapezoidal_facil_1'}
+                ],
+                "Intermedio": [
+                    {'type': 'practica', 'problem_id': 'trapezoidal_intermedio_1'}
+                ],
+                "Avanzado": [
+                    {'type': 'practica', 'problem_id': 'trapezoidal_avanzado_1'}
+                ],
+                "Prueba Final": [
+                    {'type': 'examen', 'problem_id': 'trapezoidal_1'}
+                ]
+            },
+            "Regla de 1/3 Simpson": {
+                "Fácil": [
+                    {'type': 'practica', 'problem_id': 'simpson_1_3_facil_1'}
+                ],
+                "Intermedio": [
+                    {'type': 'practica', 'problem_id': 'simpson_1_3_intermedio_1'}
+                ],
+                "Avanzado": [
+                    {'type': 'practica', 'problem_id': 'simpson_1_3_avanzado_1'}
+                ],
+                "Prueba Final": [
+                    {'type': 'examen', 'problem_id': 'simpson_1_3_1'}
+                ]
+            },
+            "Regla de 3/8 Simpson": {
+                "Fácil": [
+                    {'type': 'practica', 'problem_id': 'simpson_3_8_facil_1'}
+                ],
+                "Intermedio": [
+                    {'type': 'practica', 'problem_id': 'simpson_3_8_intermedio_1'}
+                ],
+                "Avanzado": [
+                    {'type': 'practica', 'problem_id': 'simpson_3_8_avanzado_1'}
+                ],
+                "Prueba Final": [
+                    {'type': 'examen', 'problem_id': 'simpson_3_8_1'}
+                ]
+            },
+            "Newton-Cotes Abiertas y Cerradas": {
+                "Fácil": [
+                    {'type': 'practica', 'problem_id': 'cotes_facil_1'}
+                ],
+                "Intermedio": [
+                    {'type': 'practica', 'problem_id': 'cotes_intermedio_1'}
+                ],
+                "Avanzado": [
+                    {'type': 'practica', 'problem_id': 'cotes_avanzado_1'}
+                ],
+                "Prueba Final": [
+                    {'type': 'examen', 'problem_id': 'cotes_1'}
                 ]
             },
         }

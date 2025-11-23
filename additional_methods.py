@@ -213,11 +213,8 @@ def show_simpson_13(chapter, level, difficulty, lesson_index):
 def show_simpson_38(chapter, level, difficulty, lesson_index):
     messagebox.showinfo("Próximamente", "Simpson 3/8 será implementado próximamente")
     app_ref.show_difficulty_menu(chapter, level)
-def show_newton_cotes_cerradas(chapter, level, difficulty, lesson_index):
-    messagebox.showinfo("Próximamente", "Newton-Cotes Cerradas será implementado próximamente")
-    app_ref.show_difficulty_menu(chapter, level)
-def show_newton_cotes_abiertas(chapter, level, difficulty, lesson_index):
-    messagebox.showinfo("Próximamente", "Newton-Cotes Abiertas será implementado próximamente")
+def show_newton_cotes(chapter, level, difficulty, lesson_index):
+    messagebox.showinfo("Próximamente", "Newton-Cotes Abiertas y Cerradas será implementado próximamente")
     app_ref.show_difficulty_menu(chapter, level)
 def show_minimos_cuadrados_lineal(chapter, level, difficulty, lesson_index):
     messagebox.showinfo("Próximamente", "Mínimos Cuadrados Lineal será implementado próximamente")

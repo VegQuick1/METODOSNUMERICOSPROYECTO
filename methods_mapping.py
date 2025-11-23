@@ -124,15 +124,10 @@ METHODS_MAPPING = {
             "Avanzado": {"function": "show_simpson_38", "banner_color": "#4B0082"},
             "Prueba Final": {"function": "show_simpson_38", "banner_color": "#4B0082"},
         },
-        "Nivel 4: Newton-Cotes Cerradas": {
-            "Intermedio": {"function": "show_newton_cotes_cerradas", "banner_color": "#483D8B"},
-            "Avanzado": {"function": "show_newton_cotes_cerradas", "banner_color": "#483D8B"},
-            "Prueba Final": {"function": "show_newton_cotes_cerradas", "banner_color": "#483D8B"},
-        },
-        "Nivel 5: Newton-Cotes Abiertas": {
-            "Intermedio": {"function": "show_newton_cotes_abiertas", "banner_color": "#2E8B57"},
-            "Avanzado": {"function": "show_newton_cotes_abiertas", "banner_color": "#2E8B57"},
-            "Prueba Final": {"function": "show_newton_cotes_abiertas", "banner_color": "#2E8B57"},
+        "Nivel 4: Newton-Cotes Abiertas y Cerradas": {
+            "Intermedio": {"function": "show_newton_cotes", "banner_color": "#483D8B"},
+            "Avanzado": {"function": "show_newton_cotes", "banner_color": "#483D8B"},
+            "Prueba Final": {"function": "show_newton_cotes", "banner_color": "#483D8B"},
         },
     },
     "Capítulo 6: Mínimos Cuadrados": {
