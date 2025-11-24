@@ -1104,10 +1104,10 @@ class NumericalMethodsGame:
             else:
                 back_btn.bind("<Button-1>", lambda e: self.show_difficulty_menu(chapter, level))
         
-        # Crear canvas con scrollbar para Newton Cotes (avanzado/final)
+        # Crear canvas con scrollbar para Newton Cotes (intermedio/avanzado/final)
         is_newton_cotes = 'Newton-Cotes' in level
         
-        if is_newton_cotes and difficulty.lower() in ('avanzado', 'prueba final'):
+        if is_newton_cotes and difficulty.lower() in ('intermedio', 'avanzado', 'prueba final'):
             from tkinter import ttk
             
             # Frame contenedor para canvas y scrollbar
