@@ -551,6 +551,54 @@ def generate_lagrange_final():
         'time_minutes': 25
     }
 
+def generate_lagrange_simple():
+    """Versión simplificada: solo 3-4 puntos"""
+    n = random.randint(3, 4)
+    x0 = random.randint(1, 3)
+    h = random.choice([0.5, 1])  # Espaciamiento más simple
+    xs = [x0 + i * h for i in range(n)]
+    # Polinomio cuadrático (no cúbico) para simplificar
+    a0 = random.uniform(1, 3)
+    a1 = random.uniform(0.5, 1.5)
+    a2 = random.uniform(-0.3, 0.3)
+    def poly(x):
+        return a0 + a1*x + a2*x**2
+    table = [(round(x, 2), round(poly(x), 2)) for x in xs]
+    # Escoger x_to_find entre dos puntos internos
+    k = random.randint(0, n-2)
+    x_to_find = round(xs[k] + (h/2), 2)
+    correct_val = solve_lagrange(table, x_to_find)
+    # Distractores más simples
+    distractors = set()
+    # Error de signo
+    wrong1 = a0 + a1*x_to_find - a2*x_to_find**2
+    # Omite término de mayor grado
+    wrong2 = a0 + a1*x_to_find
+    # Pequeña perturbación
+    wrong3 = correct_val * (1 - 0.05)
+    wrong4 = correct_val * (1 + 0.05)
+    for w in [wrong1, wrong2, wrong3, wrong4]:
+        w_str = _round_str(w, 5)
+        if w_str != _round_str(correct_val, 5):
+            distractors.add(w_str)
+    distractors = list(distractors)
+    while len(distractors) < 4:
+        perturb = correct_val * (1 + random.uniform(-0.08, 0.08))
+        p_str = _round_str(perturb, 5)
+        if p_str != _round_str(correct_val, 5) and p_str not in distractors:
+            distractors.append(p_str)
+    options = distractors[:4] + [_round_str(correct_val, 5)]
+    random.shuffle(options)
+    print(f"DEBUG: Lagrange Intermedio -> coef: ({a0:.3f},{a1:.3f},{a2:.3f}) x*={x_to_find:.3f} g(x)={correct_val:.6f}")
+    return {
+        'title': 'Obtener g(x) (Lagrange)',
+        'x_value': x_to_find,
+        'table': table,
+        'options': options,
+        'correct': _round_str(correct_val, 5),
+        'time_minutes': 30
+    }
+
 def generate_linear_interp_final():
     # Genera 6 puntos de una función lineal y obliga a elegir intervalo correcto
     n = 6
@@ -593,6 +641,193 @@ def generate_linear_interp_final():
         'options': options,
         'correct': _round_str(correct_val, 5),
         'time_minutes': 25
+    }
+
+def generate_linear_interp_simple():
+    """Versión simplificada: solo 4 puntos"""
+    n = 4
+    x0 = random.randint(1, 3)
+    h = random.choice([1, 2])
+    m = random.uniform(0.5, 2)
+    c = random.uniform(-2, 2)
+    xs = [x0 + i*h for i in range(n)]
+    def line(x):
+        return m*x + c
+    table = [(round(x, 2), round(line(x), 2)) for x in xs]
+    # Elegir índice interno (más simple con 4 puntos)
+    k = random.randint(0, n-2)
+    x_left, x_right = xs[k], xs[k+1]
+    x_to_find = round((x_left + x_right) / 2.0, 2)
+    correct_val = solve_linear_interpolation(x_left, line(x_left), x_right, line(x_right), x_to_find)
+    # Distractores más simples
+    distractors = set()
+    # Error de intervalo (si hay más puntos)
+    if k > 0:
+        wrong1 = solve_linear_interpolation(xs[k-1], line(xs[k-1]), x_left, line(x_left), x_to_find)
+        w_str = _round_str(wrong1, 5)
+        if w_str != _round_str(correct_val, 5):
+            distractors.add(w_str)
+    # Error de signo
+    sign_error = line(x_left) + ((line(x_right)-line(x_left))/(x_left - x_right)) * (x_to_find - x_left)
+    w_str = _round_str(sign_error, 5)
+    if w_str != _round_str(correct_val, 5):
+        distractors.add(w_str)
+    # Perturbaciones
+    for _ in range(2):
+        offset_error = correct_val * (1 + random.uniform(-0.08, 0.08))
+        w_str = _round_str(offset_error, 5)
+        if w_str != _round_str(correct_val, 5) and w_str not in distractors:
+            distractors.add(w_str)
+    distractors = list(distractors)
+    while len(distractors) < 4:
+        extra = correct_val * (1 + random.uniform(-0.12, 0.12))
+        e_str = _round_str(extra, 5)
+        if e_str != _round_str(correct_val, 5) and e_str not in distractors:
+            distractors.append(e_str)
+    options = distractors[:4] + [_round_str(correct_val, 5)]
+    random.shuffle(options)
+    print(f"DEBUG: Lineal Intermedio -> m={m:.3f} c={c:.3f} intervalo=({x_left},{x_right}) x*={x_to_find:.3f} g(x)={correct_val:.6f}")
+    return {
+        'title': 'Interpolación Lineal: Selecciona el intervalo correcto',
+        'x_value': x_to_find,
+        'table': table,
+        'options': options,
+        'correct': _round_str(correct_val, 5),
+        'time_minutes': 30
+    }
+
+def generate_newton_div_diff_simple():
+    """Versión simplificada: solo 3-4 puntos"""
+    n = random.randint(3, 4)
+    xs = []
+    current = random.randint(1, 3)
+    for _ in range(n):
+        current += random.uniform(0.5, 1)
+        xs.append(round(current, 3))
+    # Polinomio lineal o cuadrático simple
+    a0 = random.uniform(-1, 2)
+    a1 = random.uniform(0.5, 2)
+    a2 = random.uniform(-0.3, 0.3)
+    def poly(x):
+        return a0 + a1*x + a2*x**2
+    table = [(round(x, 2), round(poly(x), 2)) for x in xs]
+    # x_to_find interno
+    if n > 2:
+        k = random.randint(0, n-2)
+        x_to_find = round(xs[k] + (xs[k+1]-xs[k]) * random.uniform(0.3, 0.7), 2)
+    else:
+        x_to_find = xs[0] + 0.2
+    correct_val = solve_newton_divided_differences(table, x_to_find)
+    # Distractores simples
+    omit_second = a0 + a1*x_to_find  # omite x^2
+    wrong_sign = a0 + a1*x_to_find - a2*x_to_find**2
+    perturb = correct_val * (1 + random.uniform(-0.06, 0.06))
+    distractors = set()
+    for w in [omit_second, wrong_sign, perturb]:
+        w_str = _round_str(w, 5)
+        if w_str != _round_str(correct_val, 5):
+            distractors.add(w_str)
+    distractors = list(distractors)
+    while len(distractors) < 4:
+        extra = correct_val + random.uniform(-0.15, 0.15)
+        e_str = _round_str(extra, 5)
+        if e_str != _round_str(correct_val, 5) and e_str not in distractors:
+            distractors.append(e_str)
+    options = distractors[:4] + [_round_str(correct_val, 5)]
+    random.shuffle(options)
+    print(f"DEBUG: Newton DivDif Intermedio -> coef: ({a0:.3f},{a1:.3f},{a2:.3f}) x*={x_to_find:.3f} g(x)={correct_val:.6f}")
+    return {
+        'title': 'Newton Diferencias Divididas',
+        'x_value': x_to_find,
+        'table': table,
+        'options': options,
+        'correct': _round_str(correct_val, 5),
+        'time_minutes': 30
+    }
+
+def generate_newton_forward_simple():
+    """Versión simplificada: solo 3-4 puntos"""
+    n = random.randint(3, 4)
+    x0 = random.randint(1, 3)
+    h = 0.5  # Espaciamiento fijo
+    xs = [x0 + i*h for i in range(n)]
+    # Polinomio cuadrático simple
+    a0 = random.uniform(0.5, 2)
+    a1 = random.uniform(0.2, 1)
+    a2 = random.uniform(-0.2, 0.2)
+    def poly(x):
+        return a0 + a1*x + a2*x**2
+    table = [(round(x, 2), round(poly(x), 2)) for x in xs]
+    x_to_find = round(xs[0] + h*random.uniform(0.2, 0.8), 2)
+    correct_val = solve_newton_forward(table, x_to_find)
+    # Distractores simples
+    wrong_omit_term = a0 + a1*x_to_find
+    perturb = correct_val * (1 + random.uniform(-0.05, 0.05))
+    sign_error = a0 + a1*x_to_find - a2*x_to_find**2
+    distractors = set()
+    for w in [wrong_omit_term, perturb, sign_error]:
+        w_str = _round_str(w, 5)
+        if w_str != _round_str(correct_val, 5):
+            distractors.add(w_str)
+    distractors = list(distractors)
+    while len(distractors) < 4:
+        extra = correct_val + random.uniform(-0.12, 0.12)
+        e_str = _round_str(extra, 5)
+        if e_str != _round_str(correct_val, 5) and e_str not in distractors:
+            distractors.append(e_str)
+    options = distractors[:4] + [_round_str(correct_val, 5)]
+    random.shuffle(options)
+    print(f"DEBUG: Newton Forward Intermedio -> coef: ({a0:.3f},{a1:.3f},{a2:.3f}) x*={x_to_find:.3f} g(x)={correct_val:.6f}")
+    return {
+        'title': 'Newton Diferencias Finitas Adelante',
+        'x_value': x_to_find,
+        'table': table,
+        'options': options,
+        'correct': _round_str(correct_val, 5),
+        'time_minutes': 30
+    }
+
+def generate_newton_backward_simple():
+    """Versión simplificada: solo 3-4 puntos"""
+    n = random.randint(3, 4)
+    x0 = random.randint(3, 5)
+    h = 0.5  # Espaciamiento fijo
+    xs = [x0 - i*h for i in range(n)]
+    xs.reverse()
+    # Polinomio cuadrático simple
+    a0 = random.uniform(0.5, 2)
+    a1 = random.uniform(0.2, 1)
+    a2 = random.uniform(-0.2, 0.2)
+    def poly(x):
+        return a0 + a1*x + a2*x**2
+    table = [(round(x, 2), round(poly(x), 2)) for x in xs]
+    x_to_find = round(xs[-1] + h*random.uniform(0.2, 0.8), 2)
+    correct_val = solve_newton_backward(table, x_to_find)
+    # Distractores simples
+    wrong_omit_term = a0 + a1*x_to_find
+    perturb = correct_val * (1 + random.uniform(-0.05, 0.05))
+    sign_error = a0 + a1*x_to_find - a2*x_to_find**2
+    distractors = set()
+    for w in [wrong_omit_term, perturb, sign_error]:
+        w_str = _round_str(w, 5)
+        if w_str != _round_str(correct_val, 5):
+            distractors.add(w_str)
+    distractors = list(distractors)
+    while len(distractors) < 4:
+        extra = correct_val + random.uniform(-0.12, 0.12)
+        e_str = _round_str(extra, 5)
+        if e_str != _round_str(correct_val, 5) and e_str not in distractors:
+            distractors.append(e_str)
+    options = distractors[:4] + [_round_str(correct_val, 5)]
+    random.shuffle(options)
+    print(f"DEBUG: Newton Backward Intermedio -> coef: ({a0:.3f},{a1:.3f},{a2:.3f}) x*={x_to_find:.3f} g(x)={correct_val:.6f}")
+    return {
+        'title': 'Newton Diferencias Finitas Atrás',
+        'x_value': x_to_find,
+        'table': table,
+        'options': options,
+        'correct': _round_str(correct_val, 5),
+        'time_minutes': 30
     }
 
 def generate_newton_div_diff_final():
@@ -779,6 +1014,49 @@ def generate_linear_system_final(system_size=3):
         'time_minutes': 25
     }
 
+def generate_linear_system_simple(system_size=2):
+    """Genera un sistema lineal simplificado para Intermedio (2x2 o 3x3)"""
+    # Genera un sistema aleatorio que cumple dominancia diagonal para Gauss-Seidel/Jacobi
+    while True:
+        A = np.random.uniform(-5, 5, (system_size, system_size))
+        b = np.random.uniform(-20, 20, system_size)
+        # Hacer diagonal dominante
+        for i in range(system_size):
+            A[i, i] = sum(abs(A[i, j]) for j in range(system_size) if j != i) + random.uniform(2, 5)
+        if _is_diagonally_dominant(A):
+            break
+    # Solución de referencia
+    try:
+        x_true = np.linalg.solve(A, b)
+    except:
+        x_true = np.ones(system_size)
+    sol_str = ', '.join([f"x{i+1}={x_true[i]:.3f}" for i in range(system_size)])
+    # Tabla de ecuaciones
+    table_rows = []
+    for i in range(system_size):
+        eq_str = ' + '.join([f"{A[i,j]:.2f}*x{j+1}" for j in range(system_size)])
+        eq_str += f" = {b[i]:.2f}"
+        table_rows.append((eq_str,))
+    # Distractores
+    wrong_sols = []
+    for k in range(4):
+        x_wrong = x_true * (1 + np.random.uniform(-0.15, 0.15, system_size))
+        wrong_str = ', '.join([f"x{i+1}={x_wrong[i]:.3f}" for i in range(system_size)])
+        if wrong_str != sol_str:
+            wrong_sols.append(wrong_str)
+    options = (wrong_sols[:4] if len(wrong_sols) >= 4 else wrong_sols + [sol_str]*(4-len(wrong_sols))) + [sol_str]
+    options = list(set(options))[:5]  # Eliminar duplicados
+    random.shuffle(options)
+    print(f"DEBUG: Linear System ({system_size}x{system_size}) Intermedio -> sol: {sol_str}")
+    return {
+        'title': f'Sistema {system_size}x{system_size} (Dominante Diagonal)',
+        'x_value': None,
+        'table': table_rows,
+        'options': options,
+        'correct': sol_str,
+        'time_minutes': 30
+    }
+
 def generate_gauss_seidel_final():
     return generate_linear_system_final(3)
 
@@ -877,6 +1155,61 @@ def generate_nonlinear_final():
         'options': options,
         'correct': correct_str,
         'time_minutes': 25
+    }
+
+def generate_nonlinear_simple():
+    """Genera problema de ecuación no lineal simplificado para Intermedio"""
+    poly, true_root, coeffs, degree = generate_polynomial_root(degree=2)  # Solo grado 2
+    
+    # Intervalo más pequeño que contiene la raíz
+    interval_width = random.uniform(0.3, 1)
+    a = true_root - interval_width/2
+    b = true_root + interval_width/2
+    
+    # Construir descripción
+    poly_str = f"f(x) = "
+    degree_list = []
+    for i, c in enumerate(coeffs):
+        power = degree - i
+        if power == 0:
+            degree_list.append(f"{c:.2f}")
+        elif power == 1:
+            degree_list.append(f"{c:.2f}*x")
+        else:
+            degree_list.append(f"{c:.2f}*x^{power}")
+    poly_str += " + ".join(degree_list)
+    
+    table_rows = [
+        (f"Polinomio: {poly_str}",),
+        (f"Intervalo: [{a:.2f}, {b:.2f}]",),
+        ("Encuentra la raíz",)
+    ]
+    
+    # Opciones
+    correct_str = _round_str(true_root, 4)
+    distractors = set()
+    for k in range(4):
+        perturb = true_root + random.uniform(-interval_width*0.3, interval_width*0.3)
+        p_str = _round_str(perturb, 4)
+        if p_str != correct_str:
+            distractors.add(p_str)
+    distractors = list(distractors)
+    while len(distractors) < 4:
+        extra = true_root + random.uniform(-1, 1)
+        e_str = _round_str(extra, 4)
+        if e_str != correct_str and e_str not in distractors:
+            distractors.append(e_str)
+    options = distractors[:4] + [correct_str]
+    random.shuffle(options)
+    
+    print(f"DEBUG: Non-linear (2°) Intermedio -> root: {true_root:.6f} interval: [{a:.3f}, {b:.3f}]")
+    return {
+        'title': f'Ecuación No Lineal (Grado 2)',
+        'x_value': None,
+        'table': table_rows,
+        'options': options,
+        'correct': correct_str,
+        'time_minutes': 30
     }
 
 def generate_bisection_final():
@@ -1019,19 +1352,141 @@ def generate_integration_final():
         'time_minutes': 25
     }
 
+def generate_integration_simple():
+    """Problema de integración más simple (n ≤ 4) para Intermedio"""
+    f, a, b, integral_exact, func_type, func_name = generate_integration_function()
+    n = random.randint(2, 4)
+    
+    # Calcular con Simpson 1/3 (requiere n par)
+    if n % 2 == 1:
+        n += 1
+    h = (b - a) / n
+    sum_odd = 0
+    for i in range(1, n, 2):
+        sum_odd += f(a + i * h)
+    sum_even = 0
+    for i in range(2, n, 2):
+        sum_even += f(a + i * h)
+    integral_computed = (h / 3) * (f(a) + 4*sum_odd + 2*sum_even + f(b))
+    
+    table_rows = [
+        (f"Integrar: ∫ f(x) dx desde {round(a, 2)} hasta {round(b, 2)}",),
+        (f"Función: {func_name}",),
+        (f"n = {n} intervalos",)
+    ]
+    
+    correct_str = _round_str(integral_computed, 4)
+    distractors = set()
+    # Error de cálculo: omitir un término
+    integral_wrong1 = integral_computed * 1.08
+    # Usar trapecio en lugar de Simpson
+    trap_result = (h/2) * (f(a) + f(b) + 2*sum(f(a+i*h) for i in range(1, n)))
+    distractors.add(_round_str(integral_wrong1, 4))
+    distractors.add(_round_str(trap_result, 4))
+    # Perturbaciones
+    for _ in range(3):
+        perturb = integral_computed * (1 + random.uniform(-0.1, 0.1))
+        distractors.add(_round_str(perturb, 4))
+    
+    distractors = list(distractors)[:4]
+    while len(distractors) < 4:
+        extra = integral_computed + random.uniform(-2, 2)
+        e_str = _round_str(extra, 4)
+        if e_str not in distractors and e_str != correct_str:
+            distractors.append(e_str)
+    
+    options = distractors[:4] + [correct_str]
+    random.shuffle(options)
+    
+    print(f"DEBUG: Integration ({func_type}, n={n}) Intermedio -> integral: {integral_computed:.6f}")
+    return {
+        'title': f'Integración ({func_name}, n={n})',
+        'x_value': None,
+        'table': table_rows,
+        'options': options,
+        'correct': correct_str,
+        'time_minutes': 30
+    }
+
 def generate_trapezoidal_final():
     return generate_integration_final()
+
+def generate_trapezoidal_intermedio():
+    return generate_integration_simple()
 
 def generate_simpson_1_3_final():
     return generate_integration_final()
 
+def generate_simpson_1_3_intermedio():
+    return generate_integration_simple()
+
 def generate_simpson_3_8_final():
     return generate_integration_final()
 
+def generate_simpson_3_8_intermedio():
+    return generate_integration_simple()
+
+def generate_integration_for_cotes(max_n=10):
+    """Problema de integración con N limitado para Newton-Cotes"""
+    f, a, b, integral_exact, func_type, func_name = generate_integration_function()
+    n = random.randint(4, max_n)
+    
+    # Calcular con Simpson 1/3 (requiere n par)
+    if n % 2 == 1:
+        n += 1
+    h = (b - a) / n
+    sum_odd = 0
+    for i in range(1, n, 2):
+        sum_odd += f(a + i * h)
+    sum_even = 0
+    for i in range(2, n, 2):
+        sum_even += f(a + i * h)
+    integral_computed = (h / 3) * (f(a) + 4*sum_odd + 2*sum_even + f(b))
+    
+    table_rows = [
+        (f"Integrar: ∫ f(x) dx desde {round(a, 2)} hasta {round(b, 2)}",),
+        (f"Función: {func_name}",),
+        (f"n = {n} intervalos",)
+    ]
+    
+    correct_str = _round_str(integral_computed, 4)
+    distractors = set()
+    # Error de cálculo: omitir un término
+    integral_wrong1 = integral_computed * 1.08
+    # Usar trapecio en lugar de Simpson
+    trap_result = (h/2) * (f(a) + f(b) + 2*sum(f(a+i*h) for i in range(1, n)))
+    distractors.add(_round_str(integral_wrong1, 4))
+    distractors.add(_round_str(trap_result, 4))
+    # Perturbaciones
+    for _ in range(3):
+        perturb = integral_computed * (1 + random.uniform(-0.1, 0.1))
+        distractors.add(_round_str(perturb, 4))
+    
+    distractors = list(distractors)[:4]
+    while len(distractors) < 4:
+        extra = integral_computed + random.uniform(-2, 2)
+        e_str = _round_str(extra, 4)
+        if e_str not in distractors and e_str != correct_str:
+            distractors.append(e_str)
+    
+    options = distractors[:4] + [correct_str]
+    random.shuffle(options)
+    
+    print(f"DEBUG: Integration ({func_type}, n={n}) Final -> integral: {integral_computed:.6f}")
+    return {
+        'title': f'Integración ({func_name}, n={n})',
+        'x_value': None,
+        'table': table_rows,
+        'options': options,
+        'correct': correct_str,
+        'time_minutes': 25
+    }
+
 def generate_cotes_final():
-    """Newton-Cotes: elige aleatoriamente entre Abiertas y Cerradas"""
-    result = generate_integration_final()
+    """Newton-Cotes: elige aleatoriamente entre Abiertas (n≤6) y Cerradas (n≤10)"""
     method = random.choice(['Abiertas', 'Cerradas'])
+    max_n = 6 if method == 'Abiertas' else 10
+    result = generate_integration_for_cotes(max_n=max_n)
     # Modificar el título para incluir el método seleccionado
     result['title'] = f'Resuelve según el método Newton-Cotes {method}'
     # Agregar la imagen de la tabla correspondiente (TNCA = Tabla Newton Cotes Abiertas, TNCC = Tabla Newton Cotes Cerradas)
@@ -1039,11 +1494,32 @@ def generate_cotes_final():
     result['image'] = image_abbr
     return result
 
+def generate_cotes_intermedio():
+    """Newton-Cotes Intermedio: elige aleatoriamente entre Abiertas (n≤4) y Cerradas (n≤6)"""
+    method = random.choice(['Abiertas', 'Cerradas'])
+    max_n = 4 if method == 'Abiertas' else 6
+    result = generate_integration_for_cotes(max_n=max_n)
+    # Modificar el título para incluir el método seleccionado
+    result['title'] = f'Resuelve según el método Newton-Cotes {method}'
+    # Agregar la imagen de la tabla correspondiente
+    image_abbr = 'TNCA' if method == 'Abiertas' else 'TNCC'
+    result['image'] = image_abbr
+    result['time_minutes'] = 30
+    return result
+
 def generate_cotes_closed_final():
-    return generate_integration_final()
+    """Newton-Cotes Cerradas: n ≤ 10"""
+    result = generate_integration_for_cotes(max_n=10)
+    result['title'] = f'Newton-Cotes Cerradas: {result["title"]}'
+    result['image'] = 'TNCC'
+    return result
 
 def generate_cotes_open_final():
-    return generate_integration_final()
+    """Newton-Cotes Abiertas: n ≤ 6"""
+    result = generate_integration_for_cotes(max_n=6)
+    result['title'] = f'Newton-Cotes Abiertas: {result["title"]}'
+    result['image'] = 'TNCA'
+    return result
 
 # ===================== FACTORÍAS DINÁMICAS: MÍNIMOS CUADRADOS (PRUEBA FINAL) =====================
 
@@ -1102,6 +1578,58 @@ def generate_least_squares_final():
         'options': options,
         'correct': correct_str,
         'time_minutes': 25
+    }
+
+def generate_least_squares_simple():
+    """Generador para mínimos cuadrados simplificado - solo 4-5 puntos"""
+    method = random.choice(['lineal', 'cuadrática'])  # Sin cúbica
+    n_points = random.randint(4, 5)  # Menos puntos
+    
+    # Generar datos
+    xs = sorted([random.uniform(0, 8) for _ in range(n_points)])
+    
+    if method == 'lineal':
+        # y = a + bx
+        a0, a1 = random.uniform(1, 3), random.uniform(0.5, 1.5)
+        points = [(x, a0 + a1*x + random.uniform(-0.3, 0.3)) for x in xs]
+        x_eval = round(random.uniform(min(xs), max(xs)), 2)
+        y_pred = a0 + a1*x_eval
+    else:  # cuadrática (no cúbica)
+        a0, a1, a2 = random.uniform(1, 3), random.uniform(-0.3, 0.8), random.uniform(-0.2, 0.2)
+        points = [(x, a0 + a1*x + a2*x**2 + random.uniform(-0.5, 0.5)) for x in xs]
+        x_eval = round(random.uniform(min(xs), max(xs)), 2)
+        y_pred = a0 + a1*x_eval + a2*x_eval**2
+    
+    table_rows = [("Ajustar mínimos cuadrados",), ("Datos:",)]
+    for x, y in points:  # Mostrar todos los puntos (solo 4-5)
+        table_rows.append((round(x, 2), round(y, 2)))
+    
+    # Opciones
+    correct_str = _round_str(y_pred, 4)
+    distractors = set()
+    for k in range(4):
+        perturb = y_pred * (1 + random.uniform(-0.12, 0.12))
+        p_str = _round_str(perturb, 4)
+        if p_str != correct_str:
+            distractors.add(p_str)
+    distractors = list(distractors)
+    while len(distractors) < 4:
+        extra = y_pred + random.uniform(-2, 2)
+        e_str = _round_str(extra, 4)
+        if e_str != correct_str and e_str not in distractors:
+            distractors.append(e_str)
+    
+    options = distractors[:4] + [correct_str]
+    random.shuffle(options)
+    
+    print(f"DEBUG: Least Squares ({method}) Intermedio -> y_pred({x_eval:.2f}): {y_pred:.6f}")
+    return {
+        'title': 'Resuelve según el método',
+        'x_value': None,
+        'table': table_rows,
+        'options': options,
+        'correct': correct_str,
+        'time_minutes': 30
     }
 
 def generate_least_sq_linear_final():
@@ -1178,6 +1706,63 @@ def generate_ode_final():
         'time_minutes': 25
     }
 
+def generate_ode_simple():
+    """Generador para ecuaciones diferenciales ordinarias - versión más simple para Intermedio"""
+    method = random.choice(['euler', 'rk2', 'rk4'])
+    # EDO simple: dy/dx = ay + b
+    a = random.uniform(-0.8, -0.2)  # Valores más simples
+    b = random.uniform(-1, 1)
+    y0 = random.uniform(1, 2)
+    h = 0.1  # Valor fijo para simplificar
+    steps = random.randint(1, 2)  # Menos pasos
+    
+    # Solución analítica aproximada
+    def ode_func(y, x):
+        return a*y + b
+    
+    y_current = y0
+    x_current = 0
+    for _ in range(steps):
+        # Euler simple para valor de referencia
+        y_current = y_current + h * ode_func(y_current, x_current)
+        x_current += h
+    
+    x_eval = round(x_current, 2)
+    y_true = y_current
+    
+    table_rows = [
+        (f"EDO: dy/dx = {a:.2f}*y + {b:.2f}",),
+        (f"y(0) = {y0:.2f}",),
+        (f"h = {h}, calcular y({x_eval})",)
+    ]
+    
+    correct_str = _round_str(y_true, 4)
+    distractors = set()
+    for k in range(4):
+        perturb = y_true * (1 + random.uniform(-0.15, 0.15))
+        p_str = _round_str(perturb, 4)
+        if p_str != correct_str:
+            distractors.add(p_str)
+    distractors = list(distractors)
+    while len(distractors) < 4:
+        extra = y_true + random.uniform(-0.5, 0.5)
+        e_str = _round_str(extra, 4)
+        if e_str != correct_str and e_str not in distractors:
+            distractors.append(e_str)
+    
+    options = distractors[:4] + [correct_str]
+    random.shuffle(options)
+    
+    print(f"DEBUG: ODE ({method}) Intermedio -> y({x_eval}): {y_true:.6f}")
+    return {
+        'title': 'Resuelve según el método',
+        'x_value': None,
+        'table': table_rows,
+        'options': options,
+        'correct': correct_str,
+        'time_minutes': 30
+    }
+
 def generate_euler_modified_final():
     return generate_ode_final()
 
@@ -1197,7 +1782,112 @@ def generate_rk_higher_order_final():
     return generate_ode_final()
 
 # ===================== FACTORÍAS DINÁMICAS: NIVEL AVANZADO =====================
+# Los ejercicios Intermedio son versiones simplificadas de Prueba Final con 15 min
 # Los ejercicios Avanzado son idénticos a Prueba Final pero con 30 min en lugar de 25
+# Todos siguen la misma estructura: mismas opciones de respuesta y dificultad matemática similar,
+# solo varía el tiempo para resolver
+
+
+def generate_lagrange_intermedio():
+    return generate_lagrange_simple()
+
+def generate_linear_intermedio_1():
+    return generate_linear_interp_simple()
+
+def generate_newton_div_diff_intermedio_1():
+    return generate_newton_div_diff_simple()
+
+def generate_newton_forward_intermedio_1():
+    return generate_newton_forward_simple()
+
+def generate_newton_backward_intermedio_1():
+    return generate_newton_backward_simple()
+
+def generate_graphical_intermedio_1():
+    return generate_nonlinear_simple()
+
+def generate_bisection_intermedio_1():
+    return generate_nonlinear_simple()
+
+def generate_fixed_point_intermedio_1():
+    return generate_nonlinear_simple()
+
+def generate_false_position_intermedio_1():
+    return generate_nonlinear_simple()
+
+def generate_secant_intermedio_1():
+    return generate_nonlinear_simple()
+
+def generate_newton_raphson_intermedio_1():
+    return generate_nonlinear_simple()
+
+def generate_gauss_seidel_intermedio_1():
+    return generate_linear_system_simple(2)
+
+def generate_jacobi_intermedio_1():
+    return generate_linear_system_simple(2)
+
+def generate_montante_intermedio_1():
+    return generate_linear_system_simple(2)
+
+def generate_gauss_jordan_intermedio_1():
+    return generate_linear_system_simple(3)
+
+def generate_gaussian_elim_intermedio_1():
+    return generate_linear_system_simple(2)
+
+def generate_least_sq_linear_intermedio_1():
+    return generate_least_squares_simple()
+
+def generate_least_sq_quadratic_intermedio_1():
+    return generate_least_squares_simple()
+
+def generate_least_sq_cubic_intermedio_1():
+    return generate_least_squares_simple()
+
+def generate_least_sq_linear_func_intermedio_1():
+    return generate_least_squares_simple()
+
+def generate_least_sq_quadratic_func_intermedio_1():
+    return generate_least_squares_simple()
+
+def generate_trapezoidal_intermedio_1():
+    return generate_integration_simple()
+
+def generate_simpson_1_3_intermedio_1():
+    return generate_integration_simple()
+
+def generate_simpson_3_8_intermedio_1():
+    return generate_integration_simple()
+
+def generate_cotes_intermedio_1():
+    """Newton-Cotes Intermedio con N más pequeño"""
+    method = random.choice(['Abiertas', 'Cerradas'])
+    max_n = 4 if method == 'Abiertas' else 6
+    result = generate_integration_for_cotes(max_n=max_n)
+    result['title'] = f'Resuelve según el método Newton-Cotes {method}'
+    image_abbr = 'TNCA' if method == 'Abiertas' else 'TNCC'
+    result['image'] = image_abbr
+    result['time_minutes'] = 30
+    return result
+
+def generate_euler_modified_intermedio_1():
+    return generate_ode_simple()
+
+def generate_rk2_intermedio_1():
+    return generate_ode_simple()
+
+def generate_rk3_intermedio_1():
+    return generate_ode_simple()
+
+def generate_rk4_simpson13_intermedio_1():
+    return generate_ode_simple()
+
+def generate_rk4_simpson38_intermedio_1():
+    return generate_ode_simple()
+
+def generate_rk_higher_order_intermedio_1():
+    return generate_ode_simple()
 
 def generate_lagrange_avanzado():
     result = generate_lagrange_final()
@@ -1406,12 +2096,7 @@ DYNAMIC_PROBLEM_FACTORIES = {
 }
 
 PROBLEM_DATA = {
-    'lagrange_intermedio': {
-        'title': 'Lagrange: Interpola f(2.5) con puntos (2, 4) y (3, 7)',
-        'options': ['5.5', '6.5', '5', '6'],
-        'time_minutes': 25,
-        'correct': '5.5'
-    },
+    'lagrange_intermedio': generate_lagrange_intermedio,
     'lagrange_avanzado': generate_lagrange_avanzado,
     'lagrange_final': generate_lagrange_final,
     'linear_interp_1': generate_linear_interp_final,
@@ -1451,378 +2136,217 @@ PROBLEM_DATA = {
         'options': ['Parábola', 'Línea Recta'],
         'correct': 'Línea Recta'
     },
-    'linear_intermedio_1': {
-        'title': 'Interpola f(3) usando los puntos (2, 0.693) y (5, 1.609)',
-        'x_value': 3,
-        'table': [(2, 0.693), (5, 1.609)],
-        'options': ['0.998', '1.098', '0.898', '1.198'],
-        'time_minutes': 25,
-        'correct': '0.998'
-    },
+    'linear_intermedio_1': generate_linear_intermedio_1,
     'linear_avanzado_1': generate_linear_avanzado_1,
     'newton_div_diff_facil_1': {
         'title': '¿Qué tipo de intervalos maneja principalmente este método?',
         'options': ['Uniformes', 'No Uniformes'],
         'correct': 'No Uniformes'
     },
-    'newton_div_diff_intermedio_1': {
-        'title': 'Calcula la 1ra diferencia dividida entre (6.5, -1.35) y (7.3, -0.28)',
-        'options': ['1.3375', '0.8375', '1.0375', '1.2375'],
-        'time_minutes': 25,
-        'correct': '1.3375'
-    },
+    'newton_div_diff_intermedio_1': generate_newton_div_diff_intermedio_1,
     'newton_div_diff_avanzado_1': generate_newton_div_diff_avanzado_1,
     'newton_forward_facil_1': {
         'title': 'En Newton Adelante, el factor "s" se calcula como:',
         'options': ['(x - xi) / h', '(x + xi) / h'],
         'correct': '(x - xi) / h'
     },
-    'newton_forward_intermedio_1': {
-        'title': 'Con h=0.7 y x=3, x0=1.7, calcula s = (x - x0)/h',
-        'options': ['1.857', '1.657', '2.057', '1.457'],
-        'time_minutes': 25,
-        'correct': '1.857'
-    },
+    'newton_forward_intermedio_1': generate_newton_forward_intermedio_1,
     'newton_forward_avanzado_1': generate_newton_forward_avanzado_1,
     'newton_backward_facil_1': {
         'title': 'El signo del factor binomial "s" en este método es generalmente:',
         'options': ['Positivo', 'Negativo'],
         'correct': 'Negativo'
     },
-    'newton_backward_intermedio_1': {
-        'title': 'Con x=3, xn=3.1, h=0.7, calcula s = (x - xn)/h',
-        'options': ['-0.1428', '0.1428', '-0.2428', '0.2428'],
-        'time_minutes': 25,
-        'correct': '-0.1428'
-    },
+    'newton_backward_intermedio_1': generate_newton_backward_intermedio_1,
     'newton_backward_avanzado_1': generate_newton_backward_avanzado_1,
     'bisection_facil_1': {
         'title': 'Si f(a) es positivo y f(b) positivo, ¿hay raíz garantizada?',
         'options': ['Si', 'No'],
         'correct': 'No'
     },
-    'bisection_intermedio_1': {
-        'title': 'Bisección: Primera iteración entre a=1, f(a)=-1 y b=2, f(b)=5. Calcula c',
-        'options': ['0.3087', '1.25', '1.75', '1.0'],
-        'time_minutes': 25,
-        'correct': '0.3087'
-    },
+    'bisection_intermedio_1': generate_bisection_intermedio_1,
     'bisection_avanzado_1': generate_bisection_avanzado_1,
     'false_position_facil_1': {
         'title': 'Este método se basa en una visualización:',
         'options': ['Gráfica', 'Aleatoria'],
         'correct': 'Gráfica'
     },
-    'false_position_intermedio_1': {
-        'title': 'Falsa Posición: Con a=1, f(a)=-2, b=2, f(b)=17, calcula c',
-        'options': ['1.217859143', '1.205', '1.005', '1.305'],
-        'time_minutes': 25,
-        'correct': '1.217859143'
-    },
+    'false_position_intermedio_1': generate_false_position_intermedio_1,
     'false_position_avanzado_1': generate_false_position_avanzado_1,
     'newton_raphson_facil_1': {
         'title': '¿Qué requiere este método obligatoriamente?',
         'options': ['La derivada f\'(x)', 'Dos puntos iniciales'],
         'correct': 'La derivada f\'(x)'
     },
-    'newton_raphson_intermedio_1': {
-        'title': 'Newton-Raphson: f(x)=x³+2x²+10x-20, f\'(x)=3x²+4x+10. Con x0=1, calcula x1',
-        'options': ['1.368808108', '1.311', '1.511', '1.211'],
-        'time_minutes': 25,
-        'correct': '1.368808108'
-    },
+    'newton_raphson_intermedio_1': generate_newton_raphson_intermedio_1,
     'newton_raphson_avanzado_1': generate_newton_raphson_avanzado_1,
     'fixed_point_facil_1': {
         'title': 'Si $2x^2 - x - 5 = 0$, una posible g(x) es:',
         'options': ['$2x^2 - 5$', '$\\sqrt{(x+5)/2}$'],
         'correct': '$2x^2 - 5$'
     },
-    'fixed_point_intermedio_1': {
-        'title': 'Punto Fijo: Para e^(-x) = x, usa g(x)=e^(-x). Con x0=1, calcula x1',
-        'options': ['0.5671433', '0.467', '0.267', '0.567'],
-        'time_minutes': 25,
-        'correct': '0.5671433'
-    },
+    'fixed_point_intermedio_1': generate_fixed_point_intermedio_1,
     'fixed_point_avanzado_1': generate_fixed_point_avanzado_1,
     'secant_facil_1': {
         'title': '¿Cuántos valores iniciales requiere la Secante?',
         'options': ['1', '2'],
         'correct': '2'
     },
-    'secant_intermedio_1': {
-        'title': 'Secante: Con x0=0, f(x0)=0, x1=1, f(x1)=-0.63. Calcula x2 para e^(-x)-x=0',
-        'options': ['0.5671433', '0.7127', '0.5127', '0.8127'],
-        'time_minutes': 25,
-        'correct': '0.5671433'
-    },
+    'secant_intermedio_1': generate_secant_intermedio_1,
     'secant_avanzado_1': generate_secant_avanzado_1,
     'graphical_facil_1': {
         'title': 'Una raíz se identifica visualmente cuando la curva cruza el eje:',
         'options': ['X', 'Y'],
         'correct': 'X'
     },
-    'graphical_intermedio_1': {
-        'title': 'Gráfico: Evalúa f(x)=x³-6.5x+2 en x=0: f(0)=? ¿Hay raíz entre 0 y 1?',
-        'options': ['f(0)=2, sí hay raíz', 'f(0)=0, no hay raíz', 'f(0)=-1, sí hay raíz', 'f(0)=1, no hay raíz'],
-        'time_minutes': 25,
-        'correct': 'f(0)=2, sí hay raíz'
-    },
+    'graphical_intermedio_1': generate_graphical_intermedio_1,
     'graphical_avanzado_1': generate_graphical_avanzado_1,
     'gauss_seidel_facil_1': {
         'title': '¿Qué valores usa para calcular la variable "b" en la iteración 1?',
         'options': ['Los iniciales (0)', 'El nuevo "a" recién calculado'],
         'correct': 'El nuevo "a" recién calculado'
     },
-    'gauss_seidel_intermedio_1': {
-        'title': 'Gauss-Seidel: Sistema 2x2: 4x+y=9, x+3y=10. Con x0=y0=0, calcula x1',
-        'options': ['2.25', '2.0', '2.5', '2.75'],
-        'time_minutes': 25,
-        'correct': '2.25'
-    },
+    'gauss_seidel_intermedio_1': generate_gauss_seidel_intermedio_1,
     'gauss_seidel_avanzado_1': generate_gauss_seidel_avanzado_1,
     'jacobi_facil_1': {
         'title': 'Diferencia clave con Gauss-Seidel:',
         'options': ['Uso de valores anteriores', 'No iterativo'],
         'correct': 'Uso de valores anteriores'
     },
-    'jacobi_intermedio_1': {
-        'title': 'En Jacobi, para calcular x(k+1) se usan valores:',
-        'options': ['Todos de la iteración k', 'Mezclados de k y k+1', 'Solo de la iteración inicial', 'Aleatorios'],
-        'time_minutes': 25,
-        'correct': 'Todos de la iteración k'
-    },
+    'jacobi_intermedio_1': generate_jacobi_intermedio_1,
     'jacobi_avanzado_1': generate_jacobi_avanzado_1,
     'montante_facil_1': {
         'title': 'El método Montante utiliza principalmente aritmética de:',
         'options': ['Enteros', 'Fracciones'],
         'correct': 'Enteros'
     },
-    'montante_intermedio_1': {
-        'title': 'Montante: Sistema 2x2: 2x+y=5, x+3y=8. Paso 1: Calcula nueva posición [2,2]',
-        'options': ['5', '4', '6', '3'],
-        'time_minutes': 25,
-        'correct': '5'
-    },
+    'montante_intermedio_1': generate_montante_intermedio_1,
     'montante_avanzado_1': generate_montante_avanzado_1,
     'gauss_jordan_facil_1': {
         'title': 'La matriz final en Gauss-Jordan debe ser:',
         'options': ['Identidad', 'Triangular'],
         'correct': 'Identidad'
     },
-    'gauss_jordan_intermedio_1': {
-        'title': 'Gauss-Jordan: Sistema 2x2: 3x+2y=12, x+4y=14. Primera fila normalizada por pivote',
-        'options': ['1, 2/3, 4', '3, 2, 12', '1, 1, 1', '2, 3, 4'],
-        'time_minutes': 25,
-        'correct': '1, 2/3, 4'
-    },
+    'gauss_jordan_intermedio_1': generate_gauss_jordan_intermedio_1,
     'gauss_jordan_avanzado_1': generate_gauss_jordan_avanzado_1,
     'gaussian_elim_facil_1': {
         'title': 'A diferencia de Gauss-Jordan, aquí solo buscamos una matriz:',
         'options': ['Triangular Superior', 'Identidad'],
         'correct': 'Triangular Superior'
     },
-    'gaussian_elim_intermedio_1': {
-        'title': 'Eliminación Gaussiana: Matriz 3x3. Después de fila 1, elemento [2,1] es 0: ?',
-        'options': ['15.5', '-7.5', '10.5', '5.5'],
-        'time_minutes': 25,
-        'correct': '-7.5'
-    },
+    'gaussian_elim_intermedio_1': generate_gaussian_elim_intermedio_1,
     'gaussian_elim_avanzado_1': generate_gaussian_elim_avanzado_1,
     'trapezoidal_facil_1': {
         'title': '¿A qué grado de polinomio corresponde el trapecio?',
         'options': ['1er Grado', '2do Grado'],
         'correct': '1er Grado'
     },
-    'trapezoidal_intermedio_1': {
-        'title': 'Trapezoidal: ∫[0,1](1-x²)dx con n=4. Calcula I',
-        'options': ['0.65625', '0.5', '0.75', '0.666'],
-        'time_minutes': 25,
-        'correct': '0.65625'
-    },
+    'trapezoidal_intermedio_1': generate_trapezoidal_intermedio_1,
     'trapezoidal_avanzado_1': generate_trapezoidal_avanzado_1,
     'simpson_1_3_facil_1': {
         'title': 'Requisito indispensable de "n" para 1/3 Simpson:',
         'options': ['Debe ser Par', 'Debe ser Impar'],
         'correct': 'Debe ser Par'
     },
-    'simpson_1_3_intermedio_1': {
-        'title': 'Simpson 1/3: ∫[0,1](1-x²)dx con n=4. Calcula I',
-        'options': ['0.666666667', '0.5', '0.75', '0.55'],
-        'time_minutes': 25,
-        'correct': '0.666666667'
-    },
+    'simpson_1_3_intermedio_1': generate_simpson_1_3_intermedio_1,
     'simpson_1_3_avanzado_1': generate_simpson_1_3_avanzado_1,
     'simpson_3_8_facil_1': {
         'title': 'Simpson 3/8 requiere que "n" sea:',
         'options': ['Múltiplo de 3', 'Par'],
         'correct': 'Múltiplo de 3'
     },
-    'simpson_3_8_intermedio_1': {
-        'title': 'Simpson 3/8: Con 4 puntos (n=3), calcula el área bajo la curva',
-        'options': ['A usar fórmula 3/8', 'Error - n debe ser par', 'Usar Simpson 1/3', 'Usar Trapecio'],
-        'time_minutes': 25,
-        'correct': 'A usar fórmula 3/8'
-    },
+    'simpson_3_8_intermedio_1': generate_simpson_3_8_intermedio_1,
     'simpson_3_8_avanzado_1': generate_simpson_3_8_avanzado_1,
     'cotes_closed_facil_1': {
         'title': 'En fórmulas cerradas, ¿se incluyen los límites a y b?',
         'options': ['Si', 'No'],
         'correct': 'Si'
     },
-    'cotes_closed_intermedio_1': {
-        'title': 'Newton-Cotes Cerrado: Selecciona n=2 (3 puntos). Qué fórmula usar',
-        'options': ['Simpson 1/3 (Trapecio mejorado)', 'Trapecio', 'Simpson 3/8', 'Punto Medio'],
-        'time_minutes': 25,
-        'correct': 'Simpson 1/3 (Trapecio mejorado)'
-    },
+    'cotes_closed_intermedio_1': generate_cotes_intermedio_1,
+    'cotes_open_intermedio_1': None,  # No se usa en GAME_STRUCTURE
+    'cotes_intermedio_1': generate_cotes_intermedio_1,
     'cotes_avanzado_1': generate_cotes_avanzado_1,
     'cotes_open_facil_1': {
         'title': 'Fórmula para calcular h en Cotes Abiertas:',
         'options': ['(b-a)/(n+2)', '(b-a)/n'],
         'correct': '(b-a)/(n+2)'
     },
-    'cotes_open_intermedio_1': {
-        'title': 'Newton-Cotes Abierto: Con intervalo [0,2], n=4, calcula h = (b-a)/(n+2)',
-        'options': ['1/3', '0.5', '1/4', '2/3'],
-        'time_minutes': 25,
-        'correct': '1/3'
-    },
+    'cotes_open_intermedio_1': generate_cotes_intermedio_1,
     'least_sq_linear_facil_1': {
         'title': 'El objetivo es minimizar:',
         'options': ['La dispersión (error)', 'El valor de x'],
         'correct': 'La dispersión (error)'
     },
-    'least_sq_linear_intermedio_1': {
-        'title': 'Calcula $\\sum x^2$ para los datos: 1, 2, 3...',
-        'options': ['14', '6'],
-        'time_minutes': 25,
-        'correct': '14'
-    },
+    'least_sq_linear_intermedio_1': generate_least_sq_linear_intermedio_1,
     'least_sq_linear_avanzado_1': generate_least_sq_linear_avanzado_1,
     'least_sq_quadratic_facil_1': {
         'title': '¿Cuántas incógnitas (coeficientes) se buscan?',
         'options': ['3 (a0, a1, a2)', '2'],
         'correct': '3 (a0, a1, a2)'
     },
-    'least_sq_quadratic_intermedio_1': {
-        'title': 'Mínimos Cuadrados Cuadrático: Datos (1,1), (2,3), (3,7). Calcula ∑x²',
-        'options': ['14', '6', '12', '10'],
-        'time_minutes': 25,
-        'correct': '14'
-    },
+    'least_sq_quadratic_intermedio_1': generate_least_sq_quadratic_intermedio_1,
     'least_sq_quadratic_avanzado_1': generate_least_sq_quadratic_avanzado_1,
     'least_sq_cubic_facil_1': {
         'title': 'El sistema de ecuaciones resultante es de tamaño:',
         'options': ['4x4', '3x3'],
         'correct': '4x4'
     },
-    'least_sq_cubic_intermedio_1': {
-        'title': 'Mínimos Cuadrados Cúbico: Datos (0,1), (1,2), (2,5), (3,10). Calcula ∑x³',
-        'options': ['36', '20', '14', '30'],
-        'time_minutes': 25,
-        'correct': '36'
-    },
+    'least_sq_cubic_intermedio_1': generate_least_sq_cubic_intermedio_1,
     'least_sq_cubic_avanzado_1': generate_least_sq_cubic_avanzado_1,
     'least_sq_linear_func_facil_1': {
         'title': 'En lugar de $x^2$, el tercer término depende de:',
         'options': ['f(x)', 'x^3'],
         'correct': 'f(x)'
     },
-    'least_sq_linear_func_intermedio_1': {
-        'title': 'Mínimos Cuadrados Lineal con f(x): y=a+b*ln(x) con datos (1,2), (2,3), (3,4). Σln(x)',
-        'options': ['1.791', '1.691', '1.891', '1.591'],
-        'time_minutes': 25,
-        'correct': '1.791'
-    },
+    'least_sq_linear_func_intermedio_1': generate_least_sq_linear_func_intermedio_1,
     'least_sq_linear_func_avanzado_1': generate_least_sq_linear_func_avanzado_1,
     'least_sq_quadratic_func_facil_1': {
         'title': 'Este modelo tiene 4 coeficientes, incluyendo:',
         'options': ['El término f(x)', 'Término cúbico'],
         'correct': 'El término f(x)'
     },
-    'least_sq_quadratic_func_intermedio_1': {
-        'title': 'Mínimos Cuadrados Cuadrático con f(x): y=a+bx+c*e^x. Σe^x es el nuevo término',
-        'options': ['Si', 'No'],
-        'time_minutes': 25,
-        'correct': 'Si'
-    },
+    'least_sq_quadratic_func_intermedio_1': generate_least_sq_quadratic_func_intermedio_1,
     'least_sq_quadratic_func_avanzado_1': generate_least_sq_quadratic_func_avanzado_1,
     'euler_modified_facil_1': {
         'title': '¿Qué regla de integración usa Euler Modificado?',
         'options': ['Trapezoidal', 'Simpson'],
         'correct': 'Trapezoidal'
     },
-    'euler_modified_intermedio_1': {
-        'title': 'Euler Modificado: 3y\' - 5yt + 1 = 0, y(0) = 1.2, h = 0.2',
-        'options': ['1.2', '1.3', '1.1', '1.4'],
-        'time_minutes': 25,
-        'correct': '1.2'
-    },
+    'euler_modified_intermedio_1': generate_euler_modified_intermedio_1,
     'euler_modified_avanzado_1': generate_euler_modified_avanzado_1,
     'rk2_facil_1': {
         'title': '¿Cuántas evaluaciones de la función (k) se hacen?',
         'options': ['2', '4'],
         'correct': '2'
     },
-    'rk2_intermedio_1': {
-        'title': 'Euler Modificado: dy/dx = x + y, y(0) = 1, h = 0.2. Calcula y1',
-        'options': ['1.242', '1.142', '1.342', '1.042'],
-        'time_minutes': 25,
-        'correct': '1.242'
-    },
+    'rk2_intermedio_1': generate_rk2_intermedio_1,
     'rk2_avanzado_1': generate_rk2_avanzado_1,
     'rk3_facil_1': {
         'title': 'El peso mayor se le da a la pendiente intermedia:',
         'options': ['k2 (x4)', 'k1 (x1)'],
         'correct': 'k2 (x4)'
     },
-    'rk3_intermedio_1': {
-        'title': 'RK3: dy/dx = 2x, y(0) = 0, h = 0.1. Calcula y1',
-        'options': ['0.002', '0.001', '0.003', '0.004'],
-        'time_minutes': 25,
-        'correct': '0.002'
-    },
+    'rk3_intermedio_1': generate_rk3_intermedio_1,
     'rk3_avanzado_1': generate_rk3_avanzado_1,
     'rk4_simpson13_facil_1': {
         'title': '¿Cuáles pendientes se multiplican por 2?',
         'options': ['k2 y k3', 'k1 y k4'],
         'correct': 'k2 y k3'
     },
-    'rk4_simpson13_intermedio_1': {
-        'title': 'RK4 Simpson 1/3: dy/dx = -2y, y(0) = 1, h = 0.1. Calcula y1',
-        'options': ['0.818', '0.918', '0.718', '0.618'],
-        'time_minutes': 25,
-        'correct': '0.818'
-    },
+    'rk4_simpson13_intermedio_1': generate_rk4_simpson13_intermedio_1,
     'rk4_simpson13_avanzado_1': generate_rk4_simpson13_avanzado_1,
     'rk4_simpson38_facil_1': {
         'title': 'En esta variante, el divisor de la fórmula es:',
         'options': ['8', '6'],
         'correct': '8'
     },
-    'rk4_simpson38_intermedio_1': {
-        'title': 'RK4 Simpson 3/8: dy/dx = y, y(0) = 1, h = 0.1. Calcula y1',
-        'options': ['1.105', '1.205', '1.005', '1.305'],
-        'time_minutes': 25,
-        'correct': '1.105'
-    },
+    'rk4_simpson38_intermedio_1': generate_rk4_simpson38_intermedio_1,
     'rk4_simpson38_avanzado_1': generate_rk4_simpson38_avanzado_1,
     'rk_higher_order_facil_1': {
         'title': 'Para una EDO de 2do orden, necesitamos calcular:',
         'options': ['k y m', 'Solo k'],
         'correct': 'k y m'
     },
-    'rk_higher_order_intermedio_1': {
-        'title': 'Runge Kutta de Orden Superior: y" = x - y\', y(0) = 1, y\'(0) = 0, h = 0.1. Sistema equivalente: dy/dx = z, dz/dx = x - z',
-        'options': ['y(0.1) ≈ 1.005', 'y(0.1) ≈ 1.105', 'y(0.1) ≈ 0.905', 'y(0.1) ≈ 1.205'],
-        'time_minutes': 25,
-        'correct': 'y(0.1) ≈ 1.005'
-    },
-    'rk_higher_order_avanzado_1': {
-        'title': 'Runge Kutta de Orden Superior: Resuelve y" = x - y\' en [0, 0.1] con y(0) = 1, y\'(0) = 0',
-        'table': [('Sistema: dy/dx = z, dz/dx = x - z',), ('y(0) = 1, z(0) = 0',), ('Paso: h = 0.05',)],
-        'options': ['y(0.1) ≈ 1.005', 'y(0.1) ≈ 1.105', 'y(0.1) ≈ 0.905', 'y(0.1) ≈ 1.205'],
-        'correct': 'y(0.1) ≈ 1.005',
-        'time_minutes': 30
-    },
+    'rk_higher_order_intermedio_1': generate_rk_higher_order_intermedio_1,
+    'rk_higher_order_avanzado_1': generate_rk_higher_order_avanzado_1,
 }

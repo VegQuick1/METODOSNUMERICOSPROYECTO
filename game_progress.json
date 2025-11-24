@@ -1,5 +1,5 @@
 {
-    "time_elapsed_seconds": 17,
+    "time_elapsed_seconds": 40,
     "errors_committed": 1,
     "medals": {
         "FAILED_Lagrange (Prueba Final)": {
@@ -9,6 +9,10 @@
         "FAILED_Lineal (Prueba Final)": {
             "time_failed": 17,
             "failed_at": "2025-11-24 16:50:18.069975"
+        },
+        "FAILED_Newton Hacia Adelante (Prueba Final)": {
+            "time_failed": 35,
+            "failed_at": "2025-11-24 16:56:18.888084"
         }
     },
     "username": "Jugador 1",
