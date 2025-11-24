@@ -486,6 +486,7 @@ class NumericalMethodsGame:
             self.save_file = "game_progress.json"
         self.music_enabled = True
         self.music_volume = 0.7
+        self.current_menu_context = "main_menu"  # Controla dónde está el usuario: "menu" o "exercise"
         self._load_progress()
         self._start_timer()
         songs_path = os.path.join(BASE_PATH, "songs")
@@ -623,11 +624,15 @@ class NumericalMethodsGame:
                  bg=bg_color, fg=text_color).place(relx=0.5, rely=0.5, anchor=tk.CENTER)
     def show_main_menu(self):
         self.clear_screen()
+        self.current_menu_context = "main_menu"  # Estamos en menú principal
         try:
             if not hasattr(self, 'music_started'):
                 if self.music_enabled:
                     self.music_manager.play()
                 self.music_started = True
+            elif self.music_enabled and self.music_manager.current_volume == 0.0:
+                # Si la música fue pausada, resumirla con fade in
+                self.music_manager.fade_in(duration=3.0, target_volume=self.music_volume)
         except Exception as e:
             print(f"Error iniciando música: {e}")
         banner_h = 100
@@ -686,6 +691,12 @@ class NumericalMethodsGame:
                   command=self.root.quit).pack(pady=22)
     def show_user_menu(self):
         self.clear_screen()
+        self.current_menu_context = "user_menu"  # Estamos en menú de usuario
+        try:
+            if self.music_enabled and self.music_manager.current_volume == 0.0:
+                self.music_manager.fade_in(duration=3.0, target_volume=self.music_volume)
+        except Exception as e:
+            print(f"Error en fade in de música: {e}")
         header_frame = tk.Frame(self.current_screen, bg="#0052CC", height=HEADER_HEIGHT)
         header_frame.pack(fill=tk.X, side=tk.TOP)
         header_frame.pack_propagate(False)
@@ -766,6 +777,12 @@ class NumericalMethodsGame:
         tk.Label(medals_frame, text=medals_text, font=("Arial", scale_font(12)), bg=COLOR_FONDO, fg="white", justify=tk.LEFT).pack(anchor="w", padx=10)
     def show_config_menu(self):
         self.clear_screen()
+        self.current_menu_context = "config_menu"  # Estamos en menú de configuración
+        try:
+            if self.music_enabled and self.music_manager.current_volume == 0.0:
+                self.music_manager.fade_in(duration=3.0, target_volume=self.music_volume)
+        except Exception as e:
+            print(f"Error en fade in de música: {e}")
         header_frame = tk.Frame(self.current_screen, bg="#003366", height=HEADER_HEIGHT)
         header_frame.pack(fill=tk.X, side=tk.TOP)
         header_frame.pack_propagate(False)
@@ -815,6 +832,12 @@ class NumericalMethodsGame:
                   command=_on_reset_click).pack(pady=22)
     def show_chapter_menu(self):
         self.clear_screen()
+        self.current_menu_context = "chapter_menu"  # Estamos en menú de capítulos
+        try:
+            if self.music_enabled:
+                self.music_manager.fade_out(duration=5.0)  # Detener música al entrar en capítulos
+        except Exception as e:
+            print(f"Error en fade out de música: {e}")
         self.current_chapter = None
         self.current_level = None
         self.current_difficulty = None
@@ -894,14 +917,11 @@ class NumericalMethodsGame:
             print(f"Error al restaurar posición del scroll: {e}")
     def show_difficulty_menu(self, chapter, level):
         self.clear_screen()
+        self.current_menu_context = "difficulty_menu"  # Estamos en menú de dificultad
         self.current_chapter = chapter
         self.current_level = level
         self.current_difficulty = None
-        try:
-            if self.music_enabled:
-                self.music_manager.fade_in(duration=3.0, target_volume=self.music_volume)
-        except Exception as e:
-            print(f"Error en fade in de música: {e}")
+        # No reproducir música aquí - ya está desactivada desde show_chapter_menu
         self.add_header_with_back(level, self.show_chapter_menu)
         container = tk.Frame(self.current_screen, bg=COLOR_FONDO)
         container.pack(expand=True)
@@ -918,6 +938,7 @@ class NumericalMethodsGame:
                       color=BTN_FINAL_COLOR, text_color="white",
                       command=lambda: self.start_lesson(chapter, level, "Prueba Final", 0)).pack(pady=15)
     def start_lesson(self, chapter, level, difficulty, lesson_index):
+        self.current_menu_context = "exercise"  # Estamos dentro de un ejercicio/lección
         try:
             if self.music_enabled:
                 self.music_manager.fade_out(duration=5.0)

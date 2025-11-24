@@ -1,15 +1,9 @@
 {
-    "time_elapsed_seconds": 47,
+    "time_elapsed_seconds": 102,
     "errors_committed": 0,
     "medals": [
-        "FAILED_L\u00ednea Recta (Prueba Final)",
-        "FAILED_C\u00fabica (Prueba Final)",
-        "FAILED_Falsa Posici\u00f3n (Regula-Falsi) (Prueba Final)",
         "FAILED_Montante (Prueba Final)",
-        "FAILED_Eliminaci\u00f3n Gaussiana (Prueba Final)",
-        "FAILED_Lineal con Funci\u00f3n (Prueba Final)",
-        "FAILED_Newton-Cotes Abiertas y Cerradas (Prueba Final)",
-        "FAILED_Runge-Kutta 4to Orden (3/8 Simpson) (Prueba Final)"
+        "FAILED_Lineal (Prueba Final)"
     ],
     "username": "Jugador 1",
     "music_enabled": false,

@@ -1155,6 +1155,108 @@ def generate_rk4_simpson38_final():
 def generate_rk_higher_order_final():
     return generate_ode_final()
 
+# ===================== FACTORÍAS DINÁMICAS: NIVEL AVANZADO =====================
+# Los ejercicios Avanzado son idénticos a Prueba Final pero sin bloqueo por fallos
+
+def generate_lagrange_avanzado():
+    return generate_lagrange_final()
+
+def generate_linear_avanzado_1():
+    return generate_linear_interp_final()
+
+def generate_newton_div_diff_avanzado_1():
+    return generate_newton_div_diff_final()
+
+def generate_newton_forward_avanzado_1():
+    return generate_newton_forward_final()
+
+def generate_newton_backward_avanzado_1():
+    return generate_newton_backward_final()
+
+def generate_graphical_avanzado_1():
+    return generate_graphical_final()
+
+def generate_bisection_avanzado_1():
+    return generate_bisection_final()
+
+def generate_fixed_point_avanzado_1():
+    return generate_fixed_point_final()
+
+def generate_false_position_avanzado_1():
+    return generate_false_position_final()
+
+def generate_secant_avanzado_1():
+    return generate_secant_final()
+
+def generate_newton_raphson_avanzado_1():
+    return generate_newton_raphson_final()
+
+def generate_gauss_seidel_avanzado_1():
+    return generate_gauss_seidel_final()
+
+def generate_jacobi_avanzado_1():
+    return generate_jacobi_final()
+
+def generate_montante_avanzado_1():
+    return generate_montante_final()
+
+def generate_gauss_jordan_avanzado_1():
+    return generate_gauss_jordan_final()
+
+def generate_gaussian_elim_avanzado_1():
+    return generate_gaussian_elim_final()
+
+def generate_least_sq_linear_avanzado_1():
+    return generate_least_sq_linear_final()
+
+def generate_least_sq_quadratic_avanzado_1():
+    return generate_least_sq_quadratic_final()
+
+def generate_least_sq_cubic_avanzado_1():
+    return generate_least_sq_cubic_final()
+
+def generate_least_sq_linear_func_avanzado_1():
+    return generate_least_sq_linear_func_final()
+
+def generate_least_sq_quadratic_func_avanzado_1():
+    return generate_least_sq_quadratic_func_final()
+
+def generate_trapezoidal_avanzado_1():
+    return generate_trapezoidal_final()
+
+def generate_simpson_1_3_avanzado_1():
+    return generate_simpson_1_3_final()
+
+def generate_simpson_3_8_avanzado_1():
+    return generate_simpson_3_8_final()
+
+def generate_cotes_avanzado_1():
+    return generate_cotes_final()
+
+def generate_cotes_closed_avanzado_1():
+    return generate_cotes_closed_final()
+
+def generate_cotes_open_avanzado_1():
+    return generate_cotes_open_final()
+
+def generate_euler_modified_avanzado_1():
+    return generate_euler_modified_final()
+
+def generate_rk2_avanzado_1():
+    return generate_rk2_final()
+
+def generate_rk3_avanzado_1():
+    return generate_rk3_final()
+
+def generate_rk4_simpson13_avanzado_1():
+    return generate_rk4_simpson13_final()
+
+def generate_rk4_simpson38_avanzado_1():
+    return generate_rk4_simpson38_final()
+
+def generate_rk_higher_order_avanzado_1():
+    return generate_rk_higher_order_final()
+
 # Mapeo de claves de problemas finales a sus factorías
 DYNAMIC_PROBLEM_FACTORIES = {
     # Interpolación
@@ -1203,14 +1305,7 @@ PROBLEM_DATA = {
         'time_minutes': 25,
         'correct': '5.5'
     },
-    'lagrange_avanzado': {
-        'title': 'Lagrange: Interpola f(2.4) con puntos (2, 2.54), (2.5, 2.82), (3, 3.21)',
-        'x_value': 2.4,
-        'table': [(2, 2.54), (2.5, 2.82), (3, 3.21)],
-        'options': ['2.672', '2.772', '2.572', '2.872'],
-        'correct': '2.672',
-        'time_minutes': 30
-    },
+    'lagrange_avanzado': generate_lagrange_avanzado,
     'lagrange_final': generate_lagrange_final,
     'linear_interp_1': generate_linear_interp_final,
     'newton_div_diff_1': generate_newton_div_diff_final,
@@ -1257,14 +1352,7 @@ PROBLEM_DATA = {
         'time_minutes': 25,
         'correct': '0.998'
     },
-    'linear_avanzado_1': {
-        'title': 'Interpolación Lineal: Estima Ln(3) con (2, 0.693) y (5, 1.609)',
-        'x_value': 3,
-        'table': [(2, 0.693), (5, 1.609)],
-        'options': ['0.998', '1.098', '0.898', '1.198'],
-        'correct': '0.998',
-        'time_minutes': 30
-    },
+    'linear_avanzado_1': generate_linear_avanzado_1,
     'newton_div_diff_facil_1': {
         'title': '¿Qué tipo de intervalos maneja principalmente este método?',
         'options': ['Uniformes', 'No Uniformes'],
@@ -1276,14 +1364,7 @@ PROBLEM_DATA = {
         'time_minutes': 25,
         'correct': '1.3375'
     },
-    'newton_div_diff_avanzado_1': {
-        'title': 'Newton Diferencias Divididas: Interpola x=7 con (6.5, -1.35), (7.3, -0.28), (8.1, 0.98)',
-        'x_value': 7,
-        'table': [(6.5, -1.35), (7.3, -0.28), (8.1, 0.98)],
-        'options': ['-0.657', '-0.557', '-0.757', '-0.457'],
-        'correct': '-0.657',
-        'time_minutes': 30
-    },
+    'newton_div_diff_avanzado_1': generate_newton_div_diff_avanzado_1,
     'newton_forward_facil_1': {
         'title': 'En Newton Adelante, el factor "s" se calcula como:',
         'options': ['(x - xi) / h', '(x + xi) / h'],
@@ -1295,14 +1376,7 @@ PROBLEM_DATA = {
         'time_minutes': 25,
         'correct': '1.857'
     },
-    'newton_forward_avanzado_1': {
-        'title': 'Newton Adelante: Interpola g(3) con (1.7, 0.53), (2.4, 0.88), (3.1, 1.09)',
-        'x_value': 3,
-        'table': [(1.7, 0.53), (2.4, 0.88), (3.1, 1.09)],
-        'options': ['1.029', '1.129', '0.929', '1.229'],
-        'correct': '1.029',
-        'time_minutes': 30
-    },
+    'newton_forward_avanzado_1': generate_newton_forward_avanzado_1,
     'newton_backward_facil_1': {
         'title': 'El signo del factor binomial "s" en este método es generalmente:',
         'options': ['Positivo', 'Negativo'],
@@ -1314,14 +1388,7 @@ PROBLEM_DATA = {
         'time_minutes': 25,
         'correct': '-0.1428'
     },
-    'newton_backward_avanzado_1': {
-        'title': 'Newton Atrás: Interpola g(3) con (1.7, 0.53), (2.4, 0.88), (3.1, 1.09)',
-        'x_value': 3,
-        'table': [(1.7, 0.53), (2.4, 0.88), (3.1, 1.09)],
-        'options': ['1.029', '1.129', '0.929', '1.229'],
-        'correct': '1.029',
-        'time_minutes': 30
-    },
+    'newton_backward_avanzado_1': generate_newton_backward_avanzado_1,
     'bisection_facil_1': {
         'title': 'Si f(a) es positivo y f(b) positivo, ¿hay raíz garantizada?',
         'options': ['Si', 'No'],
@@ -1333,14 +1400,7 @@ PROBLEM_DATA = {
         'time_minutes': 25,
         'correct': '0.3087'
     },
-    'bisection_avanzado_1': {
-        'title': 'Bisección: Encuentra raíz de f(x)=x³-6.5x+2 en [0,1] tras 3 iteraciones',
-        'x_value': None,
-        'table': [('Función: f(x) = x³ - 6.5x + 2',), ('Intervalo: [0, 1]',), ('Realiza 3 iteraciones',)],
-        'options': ['0.3087', '0.5', '0.25', '0.375'],
-        'correct': '0.3087',
-        'time_minutes': 30
-    },
+    'bisection_avanzado_1': generate_bisection_avanzado_1,
     'false_position_facil_1': {
         'title': 'Este método se basa en una visualización:',
         'options': ['Gráfica', 'Aleatoria'],
@@ -1352,14 +1412,7 @@ PROBLEM_DATA = {
         'time_minutes': 25,
         'correct': '1.217859143'
     },
-    'false_position_avanzado_1': {
-        'title': 'Falsa Posición: Encuentra raíz de f(x)=3x³-2x-3 tras 2 iteraciones',
-        'x_value': None,
-        'table': [('Función: f(x) = 3x³ - 2x - 3',), ('f(1) = -2, f(2) = 17',)],
-        'options': ['1.217859143', '1.105', '1.232', '1.042'],
-        'correct': '1.217859143',
-        'time_minutes': 30
-    },
+    'false_position_avanzado_1': generate_false_position_avanzado_1,
     'newton_raphson_facil_1': {
         'title': '¿Qué requiere este método obligatoriamente?',
         'options': ['La derivada f\'(x)', 'Dos puntos iniciales'],
@@ -1371,14 +1424,7 @@ PROBLEM_DATA = {
         'time_minutes': 25,
         'correct': '1.368808108'
     },
-    'newton_raphson_avanzado_1': {
-        'title': 'Newton-Raphson: Encuentra raíz de f(x)=x²-2 con x0=2',
-        'x_value': None,
-        'table': [('Función: f(x) = x² - 2',), ("f'(x) = 2x",), ('Valor inicial: x₀ = 2',)],
-        'options': ['1.368808108', '1.514', '1.314', '1.614'],
-        'correct': '1.368808108',
-        'time_minutes': 30
-    },
+    'newton_raphson_avanzado_1': generate_newton_raphson_avanzado_1,
     'fixed_point_facil_1': {
         'title': 'Si $2x^2 - x - 5 = 0$, una posible g(x) es:',
         'options': ['$2x^2 - 5$', '$\\sqrt{(x+5)/2}$'],
@@ -1390,14 +1436,7 @@ PROBLEM_DATA = {
         'time_minutes': 25,
         'correct': '0.5671433'
     },
-    'fixed_point_avanzado_1': {
-        'title': 'Punto Fijo: Encuentra raíz de f(x) = e^(-x) - x con g(x) = e^(-x)',
-        'x_value': None,
-        'table': [('Función: g(x) = √(x + 1)',), ('Valor inicial: x₀ = 1',), ('Encuentra el punto fijo',)],
-        'options': ['0.5671433', '1.832', '1.632', '1.932'],
-        'correct': '0.5671433',
-        'time_minutes': 30
-    },
+    'fixed_point_avanzado_1': generate_fixed_point_avanzado_1,
     'secant_facil_1': {
         'title': '¿Cuántos valores iniciales requiere la Secante?',
         'options': ['1', '2'],
@@ -1409,14 +1448,7 @@ PROBLEM_DATA = {
         'time_minutes': 25,
         'correct': '0.5671433'
     },
-    'secant_avanzado_1': {
-        'title': 'Secante: Encuentra raíz de f(x)=x³-5 con x0=1, x1=2',
-        'x_value': None,
-        'table': [('Función: f(x) = x³ - 5',), ('Valores iniciales: x₀ = 1, x₁ = 2',), ('Encuentra la raíz',)],
-        'options': ['0.5671433', '2.194', '1.994', '2.294'],
-        'correct': '0.5671433',
-        'time_minutes': 30
-    },
+    'secant_avanzado_1': generate_secant_avanzado_1,
     'graphical_facil_1': {
         'title': 'Una raíz se identifica visualmente cuando la curva cruza el eje:',
         'options': ['X', 'Y'],
@@ -1428,14 +1460,7 @@ PROBLEM_DATA = {
         'time_minutes': 25,
         'correct': 'f(0)=2, sí hay raíz'
     },
-    'graphical_avanzado_1': {
-        'title': 'Gráfico: Localiza raíz de f(x)=x³-6.5x+2 usando cambios de signo',
-        'x_value': None,
-        'table': [('Función: f(x) = x³ - 6.5x + 2',), ('Intervalo: [0, 3]',), ('Identifica la raíz visualmente',)],
-        'options': ['1.5', '1.6', '1.4', '1.7'],
-        'correct': '1.5',
-        'time_minutes': 30
-    },
+    'graphical_avanzado_1': generate_graphical_avanzado_1,
     'gauss_seidel_facil_1': {
         'title': '¿Qué valores usa para calcular la variable "b" en la iteración 1?',
         'options': ['Los iniciales (0)', 'El nuevo "a" recién calculado'],
@@ -1447,14 +1472,7 @@ PROBLEM_DATA = {
         'time_minutes': 25,
         'correct': '2.25'
     },
-    'gauss_seidel_avanzado_1': {
-        'title': 'Gauss-Seidel: Resuelve el sistema 4x+y=9, x+3y=10',
-        'x_value': None,
-        'table': [('Sistema de ecuaciones:',), ('4x + y = 9',), ('x + 3y = 10',)],
-        'options': ['x=2, y=1', 'x=1, y=3', 'x=3, y=2', 'x=2, y=2'],
-        'correct': 'x=2, y=1',
-        'time_minutes': 30
-    },
+    'gauss_seidel_avanzado_1': generate_gauss_seidel_avanzado_1,
     'jacobi_facil_1': {
         'title': 'Diferencia clave con Gauss-Seidel:',
         'options': ['Uso de valores anteriores', 'No iterativo'],
@@ -1466,12 +1484,7 @@ PROBLEM_DATA = {
         'time_minutes': 25,
         'correct': 'Todos de la iteración k'
     },
-    'jacobi_avanzado_1': {
-        'title': 'Calcula el error $\\epsilon_a$ entre la iteración 3 y 4...',
-        'options': ['0.00056', '0.001'],
-        'time_minutes': 30,
-        'correct': '0.00056'
-    },
+    'jacobi_avanzado_1': generate_jacobi_avanzado_1,
     'montante_facil_1': {
         'title': 'El método Montante utiliza principalmente aritmética de:',
         'options': ['Enteros', 'Fracciones'],
@@ -1483,14 +1496,7 @@ PROBLEM_DATA = {
         'time_minutes': 25,
         'correct': '5'
     },
-    'montante_avanzado_1': {
-        'title': 'Montante: Resuelve el sistema 2x+y=5, x+3y=8',
-        'x_value': None,
-        'table': [('Sistema de ecuaciones:',), ('2x + y = 5',), ('x + 3y = 8',)],
-        'options': ['x=1, y=3', 'x=2, y=1', 'x=3, y=2', 'x=2, y=2'],
-        'correct': 'x=1, y=3',
-        'time_minutes': 30
-    },
+    'montante_avanzado_1': generate_montante_avanzado_1,
     'gauss_jordan_facil_1': {
         'title': 'La matriz final en Gauss-Jordan debe ser:',
         'options': ['Identidad', 'Triangular'],
@@ -1502,14 +1508,7 @@ PROBLEM_DATA = {
         'time_minutes': 25,
         'correct': '1, 2/3, 4'
     },
-    'gauss_jordan_avanzado_1': {
-        'title': 'Gauss-Jordan: Resuelve el sistema 3x+2y=12, x+4y=14',
-        'x_value': None,
-        'table': [('Sistema de ecuaciones:',), ('3x + 2y = 12',), ('x + 4y = 14',)],
-        'options': ['x=2, y=3', 'x=3, y=2', 'x=1, y=4', 'x=4, y=1'],
-        'correct': 'x=2, y=3',
-        'time_minutes': 30
-    },
+    'gauss_jordan_avanzado_1': generate_gauss_jordan_avanzado_1,
     'gaussian_elim_facil_1': {
         'title': 'A diferencia de Gauss-Jordan, aquí solo buscamos una matriz:',
         'options': ['Triangular Superior', 'Identidad'],
@@ -1521,14 +1520,7 @@ PROBLEM_DATA = {
         'time_minutes': 25,
         'correct': '-7.5'
     },
-    'gaussian_elim_avanzado_1': {
-        'title': 'Eliminación Gaussiana: Resuelve el sistema 2x+3y=13, x+2y=8',
-        'x_value': None,
-        'table': [('Sistema de ecuaciones:',), ('2x + 3y = 13',), ('x + 2y = 8',)],
-        'options': ['x=2, y=3', 'x=3, y=2', 'x=1, y=4', 'x=4, y=1'],
-        'correct': 'x=2, y=3',
-        'time_minutes': 30
-    },
+    'gaussian_elim_avanzado_1': generate_gaussian_elim_avanzado_1,
     'trapezoidal_facil_1': {
         'title': '¿A qué grado de polinomio corresponde el trapecio?',
         'options': ['1er Grado', '2do Grado'],
@@ -1540,14 +1532,7 @@ PROBLEM_DATA = {
         'time_minutes': 25,
         'correct': '0.65625'
     },
-    'trapezoidal_avanzado_1': {
-        'title': 'Trapezoidal: Resuelve ∫[0,1](1-x²)dx con n=4',
-        'x_value': 1,
-        'table': [('Integral de 1-x² de 0 a 1',), ('h=0.25',)],
-        'options': ['0.65625', '0.5', '0.75', '0.666'],
-        'correct': '0.65625',
-        'time_minutes': 30
-    },
+    'trapezoidal_avanzado_1': generate_trapezoidal_avanzado_1,
     'simpson_1_3_facil_1': {
         'title': 'Requisito indispensable de "n" para 1/3 Simpson:',
         'options': ['Debe ser Par', 'Debe ser Impar'],
@@ -1559,14 +1544,7 @@ PROBLEM_DATA = {
         'time_minutes': 25,
         'correct': '0.666666667'
     },
-    'simpson_1_3_avanzado_1': {
-        'title': 'Simpson 1/3: Resuelve ∫[0,1](1-x²)dx con n=4',
-        'x_value': 1,
-        'table': [('Integral de 1-x² de 0 a 1',), ('h=0.25',)],
-        'options': ['0.666666667', '0.5', '0.75', '0.55'],
-        'correct': '0.666666667',
-        'time_minutes': 30
-    },
+    'simpson_1_3_avanzado_1': generate_simpson_1_3_avanzado_1,
     'simpson_3_8_facil_1': {
         'title': 'Simpson 3/8 requiere que "n" sea:',
         'options': ['Múltiplo de 3', 'Par'],
@@ -1578,14 +1556,7 @@ PROBLEM_DATA = {
         'time_minutes': 25,
         'correct': 'A usar fórmula 3/8'
     },
-    'simpson_3_8_avanzado_1': {
-        'title': 'Simpson 3/8: Integra de 0 a 3 con datos (0,1), (1,2), (2,5), (3,10)',
-        'x_value': None,
-        'table': [('Integrar: ∫ f(x) dx',), ('Datos de la función:',), (0, 1), (1, 2), (2, 5), (3, 10)],
-        'options': ['11.25', '12.25', '10.25', '13.25'],
-        'correct': '11.25',
-        'time_minutes': 30
-    },
+    'simpson_3_8_avanzado_1': generate_simpson_3_8_avanzado_1,
     'cotes_closed_facil_1': {
         'title': 'En fórmulas cerradas, ¿se incluyen los límites a y b?',
         'options': ['Si', 'No'],
@@ -1597,14 +1568,7 @@ PROBLEM_DATA = {
         'time_minutes': 25,
         'correct': 'Simpson 1/3 (Trapecio mejorado)'
     },
-    'cotes_closed_avanzado_1': {
-        'title': 'Newton-Cotes Cerrado: Integra con 5 datos: (0,1), (0.5,1.5), (1,2.5), (1.5,4), (2,6)',
-        'x_value': None,
-        'table': [('Integrar: ∫ f(x) dx desde 0 hasta 2',), ('Datos de la función:',), (0, 1), (0.5, 1.5), (1, 2.5), (1.5, 4), (2, 6)],
-        'options': ['5.208', '6.208', '4.208', '7.208'],
-        'correct': '5.208',
-        'time_minutes': 30
-    },
+    'cotes_avanzado_1': generate_cotes_avanzado_1,
     'cotes_open_facil_1': {
         'title': 'Fórmula para calcular h en Cotes Abiertas:',
         'options': ['(b-a)/(n+2)', '(b-a)/n'],
@@ -1615,14 +1579,6 @@ PROBLEM_DATA = {
         'options': ['1/3', '0.5', '1/4', '2/3'],
         'time_minutes': 25,
         'correct': '1/3'
-    },
-    'cotes_open_avanzado_1': {
-        'title': 'Newton-Cotes Abierto: Integra entre puntos internos (0.5,1.5,1,1.5,4)',
-        'x_value': None,
-        'table': [('Integrar: ∫ f(x) dx',), ('Datos de la función (sin extremos):',), (0.5, 1.5), (1, 2.5), (1.5, 4)],
-        'options': ['4.5', '5.5', '3.5', '6.5'],
-        'correct': '4.5',
-        'time_minutes': 30
     },
     'least_sq_linear_facil_1': {
         'title': 'El objetivo es minimizar:',
@@ -1635,12 +1591,7 @@ PROBLEM_DATA = {
         'time_minutes': 25,
         'correct': '14'
     },
-    'least_sq_linear_avanzado_1': {
-        'title': 'El método de mínimos cuadrados minimiza:',
-        'options': ['∑[yi - (a0 + a1xi)]²', '∑(yi - xi)', 'max|yi - ŷi|', '∑|yi - ŷi|'],
-        'time_minutes': 30,
-        'correct': '∑[yi - (a0 + a1xi)]²'
-    },
+    'least_sq_linear_avanzado_1': generate_least_sq_linear_avanzado_1,
     'least_sq_quadratic_facil_1': {
         'title': '¿Cuántas incógnitas (coeficientes) se buscan?',
         'options': ['3 (a0, a1, a2)', '2'],
@@ -1652,14 +1603,7 @@ PROBLEM_DATA = {
         'time_minutes': 25,
         'correct': '14'
     },
-    'least_sq_quadratic_avanzado_1': {
-        'title': 'Mínimos Cuadrados Cuadrático: Ajusta y=a+bx+cx² con (1,1), (2,3), (3,7), (4,13)',
-        'x_value': 5,
-        'table': [('Ajustar: y = a + bx + cx²',), ('Datos:',), (1, 1), (2, 3), (3, 7), (4, 13)],
-        'options': ['21', '22', '20', '23'],
-        'correct': '21',
-        'time_minutes': 30
-    },
+    'least_sq_quadratic_avanzado_1': generate_least_sq_quadratic_avanzado_1,
     'least_sq_cubic_facil_1': {
         'title': 'El sistema de ecuaciones resultante es de tamaño:',
         'options': ['4x4', '3x3'],
@@ -1671,14 +1615,7 @@ PROBLEM_DATA = {
         'time_minutes': 25,
         'correct': '36'
     },
-    'least_sq_cubic_avanzado_1': {
-        'title': 'Mínimos Cuadrados Cúbico: Ajusta y=a+bx+cx²+dx³ con (0,1), (1,2), (2,5), (3,10), (4,20)',
-        'x_value': 3,
-        'table': [('Ajustar: y = a + bx + cx² + dx³',), ('Datos:',), (0, 1), (1, 2), (2, 5), (3, 10), (4, 20)],
-        'options': ['10.2', '11.2', '9.2', '12.2'],
-        'correct': '10.2',
-        'time_minutes': 30
-    },
+    'least_sq_cubic_avanzado_1': generate_least_sq_cubic_avanzado_1,
     'least_sq_linear_func_facil_1': {
         'title': 'En lugar de $x^2$, el tercer término depende de:',
         'options': ['f(x)', 'x^3'],
@@ -1690,14 +1627,7 @@ PROBLEM_DATA = {
         'time_minutes': 25,
         'correct': '1.791'
     },
-    'least_sq_linear_func_avanzado_1': {
-        'title': 'Mínimos Cuadrados Lineal con f(x): Ajusta y=a+b*ln(x) con (1,2.5), (2,5.2), (3,8.8), (4,13.1)',
-        'x_value': 4,
-        'table': [('Ajustar: y = a + b*ln(x)',), ('Datos:',), (1, 2.5), (2, 5.2), (3, 8.8), (4, 13.1)],
-        'options': ['13.5', '14.5', '12.5', '15.5'],
-        'correct': '13.5',
-        'time_minutes': 30
-    },
+    'least_sq_linear_func_avanzado_1': generate_least_sq_linear_func_avanzado_1,
     'least_sq_quadratic_func_facil_1': {
         'title': 'Este modelo tiene 4 coeficientes, incluyendo:',
         'options': ['El término f(x)', 'Término cúbico'],
@@ -1709,14 +1639,7 @@ PROBLEM_DATA = {
         'time_minutes': 25,
         'correct': 'Si'
     },
-    'least_sq_quadratic_func_avanzado_1': {
-        'title': 'Mínimos Cuadrados Cuadrático con f(x): Ajusta y=a+bx+c*e^x con (0,1), (1,1.5), (2,3.8), (3,8.2)',
-        'x_value': 3,
-        'table': [('Ajustar: y = a + bx + c*e^x',), ('Datos:',), (0, 1), (1, 1.5), (2, 3.8), (3, 8.2)],
-        'options': ['8.5', '9.5', '7.5', '10.5'],
-        'correct': '8.5',
-        'time_minutes': 30
-    },
+    'least_sq_quadratic_func_avanzado_1': generate_least_sq_quadratic_func_avanzado_1,
     'euler_modified_facil_1': {
         'title': '¿Qué regla de integración usa Euler Modificado?',
         'options': ['Trapezoidal', 'Simpson'],
@@ -1728,14 +1651,7 @@ PROBLEM_DATA = {
         'time_minutes': 25,
         'correct': '1.2'
     },
-    'euler_modified_avanzado_1': {
-        'title': 'Euler Modificado: Resuelve dy/dx = x + y, y(0) = 1 en [0, 0.2]',
-        'x_value': 0.2,
-        'table': [("Ecuación: dy/dx = x + y",), ("Condición inicial: y(0) = 1",), ("Paso: h = 0.1",)],
-        'options': ['1.221', '1.321', '1.121', '1.421'],
-        'correct': '1.221',
-        'time_minutes': 30
-    },
+    'euler_modified_avanzado_1': generate_euler_modified_avanzado_1,
     'rk2_facil_1': {
         'title': '¿Cuántas evaluaciones de la función (k) se hacen?',
         'options': ['2', '4'],
@@ -1747,14 +1663,7 @@ PROBLEM_DATA = {
         'time_minutes': 25,
         'correct': '1.242'
     },
-    'rk2_avanzado_1': {
-        'title': 'RK2: Resuelve dy/dx = x + y, y(0) = 1 en [0, 0.2]',
-        'x_value': 0.2,
-        'table': [('Ecuación: dy/dx = x + y',), ('Condición inicial: y(0) = 1',), ('Paso: h = 0.1',)],
-        'options': ['1.242', '1.342', '1.142', '1.442'],
-        'correct': '1.242',
-        'time_minutes': 30
-    },
+    'rk2_avanzado_1': generate_rk2_avanzado_1,
     'rk3_facil_1': {
         'title': 'El peso mayor se le da a la pendiente intermedia:',
         'options': ['k2 (x4)', 'k1 (x1)'],
@@ -1766,14 +1675,7 @@ PROBLEM_DATA = {
         'time_minutes': 25,
         'correct': '0.002'
     },
-    'rk3_avanzado_1': {
-        'title': 'RK3: Resuelve dy/dx = 2x, y(0) = 0 en [0, 0.1]',
-        'x_value': 0.1,
-        'table': [('Ecuación: dy/dx = 2x',), ('Condición inicial: y(0) = 0',), ('Paso: h = 0.1',)],
-        'options': ['0.002', '0.003', '0.001', '0.004'],
-        'correct': '0.002',
-        'time_minutes': 30
-    },
+    'rk3_avanzado_1': generate_rk3_avanzado_1,
     'rk4_simpson13_facil_1': {
         'title': '¿Cuáles pendientes se multiplican por 2?',
         'options': ['k2 y k3', 'k1 y k4'],
@@ -1785,14 +1687,7 @@ PROBLEM_DATA = {
         'time_minutes': 25,
         'correct': '0.818'
     },
-    'rk4_simpson13_avanzado_1': {
-        'title': 'RK4 Simpson 1/3: Resuelve dy/dx = -2y, y(0) = 1 en [0, 0.1]',
-        'x_value': 0.1,
-        'table': [('Ecuación: dy/dx = -2y',), ('Condición inicial: y(0) = 1',), ('Paso: h = 0.05',)],
-        'options': ['0.818', '0.918', '0.718', '0.618'],
-        'correct': '0.818',
-        'time_minutes': 30
-    },
+    'rk4_simpson13_avanzado_1': generate_rk4_simpson13_avanzado_1,
     'rk4_simpson38_facil_1': {
         'title': 'En esta variante, el divisor de la fórmula es:',
         'options': ['8', '6'],
@@ -1804,14 +1699,7 @@ PROBLEM_DATA = {
         'time_minutes': 25,
         'correct': '1.105'
     },
-    'rk4_simpson38_avanzado_1': {
-        'title': 'RK4 Simpson 3/8: Resuelve dy/dx = y, y(0) = 1 en [0, 0.1]',
-        'x_value': 0.1,
-        'table': [('Ecuación: dy/dx = y',), ('Condición inicial: y(0) = 1',), ('Paso: h = 0.05',)],
-        'options': ['1.105', '1.205', '1.005', '1.305'],
-        'correct': '1.105',
-        'time_minutes': 30
-    },
+    'rk4_simpson38_avanzado_1': generate_rk4_simpson38_avanzado_1,
     'rk_higher_order_facil_1': {
         'title': 'Para una EDO de 2do orden, necesitamos calcular:',
         'options': ['k y m', 'Solo k'],
