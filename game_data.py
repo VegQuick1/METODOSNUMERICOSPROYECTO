@@ -996,7 +996,15 @@ def generate_simpson_3_8_final():
     return generate_integration_final()
 
 def generate_cotes_final():
-    return generate_integration_final()
+    """Newton-Cotes: elige aleatoriamente entre Abiertas y Cerradas"""
+    result = generate_integration_final()
+    method = random.choice(['Abiertas', 'Cerradas'])
+    # Modificar el título para incluir el método seleccionado
+    result['title'] = f'Resuelve según el método Newton-Cotes {method}'
+    # Agregar la imagen de la tabla correspondiente (TNCA = Tabla Newton Cotes Abiertas, TNCC = Tabla Newton Cotes Cerradas)
+    image_abbr = 'TNCA' if method == 'Abiertas' else 'TNCC'
+    result['image'] = image_abbr
+    return result
 
 def generate_cotes_closed_final():
     return generate_integration_final()

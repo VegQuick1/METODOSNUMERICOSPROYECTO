@@ -128,8 +128,15 @@ def extract_answer_text(filename, folder_name):
     Extrae el nombre de la imagen para mostrarlo.
     Si la carpeta está en SHOW_PARENTHESES, mantiene todo el nombre.
     Si no, elimina el contenido en paréntesis.
+    Caso especial: Newton Cotes - convierte "Tabla Newton Cotes Abiertas" a "Newton Cotes Abiertas"
     """
     answer = os.path.splitext(filename)[0]  # Elimina extensión .png
+    
+    # Caso especial para Newton Cotes en nivel fácil
+    if folder_name == 'Newton_Cotes_Abiertas_y_Cerradas' and answer.startswith('Tabla Newton Cotes'):
+        # Convertir "Tabla Newton Cotes Abiertas" a "Newton Cotes Abiertas"
+        answer = answer.replace('Tabla ', '')
+        return answer
     
     # Si la carpeta permite mostrar paréntesis, devuelve todo
     if folder_name in SHOW_PARENTHESES:
@@ -1057,8 +1064,42 @@ class NumericalMethodsGame:
                 back_btn.bind("<Button-1>", lambda e: self._confirm_exit_final(chapter, level))
             else:
                 back_btn.bind("<Button-1>", lambda e: self.show_difficulty_menu(chapter, level))
-        main_frame = tk.Frame(self.current_screen, bg=COLOR_FONDO)
-        main_frame.pack(fill=tk.BOTH, expand=True, padx=20, pady=20)
+        
+        # Crear canvas con scrollbar para Newton Cotes (avanzado/final)
+        is_newton_cotes = 'Newton-Cotes' in level
+        
+        if is_newton_cotes and difficulty.lower() in ('avanzado', 'prueba final'):
+            from tkinter import ttk
+            
+            # Frame contenedor para canvas y scrollbar
+            canvas_container = tk.Frame(self.current_screen, bg=COLOR_FONDO)
+            canvas_container.pack(fill=tk.BOTH, expand=True, padx=20, pady=20)
+            
+            # Canvas y scrollbar
+            content_canvas = tk.Canvas(canvas_container, bg=COLOR_FONDO, highlightthickness=0)
+            scrollbar = ttk.Scrollbar(canvas_container, orient=tk.VERTICAL, command=content_canvas.yview)
+            main_frame = tk.Frame(content_canvas, bg=COLOR_FONDO)
+            
+            main_frame.bind(
+                "<Configure>",
+                lambda e: content_canvas.configure(scrollregion=content_canvas.bbox("all"))
+            )
+            
+            content_canvas.create_window((0, 0), window=main_frame, anchor="nw")
+            content_canvas.configure(yscrollcommand=scrollbar.set)
+            
+            # Bind mouse wheel
+            def _on_content_mousewheel(event):
+                content_canvas.yview_scroll(int(-1*(event.delta/120)), "units")
+            content_canvas.bind("<MouseWheel>", _on_content_mousewheel)
+            
+            content_canvas.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
+            scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
+        else:
+            # Para otros problemas: frame normal sin scrollbar
+            main_frame = tk.Frame(self.current_screen, bg=COLOR_FONDO)
+            main_frame.pack(fill=tk.BOTH, expand=True, padx=20, pady=20)
+        
         tk.Label(main_frame, text=problem_data.get('title', "Problema"), font=("Arial", scale_font(18), "bold"),
                 bg=COLOR_FONDO, fg=style['title_color']).pack(pady=10)
         top_content_frame = tk.Frame(main_frame, bg=COLOR_FONDO)
@@ -1091,6 +1132,28 @@ class NumericalMethodsGame:
                         for item in row_data:
                             tk.Label(table_frame, text=str(item), font=("Arial", scale_font(12), "italic"),
                                     bg="#34495e", fg="#ecf0f1", padx=10, pady=5, relief=tk.RAISED).pack(pady=3)
+        
+        # Mostrar imagen si está disponible (para Newton Cotes)
+        image_name = problem_data.get('image')
+        if image_name:
+            try:
+                img_path = os.path.join(BASE_PATH, 'imgs', 'Newton_Cotes_Abiertas_y_Cerradas', f'{image_name}.png')
+                if os.path.exists(img_path):
+                    img_frame = tk.Frame(main_frame, bg=COLOR_FONDO)
+                    img_frame.pack(pady=15, padx=20, fill=tk.X)
+                    
+                    display_img = tk.PhotoImage(file=img_path)
+                    # Escalar para que quepa en pantalla (máximo 400px de alto)
+                    if display_img.height() > 400:
+                        factor = max(1, int(display_img.height() / 400))
+                        display_img = display_img.subsample(factor)
+                    
+                    img_lbl = tk.Label(img_frame, image=display_img, bg=COLOR_FONDO)
+                    img_lbl.image = display_img
+                    img_lbl.pack()
+            except Exception as e:
+                print(f"Error loading image {image_name}: {e}")
+        
         timer_container = tk.Frame(top_content_frame, bg=COLOR_FONDO)
         time_min = problem_data.get('time_minutes')
         
@@ -1170,11 +1233,52 @@ class NumericalMethodsGame:
                         self._save_progress()
                         self.show_difficulty_menu(chapter, level)
             return _handler
-        for opt_text in options_values:
-            btn = RoundedButton(btn_frame, text=opt_text, width=max(180, len(opt_text) * 12), height=90,
-                              color=style['button_color'], text_color=style['button_text_color'],
-                              command=_make_handler(opt_text))
-            btn.pack(side=tk.LEFT, padx=12)
+        
+        # Detectar si es Ecuaciones Lineales para mostrar botones verticalmente
+        is_linear_equations = 'Ecuaciones Lineales' in chapter
+        
+        if is_linear_equations:
+            # Para Ecuaciones Lineales: botones verticales con scrollbar
+            from tkinter import ttk
+            
+            # Frame contenedor con scrollbar
+            canvas_frame = tk.Frame(options_frame, bg=COLOR_FONDO)
+            canvas_frame.pack(pady=20, fill=tk.BOTH, expand=True, padx=20)
+            
+            canvas = tk.Canvas(canvas_frame, bg=COLOR_FONDO, highlightthickness=0)
+            scrollbar = ttk.Scrollbar(canvas_frame, orient=tk.VERTICAL, command=canvas.yview)
+            scrollable_frame = tk.Frame(canvas, bg=COLOR_FONDO)
+            
+            scrollable_frame.bind(
+                "<Configure>",
+                lambda e: canvas.configure(scrollregion=canvas.bbox("all"))
+            )
+            
+            canvas.create_window((0, 0), window=scrollable_frame, anchor="nw")
+            canvas.configure(yscrollcommand=scrollbar.set)
+            
+            # Bind mouse wheel to canvas
+            def _on_mousewheel(event):
+                canvas.yview_scroll(int(-1*(event.delta/120)), "units")
+            canvas.bind("<MouseWheel>", _on_mousewheel)
+            
+            canvas.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
+            scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
+            
+            btn_frame = scrollable_frame
+            # Cambiar empaquetado a vertical
+            for opt_text in options_values:
+                btn = RoundedButton(btn_frame, text=opt_text, width=350, height=70,
+                                  color=style['button_color'], text_color=style['button_text_color'],
+                                  command=_make_handler(opt_text))
+                btn.pack(side=tk.TOP, pady=10, padx=5, fill=tk.X)
+        else:
+            # Para otros métodos: botones horizontales (comportamiento original)
+            for opt_text in options_values:
+                btn = RoundedButton(btn_frame, text=opt_text, width=max(180, len(opt_text) * 12), height=90,
+                                  color=style['button_color'], text_color=style['button_text_color'],
+                                  command=_make_handler(opt_text))
+                btn.pack(side=tk.LEFT, padx=12)
     
     def _show_lagrange_intermedio(self, chapter, level, difficulty, lesson_index):
         return self._show_generic_problem('lagrange_intermedio', chapter, level, difficulty, lesson_index)
@@ -1398,23 +1502,74 @@ class NumericalMethodsGame:
                 current_answer = extract_answer_text(current_image_file, img_folder_name)
                 local_question_text = question_text
             
-            img_frame = tk.Frame(self.current_screen, bg=COLOR_FONDO)
-            img_frame.pack(pady=30)
+            # Cargar imagen y determinar si necesita scrollbar
+            display_img = None
+            original_img = None
+            img_height = 0
             
             if os.path.exists(current_image_path):
                 try:
-                    display_img = tk.PhotoImage(file=current_image_path)
-                    if display_img.height() > 250:
-                        factor = max(1, int(display_img.height() / 250))
-                        display_img = display_img.subsample(factor)
-                    img_lbl = tk.Label(img_frame, image=display_img, bg=COLOR_FONDO)
-                    img_lbl.image = display_img
-                    img_lbl.pack()
-                except Exception:
-                    tk.Label(img_frame, text=f"No se pudo cargar: {current_image_file}", bg=COLOR_FONDO, fg="white").pack()
+                    original_img = tk.PhotoImage(file=current_image_path)
+                    img_height = original_img.height()
+                    # Si la imagen es mayor a 300px, necesitará scrollbar
+                    if original_img.height() > 300:
+                        # Escalar a un tamaño máximo pero mantener proporciones
+                        factor = max(1, int(original_img.height() / 300))
+                        display_img = original_img.subsample(factor)
+                    else:
+                        display_img = original_img
+                except Exception as e:
+                    print(f"Error cargando imagen {current_image_file}: {e}")
+                    display_img = None
             
-                tk.Label(self.current_screen, text=local_question_text, font=("Arial", scale_font(14), "bold"),
+            tk.Label(self.current_screen, text=local_question_text, font=("Arial", scale_font(14), "bold"),
                     bg=COLOR_FONDO, fg="white").pack(pady=15)
+            
+            # Crear frame para imagen con potencial scrollbar
+            if display_img is not None and img_height > 300:
+                # Para imágenes grandes, usar canvas con scrollbar
+                from tkinter import ttk
+                
+                img_canvas_frame = tk.Frame(self.current_screen, bg=COLOR_FONDO)
+                img_canvas_frame.pack(pady=20, fill=tk.BOTH, expand=True, padx=20)
+                
+                img_canvas = tk.Canvas(img_canvas_frame, bg=COLOR_FONDO, highlightthickness=0, height=350)
+                img_scrollbar = ttk.Scrollbar(img_canvas_frame, orient=tk.VERTICAL, command=img_canvas.yview)
+                img_scroll_frame = tk.Frame(img_canvas, bg=COLOR_FONDO)
+                
+                img_scroll_frame.bind(
+                    "<Configure>",
+                    lambda e: img_canvas.configure(scrollregion=img_canvas.bbox("all"))
+                )
+                
+                img_lbl = tk.Label(img_scroll_frame, image=display_img, bg=COLOR_FONDO)
+                img_lbl.image = display_img
+                img_lbl.pack()
+                
+                img_canvas.create_window((0, 0), window=img_scroll_frame, anchor="nw")
+                img_canvas.configure(yscrollcommand=img_scrollbar.set)
+                
+                # Bind mouse wheel to canvas
+                def _on_img_mousewheel(event):
+                    img_canvas.yview_scroll(int(-1*(event.delta/120)), "units")
+                img_canvas.bind("<MouseWheel>", _on_img_mousewheel)
+                
+                img_canvas.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
+                img_scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
+            else:
+                # Para imágenes pequeñas, mostrar normalmente
+                img_frame = tk.Frame(self.current_screen, bg=COLOR_FONDO)
+                img_frame.pack(pady=20)
+                
+                if display_img is not None:
+                    try:
+                        img_lbl = tk.Label(img_frame, image=display_img, bg=COLOR_FONDO)
+                        img_lbl.image = display_img
+                        img_lbl.pack()
+                    except Exception:
+                        tk.Label(img_frame, text=f"No se pudo cargar: {current_image_file}", bg=COLOR_FONDO, fg="white").pack()
+                else:
+                    tk.Label(img_frame, text=f"No se pudo cargar: {current_image_file}", bg=COLOR_FONDO, fg="white").pack()
             
             # Generar opciones de respuesta (4 botones no obvios)
             correct_option = current_answer
