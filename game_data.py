@@ -11,20 +11,6 @@ LAGRANGE_FAKE_ANSWERS = {
 GAME_STRUCTURE = {
     "Interpolación": {
         "levels": {
-            "Lagrange": {
-                "Fácil": [
-                    {'type': 'practica'}
-                ],
-                "Intermedio": [
-                    {'type': 'practica', 'problem_id': 'lagrange_intermedio'}
-                ],
-                "Avanzado": [
-                    {'type': 'practica', 'problem_id': 'lagrange_avanzado'}
-                ],
-                "Prueba Final": [
-                    {'type': 'examen', 'problem_id': 'lagrange_final'}
-                ]
-            },
             "Lineal": {
                 "Fácil": [
                     {'type': 'practica'}
@@ -37,20 +23,6 @@ GAME_STRUCTURE = {
                 ],
                 "Prueba Final": [
                     {'type': 'examen', 'problem_id': 'linear_interp_1'}
-                ]
-            },
-            "Newton con Diferencias Divididas": {
-                "Fácil": [
-                    {'type': 'practica'}
-                ],
-                "Intermedio": [
-                    {'type': 'practica', 'problem_id': 'newton_div_diff_intermedio_1'}
-                ],
-                "Avanzado": [
-                    {'type': 'practica', 'problem_id': 'newton_div_diff_avanzado_1'}
-                ],
-                "Prueba Final": [
-                    {'type': 'examen', 'problem_id': 'newton_div_diff_1'}
                 ]
             },
             "Newton Hacia Adelante": {
@@ -81,10 +53,52 @@ GAME_STRUCTURE = {
                     {'type': 'examen', 'problem_id': 'newton_backward_1'}
                 ]
             },
+            "Newton con Diferencias Divididas": {
+                "Fácil": [
+                    {'type': 'practica'}
+                ],
+                "Intermedio": [
+                    {'type': 'practica', 'problem_id': 'newton_div_diff_intermedio_1'}
+                ],
+                "Avanzado": [
+                    {'type': 'practica', 'problem_id': 'newton_div_diff_avanzado_1'}
+                ],
+                "Prueba Final": [
+                    {'type': 'examen', 'problem_id': 'newton_div_diff_1'}
+                ]
+            },
+            "Lagrange": {
+                "Fácil": [
+                    {'type': 'practica'}
+                ],
+                "Intermedio": [
+                    {'type': 'practica', 'problem_id': 'lagrange_intermedio'}
+                ],
+                "Avanzado": [
+                    {'type': 'practica', 'problem_id': 'lagrange_avanzado'}
+                ],
+                "Prueba Final": [
+                    {'type': 'examen', 'problem_id': 'lagrange_final'}
+                ]
+            },
         }
     },
     "Ecuaciones No Lineales": {
         "levels": {
+            "Método Gráfico": {
+                "Fácil": [
+                    {'type': 'practica'}
+                ],
+                "Intermedio": [
+                    {'type': 'practica', 'problem_id': 'graphical_intermedio_1'}
+                ],
+                "Avanzado": [
+                    {'type': 'practica', 'problem_id': 'graphical_avanzado_1'}
+                ],
+                "Prueba Final": [
+                    {'type': 'examen', 'problem_id': 'graphical_1'}
+                ]
+            },
             "Bisección (Bisectriz)": {
                 "Fácil": [
                     {'type': 'practica'}
@@ -97,34 +111,6 @@ GAME_STRUCTURE = {
                 ],
                 "Prueba Final": [
                     {'type': 'examen', 'problem_id': 'bisection_1'}
-                ]
-            },
-            "Falsa Posición (Regula-Falsi)": {
-                "Fácil": [
-                    {'type': 'practica'}
-                ],
-                "Intermedio": [
-                    {'type': 'practica', 'problem_id': 'false_position_intermedio_1'}
-                ],
-                "Avanzado": [
-                    {'type': 'practica', 'problem_id': 'false_position_avanzado_1'}
-                ],
-                "Prueba Final": [
-                    {'type': 'examen', 'problem_id': 'false_position_1'}
-                ]
-            },
-            "Newton-Raphson": {
-                "Fácil": [
-                    {'type': 'practica'}
-                ],
-                "Intermedio": [
-                    {'type': 'practica', 'problem_id': 'newton_raphson_intermedio_1'}
-                ],
-                "Avanzado": [
-                    {'type': 'practica', 'problem_id': 'newton_raphson_avanzado_1'}
-                ],
-                "Prueba Final": [
-                    {'type': 'examen', 'problem_id': 'newton_raphson_1'}
                 ]
             },
             "Punto Fijo": {
@@ -141,6 +127,20 @@ GAME_STRUCTURE = {
                     {'type': 'examen', 'problem_id': 'fixed_point_1'}
                 ]
             },
+            "Falsa Posición (Regula-Falsi)": {
+                "Fácil": [
+                    {'type': 'practica'}
+                ],
+                "Intermedio": [
+                    {'type': 'practica', 'problem_id': 'false_position_intermedio_1'}
+                ],
+                "Avanzado": [
+                    {'type': 'practica', 'problem_id': 'false_position_avanzado_1'}
+                ],
+                "Prueba Final": [
+                    {'type': 'examen', 'problem_id': 'false_position_1'}
+                ]
+            },
             "Secante": {
                 "Fácil": [
                     {'type': 'practica'}
@@ -155,18 +155,18 @@ GAME_STRUCTURE = {
                     {'type': 'examen', 'problem_id': 'secant_1'}
                 ]
             },
-            "Método Gráfico": {
+            "Newton-Raphson": {
                 "Fácil": [
                     {'type': 'practica'}
                 ],
                 "Intermedio": [
-                    {'type': 'practica', 'problem_id': 'graphical_intermedio_1'}
+                    {'type': 'practica', 'problem_id': 'newton_raphson_intermedio_1'}
                 ],
                 "Avanzado": [
-                    {'type': 'practica', 'problem_id': 'graphical_avanzado_1'}
+                    {'type': 'practica', 'problem_id': 'newton_raphson_avanzado_1'}
                 ],
                 "Prueba Final": [
-                    {'type': 'examen', 'problem_id': 'graphical_1'}
+                    {'type': 'examen', 'problem_id': 'newton_raphson_1'}
                 ]
             },
         }
