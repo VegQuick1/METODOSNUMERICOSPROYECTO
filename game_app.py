@@ -952,7 +952,7 @@ class NumericalMethodsGame:
                       command=lambda: self.start_lesson(chapter, level, "Avanzado", 0)).pack(pady=15)
         RoundedButton(container, text="Prueba Final   🏆", width=300, height=60,
                       color=BTN_FINAL_COLOR, text_color="white",
-                      command=lambda: self.start_lesson(chapter, level, "Prueba Final", 0)).pack(pady=15)
+                      command=lambda: self._show_final_test_confirmation(chapter, level)).pack(pady=15)
     def start_lesson(self, chapter, level, difficulty, lesson_index):
         self.current_menu_context = "exercise"  # Estamos dentro de un ejercicio/lección
         try:
@@ -2224,6 +2224,48 @@ class NumericalMethodsGame:
             self.time_elapsed_seconds += 1
             self.root.after(1000, _increment_time)
         self.root.after(1000, _increment_time)
+    
+    def _show_final_test_confirmation(self, chapter, level):
+        """Muestra un diálogo de confirmación antes de iniciar la Prueba Final.
+        
+        Informa al usuario que:
+        - Solo tendrá un intento
+        - La Prueba Final durará un tiempo específico
+        - Si sale, se bloquea permanentemente
+        """
+        # Calcular duración aproximada (número de problemas * tiempo promedio por problema)
+        try:
+            lessons = GAME_STRUCTURE[chapter]['levels'][level]['Prueba Final']
+            num_problems = len(lessons)
+            # Tiempo promedio: 3 minutos por problema (180 segundos)
+            estimated_minutes = (num_problems * 3)
+        except:
+            num_problems = "varios"
+            estimated_minutes = 10
+        
+        message = f"""⚠️  ADVERTENCIA: PRUEBA FINAL
+
+Estás a punto de comenzar la PRUEBA FINAL de {level}.
+
+📋 DETALLES IMPORTANTES:
+
+• SOLO TENDRÁS UN (1) INTENTO
+• Duración estimada: ~{estimated_minutes} minutos
+• {num_problems} problemas por resolver
+• Si sales antes de terminar:
+  - La prueba se bloqueará PERMANENTEMENTE
+  - No obtendrás la medalla
+  - No podrás intentarla de nuevo
+
+¿Estás seguro de que deseas continuar?"""
+        
+        response = messagebox.askyesno(
+            "Confirmar Prueba Final",
+            message
+        )
+        if response:
+            self.start_lesson(chapter, level, "Prueba Final", 0)
+    
     def _confirm_exit_final(self, chapter, level):
         """Confirma si el usuario desea salir de una Prueba Final"""
         response = messagebox.askyesno(
