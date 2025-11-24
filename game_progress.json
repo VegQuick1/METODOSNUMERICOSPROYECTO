@@ -1,9 +1,13 @@
 {
-    "time_elapsed_seconds": 52,
+    "time_elapsed_seconds": 50,
     "errors_committed": 0,
     "medals": [
-        "FAILED_Lineal (Prueba Final)",
-        "FAILED_Newton Hacia Adelante (Prueba Final)"
+        "FAILED_Euler Modificado (Prueba Final)",
+        "FAILED_Runge-Kutta 2do Orden (Prueba Final)",
+        "FAILED_Runge-Kutta 3er Orden (Prueba Final)",
+        "FAILED_Runge-Kutta 4to Orden (1/3 Simpson) (Prueba Final)",
+        "FAILED_Runge-Kutta 4to Orden (3/8 Simpson) (Prueba Final)",
+        "FAILED_Runge-Kutta Orden Superior (Prueba Final)"
     ],
     "username": "Jugador 1",
     "music_enabled": true,

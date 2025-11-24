@@ -1129,7 +1129,7 @@ def generate_ode_final():
     
     print(f"DEBUG: ODE ({method}) Final -> y({x_eval}): {y_true:.6f}")
     return {
-        'title': f'Ecuación Diferencial (Método: {method.upper()})',
+        'title': 'Resuelve según el método',
         'x_value': None,
         'table': table_rows,
         'options': options,
