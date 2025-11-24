@@ -343,7 +343,7 @@ EULER_MODIFICADO_LESSONS = {
 }
 RK2_LESSONS = {
     'intermedio': {
-        'title': 'Runge-Kutta 2º Orden',
+        'title': 'Euler Modificado',
         'equation': 'y\' - 5yt + 1 = 0',
         'initial': 'y₀ = 2, t₀ = 0, h = 0.2',
         'iterations': 'Calcular k₁, k₂, y₁',
@@ -352,7 +352,7 @@ RK2_LESSONS = {
         'time': 1500
     },
     'avanzado': {
-        'title': 'Runge-Kutta 2º Orden - Avanzado',
+        'title': 'Euler Modificado - Avanzado',
         'equation': 'y\' = t + y',
         'initial': 'y₀ = 0, t₀ = 0, h = 0.1',
         'iterations': 'Calcular hasta t = 0.3',
@@ -361,7 +361,7 @@ RK2_LESSONS = {
         'time': 1500
     },
     'final': {
-        'title': 'Runge-Kutta 2º Orden - Prueba Final',
+        'title': 'Euler Modificado - Prueba Final',
         'equation': 'y\' = -2y + t',
         'initial': 'y₀ = 1, t₀ = 0, h = 0.1',
         'iterations': 'Calcular hasta t = 0.4',

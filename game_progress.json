@@ -1,11 +1,8 @@
 {
-    "time_elapsed_seconds": 102,
+    "time_elapsed_seconds": 0,
     "errors_committed": 0,
-    "medals": [
-        "FAILED_Montante (Prueba Final)",
-        "FAILED_Lineal (Prueba Final)"
-    ],
+    "medals": [],
     "username": "Jugador 1",
-    "music_enabled": false,
+    "music_enabled": true,
     "music_volume": 0.7
 }

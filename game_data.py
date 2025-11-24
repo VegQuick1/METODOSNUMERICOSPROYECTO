@@ -330,7 +330,7 @@ GAME_STRUCTURE = {
             },
         }
     },
-    "Integración Numérica": {
+    "Integración": {
         "levels": {
             "Regla Trapezoidal": {
                 "Fácil": [
@@ -543,7 +543,7 @@ def generate_lagrange_final():
     random.shuffle(options)
     print(f"DEBUG: Lagrange Final -> coef: ({a0:.3f},{a1:.3f},{a2:.3f},{a3:.3f}) x*={x_to_find:.3f} g(x)={correct_val:.6f}")
     return {
-        'title': 'Obtener g(x) (Lagrange - Dinámico)',
+        'title': 'Obtener g(x) (Lagrange)',
         'x_value': x_to_find,
         'table': table,
         'options': options,
@@ -587,7 +587,7 @@ def generate_linear_interp_final():
     random.shuffle(options)
     print(f"DEBUG: Lineal Final -> m={m:.3f} c={c:.3f} intervalo=({x_left},{x_right}) x*={x_to_find:.3f} g(x)={correct_val:.6f}")
     return {
-        'title': 'Interpolación Lineal Dinámica: Selecciona el intervalo correcto',
+        'title': 'Interpolación Lineal: Selecciona el intervalo correcto',
         'x_value': x_to_find,
         'table': table,
         'options': options,
@@ -634,7 +634,7 @@ def generate_newton_div_diff_final():
     random.shuffle(options)
     print(f"DEBUG: Newton DivDif Final -> coef: ({a0:.3f},{a1:.3f},{a2:.3f}) x*={x_to_find:.3f} g(x)={correct_val:.6f}")
     return {
-        'title': 'Newton Diferencias Divididas Dinámico',
+        'title': 'Newton Diferencias Divididas',
         'x_value': x_to_find,
         'table': table,
         'options': options,
@@ -677,7 +677,7 @@ def generate_newton_forward_final():
     random.shuffle(options)
     print(f"DEBUG: Newton Forward Final -> h={h} x*={x_to_find:.3f} g(x)={correct_val:.6f}")
     return {
-        'title': 'Newton Adelante Dinámico',
+        'title': 'Newton Adelante',
         'x_value': x_to_find,
         'table': table,
         'options': options,
@@ -719,7 +719,7 @@ def generate_newton_backward_final():
     random.shuffle(options)
     print(f"DEBUG: Newton Backward Final -> h={h} x*={x_to_find:.3f} g(x)={correct_val:.6f}")
     return {
-        'title': 'Newton Atrás Dinámico',
+        'title': 'Newton Atrás',
         'x_value': x_to_find,
         'table': table,
         'options': options,
@@ -771,7 +771,7 @@ def generate_linear_system_final(system_size=3):
     random.shuffle(options)
     print(f"DEBUG: Linear System ({system_size}x{system_size}) Final -> sol: {sol_str}")
     return {
-        'title': f'Sistema {system_size}x{system_size} Dinámico (Dominante Diagonal)',
+        'title': f'Sistema {system_size}x{system_size} (Dominante Diagonal)',
         'x_value': None,
         'table': table_rows,
         'options': options,
@@ -871,7 +871,7 @@ def generate_nonlinear_final():
     
     print(f"DEBUG: Non-linear ({degree}°) Final -> root: {true_root:.6f} interval: [{a:.3f}, {b:.3f}]")
     return {
-        'title': f'Ecuación No Lineal (Grado {degree}) Dinámico',
+        'title': f'Ecuación No Lineal (Grado {degree})',
         'x_value': None,
         'table': table_rows,
         'options': options,
@@ -912,6 +912,7 @@ def generate_integration_function():
             return c0 + c1*x + c2*x**2
         # Integral analítica
         integral_exact = c0*(b-a) + c1*(b**2-a**2)/2 + c2*(b**3-a**3)/3
+        func_name = "Cuadrático"
     else:
         # Exponencial o trigonométrica
         if func_type == 'exp':
@@ -919,17 +920,19 @@ def generate_integration_function():
             def f(x):
                 return c * np.exp(x)
             integral_exact = c * (np.exp(b) - np.exp(a))
+            func_name = "Exponencial"
         else:  # trig
             c = random.uniform(0.5, 2)
             def f(x):
                 return c * np.sin(x)
             integral_exact = c * (-np.cos(b) + np.cos(a))
+            func_name = "Seno"
     
-    return f, a, b, integral_exact, func_type
+    return f, a, b, integral_exact, func_type, func_name
 
 def generate_integration_final():
     """Problema de integración con n > 4"""
-    f, a, b, integral_exact, func_type = generate_integration_function()
+    f, a, b, integral_exact, func_type, func_name = generate_integration_function()
     n = random.randint(6, 10)
     
     # Calcular con Simpson 1/3 (requiere n par)
@@ -946,7 +949,7 @@ def generate_integration_final():
     
     table_rows = [
         (f"Integrar: ∫ f(x) dx desde {round(a, 2)} hasta {round(b, 2)}",),
-        (f"Función: {func_type.upper()}",),
+        (f"Función: {func_name}",),
         (f"n = {n} intervalos",)
     ]
     
@@ -975,7 +978,7 @@ def generate_integration_final():
     
     print(f"DEBUG: Integration ({func_type}, n={n}) Final -> integral: {integral_computed:.6f}")
     return {
-        'title': f'Integración Numérica ({func_type.upper()}, n={n})',
+        'title': f'Integración ({func_name}, n={n})',
         'x_value': None,
         'table': table_rows,
         'options': options,
@@ -1055,7 +1058,7 @@ def generate_least_squares_final():
     
     print(f"DEBUG: Least Squares ({method}) Final -> y_pred({x_eval:.2f}): {y_pred:.6f}")
     return {
-        'title': f'Mínimos Cuadrados {method.capitalize()} Dinámico',
+        'title': f'Mínimos Cuadrados {method.capitalize()}',
         'x_value': None,
         'table': table_rows,
         'options': options,
@@ -1129,7 +1132,7 @@ def generate_ode_final():
     
     print(f"DEBUG: ODE ({method}) Final -> y({x_eval}): {y_true:.6f}")
     return {
-        'title': f'Ecuación Diferencial (Método: {method.upper()}) Dinámico',
+        'title': f'Ecuación Diferencial (Método: {method.upper()})',
         'x_value': None,
         'table': table_rows,
         'options': options,
@@ -1658,7 +1661,7 @@ PROBLEM_DATA = {
         'correct': '2'
     },
     'rk2_intermedio_1': {
-        'title': 'RK2: dy/dx = x + y, y(0) = 1, h = 0.2. Calcula y1',
+        'title': 'Euler Modificado: dy/dx = x + y, y(0) = 1, h = 0.2. Calcula y1',
         'options': ['1.242', '1.142', '1.342', '1.042'],
         'time_minutes': 25,
         'correct': '1.242'
@@ -1706,14 +1709,13 @@ PROBLEM_DATA = {
         'correct': 'k y m'
     },
     'rk_higher_order_intermedio_1': {
-        'title': 'RK4 Orden Superior: y" = x - y\', y(0) = 1, y\'(0) = 0, h = 0.1. Sistema equivalente: dy/dx = z, dz/dx = x - z',
+        'title': 'Runge Kutta de Orden Superior: y" = x - y\', y(0) = 1, y\'(0) = 0, h = 0.1. Sistema equivalente: dy/dx = z, dz/dx = x - z',
         'options': ['y(0.1) ≈ 1.005', 'y(0.1) ≈ 1.105', 'y(0.1) ≈ 0.905', 'y(0.1) ≈ 1.205'],
         'time_minutes': 25,
         'correct': 'y(0.1) ≈ 1.005'
     },
     'rk_higher_order_avanzado_1': {
-        'title': 'RK4 Orden Superior: Resuelve y" = x - y\' en [0, 0.1] con y(0) = 1, y\'(0) = 0',
-        'x_value': 0.1,
+        'title': 'Runge Kutta de Orden Superior: Resuelve y" = x - y\' en [0, 0.1] con y(0) = 1, y\'(0) = 0',
         'table': [('Sistema: dy/dx = z, dz/dx = x - z',), ('y(0) = 1, z(0) = 0',), ('Paso: h = 0.05',)],
         'options': ['y(0.1) ≈ 1.005', 'y(0.1) ≈ 1.105', 'y(0.1) ≈ 0.905', 'y(0.1) ≈ 1.205'],
         'correct': 'y(0.1) ≈ 1.005',

@@ -113,7 +113,7 @@ METHODS_MAPPING = {
             "Prueba Final": {"function": "show_rk_orden_superior", "banner_color": "#DC143C"},
         },
     },
-    "Capítulo 5: Integración Numérica": {
+    "Integración": {
         "Nivel 1: Regla Trapezoidal": {
             "Intermedio": {"function": "show_trapezoidal", "banner_color": "#9932CC"},
             "Avanzado": {"function": "show_trapezoidal", "banner_color": "#9932CC"},
