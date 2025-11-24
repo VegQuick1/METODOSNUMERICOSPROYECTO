@@ -568,14 +568,20 @@ class NumericalMethodsGame:
 
         Jerarquía:
         Lección -> Menú de Dificultad -> Menú de Capítulos -> Menú Principal
+        Menú de Usuario -> Menú Principal
+        Menú de Configuración -> Menú Principal
+        
         Reglas especiales:
         - En Fácil: salir sin confirmación.
         - En Intermedio / Avanzado: confirmar salida.
         - En Prueba Final: usar confirmación estricta `_confirm_exit_final`.
         - En menús (dificultad / capítulos) retroceder un nivel sin confirmación.
+        - En menú de usuario/configuración: volver al menú principal.
         - Ignorado en menú principal (no hace nada).
         """
         try:
+            context = self.current_menu_context
+            
             # Si estamos dentro de una lección (hay dificultad activa)
             if self.current_difficulty:
                 diff = (self.current_difficulty or '').lower()
@@ -594,11 +600,14 @@ class NumericalMethodsGame:
             elif self.current_level:
                 # Estamos en el menú de dificultad -> volver al menú de capítulos
                 self.show_chapter_menu()
-            elif self.current_chapter:
-                # Estamos en el menú de métodos -> volver al menú principal
+            elif context == 'chapter_menu':
+                # Estamos en el menú de capítulos -> volver al menú principal
+                self.show_main_menu()
+            elif context in ('user_menu', 'config_menu'):
+                # Desde menú de usuario o configuración -> volver al menú principal
                 self.show_main_menu()
             else:
-                # Menú principal: ignorar
+                # Menú principal u otro contexto: ignorar
                 return "break"
         except Exception as e:
             print(f"Error en _on_backspace: {e}")
