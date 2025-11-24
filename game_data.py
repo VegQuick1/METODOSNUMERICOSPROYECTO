@@ -1156,106 +1156,172 @@ def generate_rk_higher_order_final():
     return generate_ode_final()
 
 # ===================== FACTORÍAS DINÁMICAS: NIVEL AVANZADO =====================
-# Los ejercicios Avanzado son idénticos a Prueba Final pero sin bloqueo por fallos
+# Los ejercicios Avanzado son idénticos a Prueba Final pero con 30 min en lugar de 25
 
 def generate_lagrange_avanzado():
-    return generate_lagrange_final()
+    result = generate_lagrange_final()
+    result['time_minutes'] = 30
+    return result
 
 def generate_linear_avanzado_1():
-    return generate_linear_interp_final()
+    result = generate_linear_interp_final()
+    result['time_minutes'] = 30
+    return result
 
 def generate_newton_div_diff_avanzado_1():
-    return generate_newton_div_diff_final()
+    result = generate_newton_div_diff_final()
+    result['time_minutes'] = 30
+    return result
 
 def generate_newton_forward_avanzado_1():
-    return generate_newton_forward_final()
+    result = generate_newton_forward_final()
+    result['time_minutes'] = 30
+    return result
 
 def generate_newton_backward_avanzado_1():
-    return generate_newton_backward_final()
+    result = generate_newton_backward_final()
+    result['time_minutes'] = 30
+    return result
 
 def generate_graphical_avanzado_1():
-    return generate_graphical_final()
+    result = generate_graphical_final()
+    result['time_minutes'] = 30
+    return result
 
 def generate_bisection_avanzado_1():
-    return generate_bisection_final()
+    result = generate_bisection_final()
+    result['time_minutes'] = 30
+    return result
 
 def generate_fixed_point_avanzado_1():
-    return generate_fixed_point_final()
+    result = generate_fixed_point_final()
+    result['time_minutes'] = 30
+    return result
 
 def generate_false_position_avanzado_1():
-    return generate_false_position_final()
+    result = generate_false_position_final()
+    result['time_minutes'] = 30
+    return result
 
 def generate_secant_avanzado_1():
-    return generate_secant_final()
+    result = generate_secant_final()
+    result['time_minutes'] = 30
+    return result
 
 def generate_newton_raphson_avanzado_1():
-    return generate_newton_raphson_final()
+    result = generate_newton_raphson_final()
+    result['time_minutes'] = 30
+    return result
 
 def generate_gauss_seidel_avanzado_1():
-    return generate_gauss_seidel_final()
+    result = generate_gauss_seidel_final()
+    result['time_minutes'] = 30
+    return result
 
 def generate_jacobi_avanzado_1():
-    return generate_jacobi_final()
+    result = generate_jacobi_final()
+    result['time_minutes'] = 30
+    return result
 
 def generate_montante_avanzado_1():
-    return generate_montante_final()
+    result = generate_montante_final()
+    result['time_minutes'] = 30
+    return result
 
 def generate_gauss_jordan_avanzado_1():
-    return generate_gauss_jordan_final()
+    result = generate_gauss_jordan_final()
+    result['time_minutes'] = 30
+    return result
 
 def generate_gaussian_elim_avanzado_1():
-    return generate_gaussian_elim_final()
+    result = generate_gaussian_elim_final()
+    result['time_minutes'] = 30
+    return result
 
 def generate_least_sq_linear_avanzado_1():
-    return generate_least_sq_linear_final()
+    result = generate_least_sq_linear_final()
+    result['time_minutes'] = 30
+    return result
 
 def generate_least_sq_quadratic_avanzado_1():
-    return generate_least_sq_quadratic_final()
+    result = generate_least_sq_quadratic_final()
+    result['time_minutes'] = 30
+    return result
 
 def generate_least_sq_cubic_avanzado_1():
-    return generate_least_sq_cubic_final()
+    result = generate_least_sq_cubic_final()
+    result['time_minutes'] = 30
+    return result
 
 def generate_least_sq_linear_func_avanzado_1():
-    return generate_least_sq_linear_func_final()
+    result = generate_least_sq_linear_func_final()
+    result['time_minutes'] = 30
+    return result
 
 def generate_least_sq_quadratic_func_avanzado_1():
-    return generate_least_sq_quadratic_func_final()
+    result = generate_least_sq_quadratic_func_final()
+    result['time_minutes'] = 30
+    return result
 
 def generate_trapezoidal_avanzado_1():
-    return generate_trapezoidal_final()
+    result = generate_trapezoidal_final()
+    result['time_minutes'] = 30
+    return result
 
 def generate_simpson_1_3_avanzado_1():
-    return generate_simpson_1_3_final()
+    result = generate_simpson_1_3_final()
+    result['time_minutes'] = 30
+    return result
 
 def generate_simpson_3_8_avanzado_1():
-    return generate_simpson_3_8_final()
+    result = generate_simpson_3_8_final()
+    result['time_minutes'] = 30
+    return result
 
 def generate_cotes_avanzado_1():
-    return generate_cotes_final()
+    result = generate_cotes_final()
+    result['time_minutes'] = 30
+    return result
 
 def generate_cotes_closed_avanzado_1():
-    return generate_cotes_closed_final()
+    result = generate_cotes_closed_final()
+    result['time_minutes'] = 30
+    return result
 
 def generate_cotes_open_avanzado_1():
-    return generate_cotes_open_final()
+    result = generate_cotes_open_final()
+    result['time_minutes'] = 30
+    return result
 
 def generate_euler_modified_avanzado_1():
-    return generate_euler_modified_final()
+    result = generate_euler_modified_final()
+    result['time_minutes'] = 30
+    return result
 
 def generate_rk2_avanzado_1():
-    return generate_rk2_final()
+    result = generate_rk2_final()
+    result['time_minutes'] = 30
+    return result
 
 def generate_rk3_avanzado_1():
-    return generate_rk3_final()
+    result = generate_rk3_final()
+    result['time_minutes'] = 30
+    return result
 
 def generate_rk4_simpson13_avanzado_1():
-    return generate_rk4_simpson13_final()
+    result = generate_rk4_simpson13_final()
+    result['time_minutes'] = 30
+    return result
 
 def generate_rk4_simpson38_avanzado_1():
-    return generate_rk4_simpson38_final()
+    result = generate_rk4_simpson38_final()
+    result['time_minutes'] = 30
+    return result
 
 def generate_rk_higher_order_avanzado_1():
-    return generate_rk_higher_order_final()
+    result = generate_rk_higher_order_final()
+    result['time_minutes'] = 30
+    return result
 
 # Mapeo de claves de problemas finales a sus factorías
 DYNAMIC_PROBLEM_FACTORIES = {
