@@ -1,10 +1,14 @@
 {
-    "time_elapsed_seconds": 6,
+    "time_elapsed_seconds": 17,
     "errors_committed": 1,
     "medals": {
         "FAILED_Lagrange (Prueba Final)": {
             "time_failed": 6,
             "failed_at": "2025-11-24 16:06:08.613469"
+        },
+        "FAILED_Lineal (Prueba Final)": {
+            "time_failed": 17,
+            "failed_at": "2025-11-24 16:50:18.069975"
         }
     },
     "username": "Jugador 1",
