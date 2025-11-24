@@ -1008,33 +1008,30 @@ def generate_cotes_open_final():
 
 def generate_least_squares_final():
     """Generador para mínimos cuadrados dinámico"""
-    method = random.choice(['linear', 'quadratic', 'cubic'])
+    method = random.choice(['lineal', 'cuadrática', 'cúbica'])
     n_points = random.randint(5, 8)
     
     # Generar datos
     xs = sorted([random.uniform(0, 10) for _ in range(n_points)])
     
-    if method == 'linear':
+    if method == 'lineal':
         # y = a + bx
         a0, a1 = random.uniform(1, 5), random.uniform(0.5, 2)
         points = [(x, a0 + a1*x + random.uniform(-0.5, 0.5)) for x in xs]
         x_eval = round(random.uniform(min(xs), max(xs)), 2)
         y_pred = a0 + a1*x_eval
-        model_str = "y = a + bx (Lineal)"
-    elif method == 'quadratic':
+    elif method == 'cuadrática':
         a0, a1, a2 = random.uniform(1, 4), random.uniform(-0.5, 1), random.uniform(-0.3, 0.3)
         points = [(x, a0 + a1*x + a2*x**2 + random.uniform(-0.8, 0.8)) for x in xs]
         x_eval = round(random.uniform(min(xs), max(xs)), 2)
         y_pred = a0 + a1*x_eval + a2*x_eval**2
-        model_str = "y = a + bx + cx² (Cuadrático)"
-    else:  # cubic
+    else:  # cúbica
         a0, a1, a2, a3 = random.uniform(1, 3), random.uniform(-0.3, 0.8), random.uniform(-0.2, 0.2), random.uniform(-0.05, 0.05)
         points = [(x, a0 + a1*x + a2*x**2 + a3*x**3 + random.uniform(-1, 1)) for x in xs]
         x_eval = round(random.uniform(min(xs), max(xs)), 2)
         y_pred = a0 + a1*x_eval + a2*x_eval**2 + a3*x_eval**3
-        model_str = "y = a + bx + cx² + dx³ (Cúbico)"
     
-    table_rows = [(f"Ajustar: {model_str}",), ("Datos:",)]
+    table_rows = [("Ajustar mínimos cuadrados",), ("Datos:",)]
     for x, y in points[:6]:
         table_rows.append((round(x, 2), round(y, 2)))
     
@@ -1058,7 +1055,7 @@ def generate_least_squares_final():
     
     print(f"DEBUG: Least Squares ({method}) Final -> y_pred({x_eval:.2f}): {y_pred:.6f}")
     return {
-        'title': f'Mínimos Cuadrados {method.capitalize()}',
+        'title': 'Resuelve según el método',
         'x_value': None,
         'table': table_rows,
         'options': options,

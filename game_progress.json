@@ -1,7 +1,11 @@
 {
-    "time_elapsed_seconds": 0,
+    "time_elapsed_seconds": 619,
     "errors_committed": 0,
-    "medals": [],
+    "medals": [
+        "FAILED_Cuadr\u00e1tica con Funci\u00f3n (Prueba Final)",
+        "FAILED_C\u00fabica (Prueba Final)",
+        "FAILED_L\u00ednea Recta (Prueba Final)"
+    ],
     "username": "Jugador 1",
     "music_enabled": true,
     "music_volume": 0.7
