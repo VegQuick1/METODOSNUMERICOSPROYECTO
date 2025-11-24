@@ -900,33 +900,66 @@ def generate_graphical_final():
 # ===================== FACTORÍAS DINÁMICAS: INTEGRACIÓN NUMÉRICA (PRUEBA FINAL) =====================
 
 def generate_integration_function():
-    """Crea función e integral bajo curva para integración"""
-    func_type = random.choice(['poly', 'exp', 'trig'])
-    a = random.randint(0, 2)
-    b = a + random.randint(1, 3)
+    """Crea función e integral bajo curva para integración
+    Genera casos realistas con a=0, b=1 y funciones como (1-x²), polinomios, etc.
+    """
+    func_type = random.choice(['polynomial', 'one_minus_x2', 'exponential', 'sine'])
+    a = 0
+    b = 1
     
-    if func_type == 'poly':
-        # Polinomio cuadrático
-        c0, c1, c2 = random.uniform(0.5, 3), random.uniform(-1, 1), random.uniform(-0.5, 0.5)
+    if func_type == 'one_minus_x2':
+        # Función clásica: (1 - x²)
         def f(x):
-            return c0 + c1*x + c2*x**2
-        # Integral analítica
-        integral_exact = c0*(b-a) + c1*(b**2-a**2)/2 + c2*(b**3-a**3)/3
-        func_name = "Cuadrático"
-    else:
-        # Exponencial o trigonométrica
-        if func_type == 'exp':
-            c = random.uniform(0.3, 1.5)
+            return 1 - x**2
+        # Integral: ∫(1-x²)dx = x - x³/3
+        integral_exact = b - (b**3)/3 - (a - (a**3)/3)
+        func_name = "(1 - x²)"
+    elif func_type == 'polynomial':
+        # Polinomios más complejos: coeficientes aleatorios
+        degree = random.randint(2, 3)
+        coeffs = [random.uniform(0.5, 2) for _ in range(degree + 1)]
+        
+        def f(x):
+            return sum(c * x**i for i, c in enumerate(coeffs))
+        
+        # Integral analítica: ∑ c_i * x^(i+1)/(i+1)
+        integral_exact = sum(coeffs[i] * (b**(i+1) - a**(i+1)) / (i + 1) for i in range(len(coeffs)))
+        
+        # Crear nombre legible
+        terms = []
+        for i, c in enumerate(coeffs):
+            if abs(c) > 0.01:
+                if i == 0:
+                    terms.append(f"{c:.2f}")
+                elif i == 1:
+                    terms.append(f"{c:.2f}x")
+                else:
+                    terms.append(f"{c:.2f}x^{i}")
+        func_name = " + ".join(terms).replace("+ -", "- ")[:30]
+    elif func_type == 'exponential':
+        # e^x o múltiplos
+        coeff = random.choice([0.5, 1, 1.5, 2])
+        
+        def f(x):
+            return coeff * np.exp(x)
+        
+        integral_exact = coeff * (np.exp(b) - np.exp(a))
+        func_name = f"{coeff}·e^x" if coeff != 1 else "e^x"
+    else:  # sine
+        # sin(x), cos(x) o múltiplos
+        coeff = random.uniform(0.5, 2)
+        trig_func = random.choice(['sin', 'cos'])
+        
+        if trig_func == 'sin':
             def f(x):
-                return c * np.exp(x)
-            integral_exact = c * (np.exp(b) - np.exp(a))
-            func_name = "Exponencial"
-        else:  # trig
-            c = random.uniform(0.5, 2)
+                return coeff * np.sin(x)
+            integral_exact = coeff * (-np.cos(b) + np.cos(a))
+            func_name = f"{coeff:.1f}·sen(x)" if coeff != 1 else "sen(x)"
+        else:
             def f(x):
-                return c * np.sin(x)
-            integral_exact = c * (-np.cos(b) + np.cos(a))
-            func_name = "Seno"
+                return coeff * np.cos(x)
+            integral_exact = coeff * (np.sin(b) - np.sin(a))
+            func_name = f"{coeff:.1f}·cos(x)" if coeff != 1 else "cos(x)"
     
     return f, a, b, integral_exact, func_type, func_name
 

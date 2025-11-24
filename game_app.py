@@ -1088,10 +1088,18 @@ class NumericalMethodsGame:
             content_canvas.create_window((0, 0), window=main_frame, anchor="nw")
             content_canvas.configure(yscrollcommand=scrollbar.set)
             
-            # Bind mouse wheel
+            # Bind mouse wheel - mejorado para funcionar correctamente
             def _on_content_mousewheel(event):
+                # Scroll hacia arriba (event.delta > 0) o hacia abajo (event.delta < 0)
+                # En Windows, delta positivo es arriba, delta negativo es abajo
                 content_canvas.yview_scroll(int(-1*(event.delta/120)), "units")
+            
+            # Bind tanto al canvas como al main_frame para asegurar que funciona
             content_canvas.bind("<MouseWheel>", _on_content_mousewheel)
+            main_frame.bind("<MouseWheel>", _on_content_mousewheel)
+            
+            # Hacer el canvas focusable para capturar eventos
+            content_canvas.focus_set()
             
             content_canvas.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
             scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
@@ -1137,20 +1145,47 @@ class NumericalMethodsGame:
         image_name = problem_data.get('image')
         if image_name:
             try:
-                img_path = os.path.join(BASE_PATH, 'imgs', 'Newton_Cotes_Abiertas_y_Cerradas', f'{image_name}.png')
+                img_path = os.path.join(BASE_PATH, 'imgs', 'Newton_Cotes_Abiertas_y_Cerradas', 'TablasMetodos', f'{image_name}.png')
                 if os.path.exists(img_path):
-                    img_frame = tk.Frame(main_frame, bg=COLOR_FONDO)
-                    img_frame.pack(pady=15, padx=20, fill=tk.X)
+                    from tkinter import ttk
+                    
+                    # Frame contenedor para la imagen con scrollbar horizontal
+                    img_container = tk.Frame(main_frame, bg=COLOR_FONDO)
+                    img_container.pack(pady=10, padx=5, fill=tk.BOTH, expand=False)
                     
                     display_img = tk.PhotoImage(file=img_path)
-                    # Escalar para que quepa en pantalla (máximo 400px de alto)
-                    if display_img.height() > 400:
-                        factor = max(1, int(display_img.height() / 400))
+                    
+                    # Escalar significativamente para que quepa (máximo 200px de alto)
+                    if display_img.height() > 200:
+                        factor = max(1, int(display_img.height() / 200))
                         display_img = display_img.subsample(factor)
                     
-                    img_lbl = tk.Label(img_frame, image=display_img, bg=COLOR_FONDO)
-                    img_lbl.image = display_img
-                    img_lbl.pack()
+                    # Si la imagen es muy ancha, crear canvas con scrollbar horizontal
+                    if display_img.width() > 1200:
+                        # Canvas con scrollbar horizontal
+                        img_canvas = tk.Canvas(img_container, bg=COLOR_FONDO, highlightthickness=0, height=display_img.height() + 10)
+                        h_scrollbar = ttk.Scrollbar(img_container, orient=tk.HORIZONTAL, command=img_canvas.xview)
+                        img_frame = tk.Frame(img_canvas, bg=COLOR_FONDO)
+                        
+                        img_frame.bind(
+                            "<Configure>",
+                            lambda e: img_canvas.configure(scrollregion=img_canvas.bbox("all"))
+                        )
+                        
+                        img_lbl = tk.Label(img_frame, image=display_img, bg=COLOR_FONDO)
+                        img_lbl.image = display_img
+                        img_lbl.pack()
+                        
+                        img_canvas.create_window((0, 0), window=img_frame, anchor="nw")
+                        img_canvas.configure(xscrollcommand=h_scrollbar.set)
+                        
+                        img_canvas.pack(side=tk.TOP, fill=tk.BOTH, expand=True)
+                        h_scrollbar.pack(side=tk.BOTTOM, fill=tk.X)
+                    else:
+                        # Imagen normal sin scrollbar horizontal
+                        img_lbl = tk.Label(img_container, image=display_img, bg=COLOR_FONDO)
+                        img_lbl.image = display_img
+                        img_lbl.pack()
             except Exception as e:
                 print(f"Error loading image {image_name}: {e}")
         
