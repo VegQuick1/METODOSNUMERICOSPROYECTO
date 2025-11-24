@@ -836,9 +836,6 @@ class NumericalMethodsGame:
         GradientConfigButton(buttons_container, text=f"{music_status}  {music_action}", width=570, height=105,
                   colors=("#0668c6", "#1cb38c"), text_color="#ffffff",
                   command=_toggle_music).pack(pady=22)
-        GradientConfigButton(buttons_container, text="🌐  IDIOMA", width=570, height=105,
-                  colors=("#21e7cc", "#5bb097"), text_color="#ffffff",
-                  command=lambda: messagebox.showinfo("Idioma", "Funcionalidad próximamente")).pack(pady=22)
         credits_text = "EQUIPO 1 - MÉTODOS NUMÉRICOS\n\nEstudiantes:\nJorge Aaron Cuellar Fuentes\n2007916\n\nGerardo Ulloa Loredo\n2001913\n\nCatedrático: ORALIA ZAMORA PEQUEÑO\nPeríodo: A2025\nGrupo: 005\nHorario: LMV, V6"
         GradientConfigButton(buttons_container, text="ℹ️  CRÉDITOS", width=570, height=105,
                   colors=("#21e7cc", "#5bb097"), text_color="#ffffff",
