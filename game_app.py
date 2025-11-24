@@ -1,11 +1,11 @@
-﻿import tkinter as tk
+import tkinter as tk
 from tkinter import messagebox
 import tkinter.font as tkfont
 import os
 import sys
 import json
 import random
-from game_data import GAME_STRUCTURE, PROBLEM_DATA, LAGRANGE_FAKE_ANSWERS
+from game_data import GAME_STRUCTURE, PROBLEM_DATA, LAGRANGE_FAKE_ANSWERS, DYNAMIC_PROBLEM_FACTORIES
 def get_base_path():
     if getattr(sys, 'frozen', False):
         return sys._MEIPASS
@@ -349,6 +349,118 @@ class GradientRoundedButton(tk.Canvas):
                 self.draw_button()
         except Exception:
             pass
+
+class GradientConfigButton(tk.Canvas):
+    """Botón con gradiente sin símbolo de play para el menú de configuración"""
+    def __init__(self, parent, text, command, width=570, height=105, corner_radius=20,
+                 colors=("#0668c6", "#1cb38c"), text_color="#ffffff", bg_color=COLOR_FONDO):
+        width = scale_value(width)
+        height = scale_value(height)
+        corner_radius = scale_value(corner_radius)
+        tk.Canvas.__init__(self, parent, borderwidth=0, relief="flat", highlightthickness=0, bg=bg_color)
+        self.command = command
+        self.text = text
+        self.colors = colors
+        self.text_color = text_color
+        self.width = width
+        self.height = height
+        self.corner_radius = corner_radius
+        self.bg_color = bg_color
+        self.configure(width=width, height=height)
+        self.draw_button()
+        self.dynamic = width is None
+        try:
+            if self.dynamic and hasattr(parent, 'bind'):
+                parent.bind('<Configure>', self._on_parent_config)
+        except Exception:
+            pass
+        self.bind("<ButtonPress-1>", self._on_press)
+        self.bind("<ButtonRelease-1>", self._on_release)
+        self.bind("<Enter>", self._on_hover)
+        self.bind("<Leave>", self._on_leave)
+
+    def draw_button(self):
+        self.delete("all")
+        r = self.corner_radius
+        w = self.width
+        h = self.height
+        if PIL_AVAILABLE:
+            try:
+                img = Image.new("RGBA", (max(2, int(w)), max(2, int(h))), (0, 0, 0, 0))
+                draw = ImageDraw.Draw(img)
+                r1, g1, b1 = self._hex_to_rgb(self.colors[0])
+                r2, g2, b2 = self._hex_to_rgb(self.colors[-1])
+                for x in range(img.width):
+                    t = x / max(1, img.width - 1)
+                    ri = int(r1 + (r2 - r1) * t)
+                    gi = int(g1 + (g2 - g1) * t)
+                    bi = int(b1 + (b2 - b1) * t)
+                    draw.line([(x, 0), (x, img.height)], fill=(ri, gi, bi))
+                mask = Image.new("L", (img.width, img.height), 0)
+                mdraw = ImageDraw.Draw(mask)
+                mdraw.rounded_rectangle([(0, 0), (img.width, img.height)], radius=r, fill=255)
+                img.putalpha(mask)
+                tkimg = ImageTk.PhotoImage(img)
+                self._tkimg = tkimg
+                self.create_image(0, 0, anchor="nw", image=self._tkimg)
+            except Exception:
+                pass
+        if not PIL_AVAILABLE or not hasattr(self, '_tkimg'):
+            try:
+                r1, g1, b1 = self._hex_to_rgb(self.colors[0])
+                r2, g2, b2 = self._hex_to_rgb(self.colors[-1])
+                steps = max(10, int(w / 5))
+                for i in range(steps):
+                    t = i / (steps - 1)
+                    ri = int(r1 + (r2 - r1) * t)
+                    gi = int(g1 + (g2 - g1) * t)
+                    bi = int(b1 + (b2 - b1) * t)
+                    col = f"#{ri:02x}{gi:02x}{bi:02x}"
+                    x0 = i * (w / steps)
+                    x1 = (i + 1) * (w / steps)
+                    self.create_rectangle(x0, 0, x1, h, fill=col, outline="", width=0)
+                self.create_arc(0, 0, r*2, r*2, start=90, extent=90, fill=self.bg_color, outline=self.bg_color, width=0)
+                self.create_arc(w-r*2, 0, w, r*2, start=0, extent=90, fill=self.bg_color, outline=self.bg_color, width=0)
+                self.create_arc(w-r*2, h-r*2, w, h, start=270, extent=90, fill=self.bg_color, outline=self.bg_color, width=0)
+                self.create_arc(0, h-r*2, r*2, h, start=180, extent=90, fill=self.bg_color, outline=self.bg_color, width=0)
+            except Exception as e:
+                self.create_rectangle(0, 0, w, h, fill=self.colors[0], outline="", width=0)
+        # Sin triángulo de play - solo texto centrado
+        self.create_text(w/2, h/2, text=self.text, fill=self.text_color,
+                 font=("Arial", scale_font(16), "bold"))
+
+    def _hex_to_rgb(self, hexcol):
+        hexcol = hexcol.lstrip('#')
+        return tuple(int(hexcol[i:i+2], 16) for i in (0, 2, 4))
+
+    def _on_press(self, event):
+        self.scale("all", self.width/2, self.height/2, 0.995, 0.995)
+
+    def _on_release(self, event):
+        try:
+            self.scale("all", self.width/2, self.height/2, 1/0.995, 1/0.995)
+        except Exception:
+            pass
+        if self.command:
+            self.command()
+
+    def _on_hover(self, event):
+        self.config(cursor="hand2")
+
+    def _on_leave(self, event):
+        self.config(cursor="")
+
+    def _on_parent_config(self, event):
+        try:
+            pw = event.width
+            new_w = max(200, int(pw * 0.7))
+            if new_w != self.width:
+                self.width = new_w
+                self.configure(width=self.width)
+                self.draw_button()
+        except Exception:
+            pass
+
 class NumericalMethodsGame:
     def __init__(self, root):
         self.root = root
@@ -679,27 +791,27 @@ class NumericalMethodsGame:
             self.show_config_menu()
         music_action = "Ensordecer" if self.music_enabled else "Desensordecer"
         music_status = "🔊" if self.music_enabled else "🔇"
-        RoundedButton(buttons_container, text=f"{music_status}  {music_action}", width=380, height=105,
-                  color="#20D0C0", text_color="#ffffff",
+        GradientConfigButton(buttons_container, text=f"{music_status}  {music_action}", width=570, height=105,
+                  colors=("#0668c6", "#1cb38c"), text_color="#ffffff",
                   command=_toggle_music).pack(pady=22)
-        RoundedButton(buttons_container, text="🌐  IDIOMA", width=570, height=105,
-                  color="#20D0C0", text_color="#ffffff",
+        GradientConfigButton(buttons_container, text="🌐  IDIOMA", width=570, height=105,
+                  colors=("#21e7cc", "#5bb097"), text_color="#ffffff",
                   command=lambda: messagebox.showinfo("Idioma", "Funcionalidad próximamente")).pack(pady=22)
         credits_text = "EQUIPO 1 - MÉTODOS NUMÉRICOS\n\nEstudiantes:\nJorge Aaron Cuellar Fuentes\n2007916\n\nGerardo Ulloa Loredo\n2001913\n\nCatedrático: ORALIA ZAMORA PEQUEÑO\nPeríodo: A2025\nGrupo: 005\nHorario: LMV, V6"
-        RoundedButton(buttons_container, text="ℹ️  CRÉDITOS", width=570, height=105,
-                  color="#20D0C0", text_color="#ffffff",
+        GradientConfigButton(buttons_container, text="ℹ️  CRÉDITOS", width=570, height=105,
+                  colors=("#21e7cc", "#5bb097"), text_color="#ffffff",
                   command=lambda: messagebox.showinfo("Créditos", credits_text)).pack(pady=22)
         bibliography_text = "1. Zamora Pequeño, O., Zamora Pequeño, R. S., & Del Ángel Ramírez, A. (2020). Métodos numéricos aplicados con software (2.ª ed.). Universidad Autónoma de Nuevo León.\n\n2. Python Software Foundation. (s.f.). tkinter — Python interface to Tcl/Tk. Python 3.12 Documentation.\n\n3. Python Software Foundation. (s.f.). json — JSON encoder and decoder. Python 3.12 Documentation.\n\n4. The NumPy Developers. (s.f.). NumPy documentation. NumPy."
-        RoundedButton(buttons_container, text="📚  BIBLIOGRAFÍA", width=570, height=105,
-                  color="#20D0C0", text_color="#ffffff",
+        GradientConfigButton(buttons_container, text="📚  BIBLIOGRAFÍA", width=570, height=105,
+                  colors=("#21e7cc", "#5bb097"), text_color="#ffffff",
                   command=lambda: messagebox.showinfo("Bibliografía", bibliography_text)).pack(pady=22)
         def _on_reset_click():
             response = messagebox.askyesno("Reiniciar Progreso",
                                           "¿Estás seguro de que deseas reiniciar tu progreso?\nEsta acción no se puede deshacer.")
             if response:
                 self._reset_progress()
-        RoundedButton(buttons_container, text="⚠️  REINICIAR PROGRESO", width=570, height=105,
-                  color="#FF3333", text_color="#ffffff",
+        GradientConfigButton(buttons_container, text="⚠️  REINICIAR PROGRESO", width=570, height=105,
+                  colors=("#fb0304", "#fb0304"), text_color="#ffffff",
                   command=_on_reset_click).pack(pady=22)
     def show_chapter_menu(self):
         self.clear_screen()
@@ -858,7 +970,16 @@ class NumericalMethodsGame:
     
     def _show_generic_problem(self, problem_id, chapter, level, difficulty, lesson_index):
         import random
-        problem_data = PROBLEM_DATA.get(problem_id, {})
+        entry = PROBLEM_DATA.get(problem_id)
+        # Si es función (problema dinámico), ejecutarla para obtener los datos
+        if callable(entry):
+            try:
+                problem_data = entry()
+            except Exception as e:
+                print(f"ERROR al generar problema dinámico {problem_id}: {e}")
+                problem_data = {}
+        else:
+            problem_data = entry or {}
         if not problem_data:
             messagebox.showerror("Error", f"No se encontraron datos para el problema: {problem_id}")
             self.show_difficulty_menu(chapter, level)
@@ -992,6 +1113,8 @@ class NumericalMethodsGame:
         btn_frame.pack(pady=20)
         options_values = problem_data.get('options', [])
         correct_answer = problem_data.get('correct', '')
+        if correct_answer:
+            print(f"DEBUG: Correct answer loaded ({problem_id}): {correct_answer}")
         random.shuffle(options_values)
         def _make_handler(option_text):
             def _handler():
