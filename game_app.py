@@ -444,20 +444,44 @@ class NumericalMethodsGame:
         self.show_main_menu()
     
     def _on_backspace(self, event=None):
-        """Maneja el botón Backspace para volver a la pantalla anterior"""
-        # Ir retrocediendo según el contexto actual
-        if self.current_difficulty:
-            # Estamos en una lección, volver al menú de dificultad
-            self.show_difficulty_menu(self.current_chapter, self.current_level)
-        elif self.current_level:
-            # Estamos en el menú de dificultad, volver al menú de métodos
-            self.show_level_menu(self.current_chapter)
-        elif self.current_chapter:
-            # Estamos en el menú de métodos, volver al menú de capítulos
-            self.show_chapter_menu()
-        else:
-            # Estamos en el menú principal, no hacer nada
-            pass
+        """Maneja el botón Backspace para navegación con confirmaciones.
+
+        Jerarquía:
+        Lección -> Menú de Dificultad -> Menú de Capítulos -> Menú Principal
+        Reglas especiales:
+        - En Fácil: salir sin confirmación.
+        - En Intermedio / Avanzado: confirmar salida.
+        - En Prueba Final: usar confirmación estricta `_confirm_exit_final`.
+        - En menús (dificultad / capítulos) retroceder un nivel sin confirmación.
+        - Ignorado en menú principal (no hace nada).
+        """
+        try:
+            # Si estamos dentro de una lección (hay dificultad activa)
+            if self.current_difficulty:
+                diff = (self.current_difficulty or '').lower()
+                if diff == 'prueba final':
+                    # Confirmación especial ya existente
+                    self._confirm_exit_final(self.current_chapter, self.current_level)
+                elif diff in ('intermedio', 'avanzado'):
+                    from tkinter import messagebox
+                    salir = messagebox.askyesno(
+                        "Salir de la lección",
+                        "¿Deseas salir de este nivel?\nPerderás el progreso de la lección actual.")
+                    if salir:
+                        self.show_difficulty_menu(self.current_chapter, self.current_level)
+                else:  # Fácil u otro
+                    self.show_difficulty_menu(self.current_chapter, self.current_level)
+            elif self.current_level:
+                # Estamos en el menú de dificultad -> volver al menú de capítulos
+                self.show_chapter_menu()
+            elif self.current_chapter:
+                # Estamos en el menú de métodos -> volver al menú principal
+                self.show_main_menu()
+            else:
+                # Menú principal: ignorar
+                return "break"
+        except Exception as e:
+            print(f"Error en _on_backspace: {e}")
         return "break"  # Prevenir que el evento se propague
     
     def _on_closing(self):

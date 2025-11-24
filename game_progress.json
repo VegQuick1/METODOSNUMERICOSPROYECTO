@@ -1,29 +1,10 @@
 {
-    "time_elapsed_seconds": 3810,
-    "errors_committed": 67,
+    "time_elapsed_seconds": 16,
+    "errors_committed": 0,
     "medals": [
-        "Lineal (F\u00e1cil)",
-        "FAILED_Lagrange (Prueba Final)",
-        "FAILED_Lineal (Prueba Final)",
-        "Punto Fijo (F\u00e1cil)",
-        "Jacobi (F\u00e1cil)",
-        "M\u00e9todo Gr\u00e1fico (F\u00e1cil)",
-        "Gauss-Jordan (F\u00e1cil)",
-        "Montante (F\u00e1cil)",
-        "FAILED_Newton Hacia Atr\u00e1s (Prueba Final)",
-        "Lagrange (F\u00e1cil)",
-        "Newton con Diferencias Divididas (F\u00e1cil)",
-        "Newton Hacia Adelante (F\u00e1cil)",
-        "Bisecci\u00f3n (Bisectriz) (F\u00e1cil)",
-        "Runge-Kutta Orden Superior (F\u00e1cil)",
-        "Gauss-Seidel (F\u00e1cil)",
-        "Eliminaci\u00f3n Gaussiana (F\u00e1cil)",
-        "Regla de 3/8 Simpson (F\u00e1cil)",
-        "FAILED_Newton Hacia Adelante (Prueba Final)",
-        "Newton Hacia Atr\u00e1s (F\u00e1cil)",
-        "Newton-Cotes Abiertas y Cerradas (F\u00e1cil)"
+        "FAILED_Lagrange (Prueba Final)"
     ],
     "username": "Jugador 1",
-    "music_enabled": false,
+    "music_enabled": true,
     "music_volume": 0.7
 }
