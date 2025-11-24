@@ -4,6 +4,7 @@ import tkinter.font as tkfont
 import os
 import sys
 import json
+import datetime
 import random
 from game_data import GAME_STRUCTURE, PROBLEM_DATA, LAGRANGE_FAKE_ANSWERS, DYNAMIC_PROBLEM_FACTORIES
 def get_base_path():
@@ -783,9 +784,17 @@ class NumericalMethodsGame:
         medals_frame = tk.Frame(content, bg=COLOR_FONDO)
         medals_frame.pack(fill=tk.BOTH, expand=True, pady=10)
         if self.medals:
-            filtered_medals = [m for m in self.medals if not m.startswith("FAILED_")]
+            # Filtrar medallas válidas (no fallidas)
+            filtered_medals = []
+            if isinstance(self.medals, dict):
+                # Nueva estructura: diccionario con información de medallas
+                filtered_medals = [f"🏅 {medal_name}" for medal_name in self.medals.keys() if not medal_name.startswith("FAILED_")]
+            else:
+                # Estructura antigua: lista de strings
+                filtered_medals = [f"🏅 {m}" for m in self.medals if not m.startswith("FAILED_")]
+            
             if filtered_medals:
-                medals_text = "\n".join([f"🏅 {m}" for m in filtered_medals])
+                medals_text = "\n".join(filtered_medals)
             else:
                 medals_text = "Sin medallas aún"
         else:
@@ -950,9 +959,30 @@ class NumericalMethodsGame:
         RoundedButton(container, text="Avanzado   ★★★", width=300, height=60,
                       color=BTN_ADV_COLOR, text_color="white",
                       command=lambda: self.start_lesson(chapter, level, "Avanzado", 0)).pack(pady=15)
-        RoundedButton(container, text="Prueba Final   🏆", width=300, height=60,
-                      color=BTN_FINAL_COLOR, text_color="white",
-                      command=lambda: self._show_final_test_confirmation(chapter, level)).pack(pady=15)
+        
+        # Botón de Prueba Final con lógica de bloqueo
+        medal_str = f"{level} (Prueba Final)"
+        failed_key = f"FAILED_{medal_str}"
+        is_blocked = (failed_key in self.medals) if isinstance(self.medals, dict) else (failed_key in self.medals)
+        is_completed = (medal_str in self.medals) if isinstance(self.medals, dict) else (medal_str in self.medals)
+        
+        if is_blocked:
+            # Mostrar botón deshabilitado si está bloqueado
+            blocked_btn = tk.Label(container, text="Prueba Final   ⛔ BLOQUEADA", width=40, height=4,
+                                  font=("Arial", scale_font(12), "bold"),
+                                  bg="#666666", fg="#999999", relief="raised", bd=2)
+            blocked_btn.pack(pady=15)
+        elif is_completed:
+            # Mostrar botón deshabilitado si ya está completada
+            completed_btn = tk.Label(container, text="Prueba Final   ✅ COMPLETADA", width=40, height=4,
+                                   font=("Arial", scale_font(12), "bold"),
+                                   bg="#4CAF50", fg="#ffffff", relief="raised", bd=2)
+            completed_btn.pack(pady=15)
+        else:
+            # Mostrar botón activo
+            RoundedButton(container, text="Prueba Final   🏆", width=300, height=60,
+                          color=BTN_FINAL_COLOR, text_color="white",
+                          command=lambda: self._show_final_test_confirmation(chapter, level)).pack(pady=15)
     def start_lesson(self, chapter, level, difficulty, lesson_index):
         self.current_menu_context = "exercise"  # Estamos dentro de un ejercicio/lección
         try:
@@ -987,8 +1017,7 @@ class NumericalMethodsGame:
             return
         if lesson_index >= len(lessons):
             medal_name = f"{level} ({difficulty})"
-            if medal_name not in self.medals:
-                self.medals.append(medal_name)
+            self._add_medal(medal_name)
             self.show_difficulty_menu(chapter, level)
             return
         current_lesson = lessons[lesson_index]
@@ -1025,14 +1054,18 @@ class NumericalMethodsGame:
         is_final = difficulty.lower() == 'prueba final'
         if is_final:
             failed_key = f"FAILED_{medal_str}"
-            if failed_key in self.medals:
+            # Verificar si es diccionario o lista
+            failed_exists = (failed_key in self.medals) if isinstance(self.medals, dict) else (failed_key in self.medals)
+            if failed_exists:
                 messagebox.showwarning("Prueba Bloqueada",
                     "⛔ Esta Prueba Final está BLOQUEADA.\n\n" +
                     "Has fallado previamente esta prueba.\n" +
                     "No puedes volver a intentarla.")
                 self.show_difficulty_menu(chapter, level)
                 return
-            if medal_str in self.medals:
+            # Verificar si ya completó la prueba
+            medal_exists = (medal_str in self.medals) if isinstance(self.medals, dict) else (medal_str in self.medals)
+            if medal_exists:
                 messagebox.showinfo("Prueba Completada",
                     "✅ Ya has completado esta Prueba Final exitosamente.\n\n" +
                     "No puedes volver a realizarla.")
@@ -1250,8 +1283,24 @@ class NumericalMethodsGame:
                     self.root.after_cancel(timer_state['timer_id'])
                 if option_text == correct_answer:
                     if is_final:
-                        if medal_str not in self.medals:
-                            self.medals.append(medal_str)
+                        # Para Prueba Final, guardar la medalla con el tiempo asociado
+                        if isinstance(self.medals, dict):
+                            if medal_str not in self.medals:
+                                self.medals[medal_str] = {
+                                    'time_completed': self.time_elapsed_seconds,
+                                    'completed_at': str(datetime.datetime.now())
+                                }
+                        else:
+                            # Convertir a diccionario si aún es lista
+                            old_medals = self.medals if isinstance(self.medals, list) else []
+                            self.medals = {}
+                            for medal in old_medals:
+                                if not medal.startswith("FAILED_"):
+                                    self.medals[medal] = {'time_completed': None, 'completed_at': None}
+                            self.medals[medal_str] = {
+                                'time_completed': self.time_elapsed_seconds,
+                                'completed_at': str(datetime.datetime.now())
+                            }
                         self._save_progress()
                         messagebox.showinfo("¡Correcto!", f"¡Excelente! ¡Prueba Final completada!")
                         self.show_difficulty_menu(chapter, level)
@@ -1263,8 +1312,25 @@ class NumericalMethodsGame:
                     self.errors_committed += 1
                     if is_final:
                         failed_key = f"FAILED_{medal_str}"
-                        if failed_key not in self.medals:
-                            self.medals.append(failed_key)
+                        if isinstance(self.medals, dict):
+                            if failed_key not in self.medals:
+                                self.medals[failed_key] = {
+                                    'time_failed': self.time_elapsed_seconds,
+                                    'failed_at': str(datetime.datetime.now())
+                                }
+                        else:
+                            # Convertir a diccionario si aún es lista
+                            old_medals = self.medals if isinstance(self.medals, list) else []
+                            self.medals = {}
+                            for medal in old_medals:
+                                if not medal.startswith("FAILED_"):
+                                    self.medals[medal] = {'time_completed': None, 'completed_at': None}
+                                else:
+                                    self.medals[medal] = {'time_failed': None, 'failed_at': None}
+                            self.medals[failed_key] = {
+                                'time_failed': self.time_elapsed_seconds,
+                                'failed_at': str(datetime.datetime.now())
+                            }
                         self._save_progress()
                         messagebox.showerror("Prueba Final Fallida",
                             "❌ Respuesta incorrecta.\n\n" +
@@ -2219,6 +2285,33 @@ class NumericalMethodsGame:
             else:
                 messagebox.showinfo("Incorrecto", "Lo siento, esa respuesta no es correcta.")
                 self.show_difficulty_menu(chapter, level)
+    def _has_medal(self, medal_name):
+        """Verifica si un usuario tiene una medalla específica.
+        Compatible con ambas estructuras (lista y diccionario)."""
+        if isinstance(self.medals, dict):
+            return medal_name in self.medals and not medal_name.startswith("FAILED_")
+        else:
+            return medal_name in self.medals and not medal_name.startswith("FAILED_")
+    
+    def _add_medal(self, medal_name, include_time=False):
+        """Agrega una medalla al usuario.
+        Compatible con ambas estructuras (lista y diccionario)."""
+        if isinstance(self.medals, dict):
+            if medal_name not in self.medals:
+                if include_time:
+                    self.medals[medal_name] = {
+                        'time_completed': self.time_elapsed_seconds,
+                        'completed_at': str(datetime.datetime.now())
+                    }
+                else:
+                    self.medals[medal_name] = {
+                        'time_completed': None,
+                        'completed_at': None
+                    }
+        else:
+            if medal_name not in self.medals:
+                self.medals.append(medal_name)
+    
     def _start_timer(self):
         def _increment_time():
             self.time_elapsed_seconds += 1
@@ -2281,8 +2374,15 @@ Estás a punto de comenzar la PRUEBA FINAL de {level}.
             # Marcar como fallida para bloquear la prueba
             medal_str = f"{level} (Prueba Final)"
             failed_key = f"FAILED_{medal_str}"
-            if failed_key not in self.medals:
-                self.medals.append(failed_key)
+            if isinstance(self.medals, dict):
+                if failed_key not in self.medals:
+                    self.medals[failed_key] = {
+                        'time_failed': self.time_elapsed_seconds,
+                        'failed_at': str(datetime.datetime.now())
+                    }
+            else:
+                if failed_key not in self.medals:
+                    self.medals.append(failed_key)
             self._save_progress()
             self.show_difficulty_menu(chapter, level)
     def _format_time(self):
@@ -2325,3 +2425,82 @@ Estás a punto de comenzar la PRUEBA FINAL de {level}.
         self._save_progress()
         messagebox.showinfo("Progreso Reiniciado", "Tu progreso ha sido reiniciado. ¡A jugar!")
         self.show_main_menu()
+    
+    def get_medal_info(self, medal_name):
+        """Obtiene la información de una medalla específica.
+        Retorna un diccionario con información sobre el tiempo de completación."""
+        if isinstance(self.medals, dict):
+            return self.medals.get(medal_name, None)
+        else:
+            # Estructura antigua: devolver None
+            return None
+    
+    def validate_final_test_completion(self, level, estimated_minutes):
+        """Valida si el tiempo de completación de una Prueba Final es válido.
+        
+        Detecta patrones de fraude cuando:
+        1. Se completa en menos de 5 minutos (tiempo sospechoso)
+        2. Hay múltiples pruebas completadas en menos de 5 minutos
+        
+        Args:
+            level: Nombre del nivel
+            estimated_minutes: Minutos estimados para completar la prueba
+            
+        Returns:
+            dict con información de validación:
+            {
+                'is_suspicious': bool,
+                'medal_info': dict or None,
+                'time_taken_minutes': int or None,
+                'fraud_pattern_detected': bool,
+                'fast_completions_count': int,
+                'warning': str or None
+            }
+        """
+        medal_str = f"{level} (Prueba Final)"
+        medal_info = self.get_medal_info(medal_str)
+        
+        MINIMUM_ACCEPTABLE_TIME = 5  # 5 minutos mínimo
+        
+        if medal_info is None:
+            return {
+                'is_suspicious': False,
+                'medal_info': None,
+                'time_taken_minutes': None,
+                'fraud_pattern_detected': False,
+                'fast_completions_count': 0,
+                'warning': None
+            }
+        
+        time_taken_seconds = medal_info.get('time_completed', 0)
+        time_taken_minutes = time_taken_seconds // 60 if time_taken_seconds else 0
+        
+        # Contar cuántas Pruebas Finales se completaron en menos de 5 minutos
+        fast_completions_count = 0
+        if isinstance(self.medals, dict):
+            for medal_key, medal_data in self.medals.items():
+                if 'Prueba Final' in medal_key and not medal_key.startswith('FAILED_'):
+                    time_completed = medal_data.get('time_completed', 0)
+                    if time_completed and (time_completed // 60) < MINIMUM_ACCEPTABLE_TIME:
+                        fast_completions_count += 1
+        
+        # Detectar patrones de fraude
+        is_suspicious_single = time_taken_minutes < MINIMUM_ACCEPTABLE_TIME
+        fraud_pattern = fast_completions_count >= 3  # 3 o más pruebas en menos de 5 min = patrón sospechoso
+        
+        warning = None
+        if is_suspicious_single and fraud_pattern:
+            warning = f'⚠️ PATRÓN DE FRAUDE DETECTADO: {fast_completions_count} Pruebas Finales completadas en menos de 5 minutos. Tiempo actual: {time_taken_minutes} min'
+        elif is_suspicious_single and fast_completions_count >= 2:
+            warning = f'⚠️ POSIBLE FRAUDE: {fast_completions_count} Pruebas Finales completadas muy rápidamente. Tiempo actual: {time_taken_minutes} min'
+        elif is_suspicious_single:
+            warning = f'⏱️ Tiempo rápido en esta prueba: {time_taken_minutes} min (recomendado: ~{estimated_minutes} min). Revisar si hay patrón'
+        
+        return {
+            'is_suspicious': is_suspicious_single,
+            'medal_info': medal_info,
+            'time_taken_minutes': time_taken_minutes,
+            'fraud_pattern_detected': fraud_pattern,
+            'fast_completions_count': fast_completions_count,
+            'warning': warning
+        }

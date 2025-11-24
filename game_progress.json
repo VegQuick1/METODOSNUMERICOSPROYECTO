@@ -1,18 +1,12 @@
 {
-    "time_elapsed_seconds": 456,
-    "errors_committed": 22,
-    "medals": [
-        "FAILED_Euler Modificado (Prueba Final)",
-        "FAILED_Runge-Kutta 2do Orden (Prueba Final)",
-        "FAILED_Runge-Kutta 3er Orden (Prueba Final)",
-        "FAILED_Runge-Kutta 4to Orden (1/3 Simpson) (Prueba Final)",
-        "FAILED_Runge-Kutta 4to Orden (3/8 Simpson) (Prueba Final)",
-        "FAILED_Runge-Kutta Orden Superior (Prueba Final)",
-        "Newton-Cotes Abiertas y Cerradas (F\u00e1cil)",
-        "Newton-Cotes Abiertas y Cerradas (Avanzado)",
-        "FAILED_Newton-Cotes Abiertas y Cerradas (Prueba Final)",
-        "FAILED_Lineal (Prueba Final)"
-    ],
+    "time_elapsed_seconds": 6,
+    "errors_committed": 1,
+    "medals": {
+        "FAILED_Lagrange (Prueba Final)": {
+            "time_failed": 6,
+            "failed_at": "2025-11-24 16:06:08.613469"
+        }
+    },
     "username": "Jugador 1",
     "music_enabled": true,
     "music_volume": 0.7
